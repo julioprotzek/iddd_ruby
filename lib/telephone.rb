@@ -10,4 +10,8 @@ class Telephone
 
     @number = a_number
   end
+
+  def ==(other)
+    self.class == other.class && self.number == other.number
+  end
 end

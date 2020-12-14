@@ -10,4 +10,8 @@ class EmailAddress
 
     @address = an_address
   end
+
+  def ==(other)
+    self.class == other.class && address == other.address
+  end
 end

@@ -45,4 +45,13 @@ class PostalAddress
 
     @country_code = a_country_code
   end
+
+  def ==(other)
+    self.class == other.class && 
+    self.street_address == other.street_address &&
+    self.city == other.city &&
+    self.state_province == other.state_province &&
+    self.postal_code == other.postal_code &&
+    self.country_code == other.country_code
+  end
 end
