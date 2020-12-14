@@ -31,4 +31,40 @@ class ContactInformation
   def secondary_telephone=(a_secondary_telephone)
     @secondary_telephone = a_secondary_telephone
   end
+
+  def change_email_address(an_email_address)
+    self.class.new(
+      an_email_address, 
+      postal_address, 
+      primary_telephone, 
+      secondary_telephone
+    )
+  end
+
+  def change_postal_address(a_postal_address)
+    self.class.new(
+      email_address, 
+      a_postal_address, 
+      primary_telephone, 
+      secondary_telephone
+    )
+  end
+
+  def change_primary_telephone(a_primary_telephone)
+    self.class.new(
+      email_address, 
+      postal_address, 
+      a_primary_telephone, 
+      secondary_telephone
+    )
+  end
+
+  def change_secondary_telephone(a_secondary_telephone)
+    self.class.new(
+      email_address, 
+      postal_address, 
+      primary_telephone, 
+      a_secondary_telephone
+    )
+  end
 end

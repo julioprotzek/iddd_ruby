@@ -1,8 +1,8 @@
 require './test/test_helper'
 
 class ContactInformationTest < ActiveSupport::TestCase
-  test 'valid contact information' do
-    contact_information = ContactInformation.new(
+  setup do
+    @contact_information = ContactInformation.new(
       EmailAddress.new('zoe@example.com'),
       PostalAddress.new(
         '123 Pearl Street',
@@ -14,24 +14,58 @@ class ContactInformationTest < ActiveSupport::TestCase
       Telephone.new('303-555-1210'),
       Telephone.new('303-555-1212')
     )
+  end
 
-    assert_equal EmailAddress.new('zoe@example.com'), contact_information.email_address
+  test 'valid contact information' do
+    assert_equal EmailAddress.new('zoe@example.com'), @contact_information.email_address
     assert_equal PostalAddress.new(
       '123 Pearl Street',
       'Boulder',
       'CO',
       '80301',
       'US'
-    ), contact_information.postal_address
+    ), @contact_information.postal_address
 
-    assert_equal Telephone.new('303-555-1210'), contact_information.primary_telephone
-    assert_equal Telephone.new('303-555-1212'), contact_information.secondary_telephone
+    assert_equal Telephone.new('303-555-1210'), @contact_information.primary_telephone
+    assert_equal Telephone.new('303-555-1212'), @contact_information.secondary_telephone
   end
 
   test 'validations' do
     assert_validates_presence :email_address, error_message: 'The email address is required.'
     assert_validates_presence :postal_address, error_message: 'The postal address is required.'
     assert_validates_presence :primary_telephone, error_message: 'The primary telephone is required.'
+  end
+
+  test 'change email address' do
+    changed_contact_information = @contact_information.change_email_address(EmailAddress.new('johnny@example.com'))
+    assert_equal EmailAddress.new('johnny@example.com'), changed_contact_information.email_address
+  end
+
+  test 'change postal address' do
+    changed_contact_information = @contact_information.change_postal_address(PostalAddress.new(
+      '555 Other Street',
+      'Boulder',
+      'CO',
+      '80602',
+      'US'
+    ))
+    assert_equal PostalAddress.new(
+      '555 Other Street',
+      'Boulder',
+      'CO',
+      '80602',
+      'US'
+    ), changed_contact_information.postal_address
+  end
+
+  test 'change primary telephone' do
+    changed_contact_information = @contact_information.change_primary_telephone(Telephone.new('333-123-0000'))
+    assert_equal Telephone.new('333-123-0000'), changed_contact_information.primary_telephone
+  end
+
+  test 'change secondary telephone' do
+    changed_contact_information = @contact_information.change_secondary_telephone(Telephone.new('333-123-0000'))
+    assert_equal Telephone.new('333-123-0000'), changed_contact_information.secondary_telephone
   end
 
 
