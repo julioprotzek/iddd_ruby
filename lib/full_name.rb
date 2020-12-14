@@ -1,5 +1,3 @@
-require 'active_support/all'
-
 class FullName
   attr_reader :first_name, :last_name
 

@@ -1,20 +1,5 @@
 require './test/test_helper'
 
-class Telephone
-  attr_reader :number
-
-  def initialize(number)
-    assert_argument_presence(number, 'Telephone number is required.')
-    @number = number
-  end
-
-  private
-
-  def assert_argument_presence(argument, message)
-    raise ArgumentError, message unless argument.present?
-  end
-end
-
 class TelephoneTest < Minitest::Test
   def test_create_telephone
     phone = Telephone.new('333-550-9010')
