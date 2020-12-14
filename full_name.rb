@@ -5,7 +5,7 @@ class FullName
 
   def initialize(first_name, last_name)
     self.first_name = first_name
-    @last_name = last_name
+    self.last_name = last_name
   end
 
   def first_name=(first_name)
@@ -14,6 +14,14 @@ class FullName
     assert_argument_true(first_name.match?(/[A-Z][a-z]*/), 'First name must be at least one character in length, starting with a capital letter.')
 
     @first_name = first_name
+  end
+
+  def last_name=(last_name)
+    assert_argument_not_empty(last_name, 'Last name is required.')
+    assert_argument_length(last_name, 1, 50, 'Last name must have 50 characters or less.')
+    assert_argument_true(last_name.match?(/^[a-zA-Z][ a-zA-Z'-]*[a-zA-Z']?/), 'Last name must be at least one character in length.')
+
+    @last_name = last_name
   end
 
   def with_changed_first_name(first_name)
