@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+
 require './full_name'
 
 class FullNameTest < Minitest::Test
@@ -24,5 +25,11 @@ class FullNameTest < Minitest::Test
   def test_formatted_name
     name = FullName.new(FIRST_NAME, LAST_NAME)
     assert_equal FIRST_NAME + ' ' + LAST_NAME, name.as_formatted_name
+  end
+
+  def test_first_name_is_required
+    assert_raises('First name is required') do
+      FullName.new(nil, LAST_NAME)
+    end
   end
 end
