@@ -3,5 +3,5 @@ Original code: https://github.com/VaughnVernon/IDDD_Samples
 
 ## Tests
 ```bash
-bundle exec ruby test/*
+rake
 ```

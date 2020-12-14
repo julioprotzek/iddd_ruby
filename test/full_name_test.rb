@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-
-require './src/full_name'
+require './test/test_helper'
 
 class FullNameTest < Minitest::Test
   FIRST_NAME = 'Zoe'
