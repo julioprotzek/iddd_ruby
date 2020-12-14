@@ -20,4 +20,9 @@ class FullNameTest < Minitest::Test
 
     assert_equal FIRST_NAME + ' ' + MARRIED_LAST_NAME, name.as_formatted_name
   end
+
+  def test_formatted_name
+    name = FullName.new(FIRST_NAME, LAST_NAME)
+    assert_equal FIRST_NAME + ' ' + LAST_NAME, name.as_formatted_name
+  end
 end
