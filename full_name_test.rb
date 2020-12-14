@@ -28,8 +28,28 @@ class FullNameTest < Minitest::Test
   end
 
   def test_first_name_is_required
-    assert_raises('First name is required') do
+    error = assert_raises(ArgumentError) do
       FullName.new(nil, LAST_NAME)
     end
+    assert_equal error.message, 'First name is required.'
+    
+    error = assert_raises(ArgumentError) do
+      FullName.new('', LAST_NAME)
+    end
+    assert_equal error.message, 'First name is required.'
+  end
+  
+  def test_first_name_limit
+    error = assert_raises(ArgumentError) do
+      FullName.new('Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooonnnng', LAST_NAME)
+    end
+    assert_equal error.message, 'First name must have 50 characters or less.'
+  end
+
+  def test_first_name_characters
+    error = assert_raises(ArgumentError) do
+      FullName.new('1', LAST_NAME)
+    end
+    assert_equal error.message, 'First name must be at least one character in length, starting with a capital letter.'
   end
 end
