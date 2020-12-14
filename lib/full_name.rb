@@ -35,4 +35,8 @@ class FullName
   def as_formatted_name
     first_name + ' ' + last_name
   end
+
+  def ==(other)
+    self.class == other.class && self.first_name == other.first_name && self.last_name == other.last_name
+  end
 end

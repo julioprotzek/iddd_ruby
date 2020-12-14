@@ -29,4 +29,9 @@ class TelephoneTest < ActiveSupport::TestCase
     end
     assert_equal error.message, 'Telephone number or its format is invalid.' 
   end
+
+  test 'equality' do
+    assert_equal Telephone.new('(123) 200-30040'), Telephone.new('(123) 200-30040')
+    assert_not_equal Telephone.new('333-550-9010'), Telephone.new('(123) 200-30040')
+  end
 end

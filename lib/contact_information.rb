@@ -67,4 +67,12 @@ class ContactInformation
       a_secondary_telephone
     )
   end
+
+  def ==(other)
+    self.class == other.class &&
+    self.email_address == other.email_address &&
+    self.postal_address == other.postal_address &&
+    self.primary_telephone == other.primary_telephone &&
+    self.secondary_telephone == other.secondary_telephone
+  end
 end

@@ -76,4 +76,9 @@ class FullNameTest < ActiveSupport::TestCase
     end
     assert_equal error.message, 'Last name must be at least one character in length.'
   end
+  
+  test 'equality' do
+    assert_equal FullName.new(FIRST_NAME, LAST_NAME), FullName.new(FIRST_NAME, LAST_NAME)
+    assert_not_equal FullName.new(FIRST_NAME, MARRIED_LAST_NAME), FullName.new(FIRST_NAME, LAST_NAME)
+  end
 end

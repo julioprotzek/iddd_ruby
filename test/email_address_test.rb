@@ -29,5 +29,10 @@ class EmailAddressTest < ActiveSupport::TestCase
 
     assert_equal error.message, 'Email address format is invalid.'
   end
+
+  test 'equality' do
+    assert_equal EmailAddress.new('zoe@example.com'), EmailAddress.new('zoe@example.com')
+    assert_not_equal EmailAddress.new('john@example.com'), EmailAddress.new('zoe@example.com')
+  end
 end
 

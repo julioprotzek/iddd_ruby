@@ -17,6 +17,96 @@ class PostalAddressTest < ActiveSupport::TestCase
     assert_equal 'US', a_postal_address.country_code
   end
 
+  test 'validations' do
+    assert_validates_presence :street_address, error_message: 'The street address is required.'
+    assert_validates_length :street_address, min: 1, max: 100, error_message: 'The street address must be 100 characters or less.'
+    
+    assert_validates_presence :city, error_message: 'The city is required.'
+    assert_validates_length :city, min: 1, max: 100, error_message: 'The city must be 100 characters or less.'
+    
+    assert_validates_presence :state_province, error_message: 'The state/province is required.'
+    assert_validates_length :state_province, min: 1, max: 100, error_message: 'The state/province must be 100 characters or less.'
+
+    assert_validates_presence :postal_code, error_message: 'The postal code is required.'
+    assert_validates_length :postal_code, min: 5, max: 12, error_message: 'The postal code must be 12 characters or less.'
+
+    assert_validates_presence :country_code, error_message: 'The country code is required.'
+    assert_validates_length :country_code, min: 2, max: 2, error_message: 'The country code must be two characters or less.'
+  end
+
+  test 'equality' do
+    assert_equal PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    ), PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    )
+
+    assert_not_equal PostalAddress.new(
+      '333 Other Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    ), PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    )
+
+    assert_not_equal PostalAddress.new(
+      '123 Pearl Street',
+      'Other City',
+      'CO',
+      '80301',
+      'US'
+    ), PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    )
+
+    assert_not_equal PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'SF',
+      '80301',
+      'US'
+    ), PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'US'
+    )
+
+    assert_not_equal PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '77777',
+      'US'
+    ), PostalAddress.new(
+      '123 Pearl Street',
+      'Boulder',
+      'CO',
+      '80301',
+      'GE'
+    )
+  end
+
+
   def assert_validates_presence(attr_name, error_message:)
     args = {
       street_address: '123 Pearl Street',
@@ -49,23 +139,6 @@ class PostalAddressTest < ActiveSupport::TestCase
     end
 
     assert_equal error.message, error_message
-  end
-
-  test 'validations' do
-    assert_validates_presence :street_address, error_message: 'The street address is required.'
-    assert_validates_length :street_address, min: 1, max: 100, error_message: 'The street address must be 100 characters or less.'
-    
-    assert_validates_presence :city, error_message: 'The city is required.'
-    assert_validates_length :city, min: 1, max: 100, error_message: 'The city must be 100 characters or less.'
-    
-    assert_validates_presence :state_province, error_message: 'The state/province is required.'
-    assert_validates_length :state_province, min: 1, max: 100, error_message: 'The state/province must be 100 characters or less.'
-
-    assert_validates_presence :postal_code, error_message: 'The postal code is required.'
-    assert_validates_length :postal_code, min: 5, max: 12, error_message: 'The postal code must be 12 characters or less.'
-
-    assert_validates_presence :country_code, error_message: 'The country code is required.'
-    assert_validates_length :country_code, min: 2, max: 2, error_message: 'The country code must be two characters or less.'
   end
 end
 

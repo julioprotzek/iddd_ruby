@@ -68,6 +68,104 @@ class ContactInformationTest < ActiveSupport::TestCase
     assert_equal Telephone.new('333-123-0000'), changed_contact_information.secondary_telephone
   end
 
+  test 'equality' do
+    assert_equal ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    ), ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    )
+
+    assert_not_equal ContactInformation.new(
+      EmailAddress.new('john@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    ), ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    )
+
+    assert_not_equal ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '333 Other Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    ), ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('(555) 000-1210'),
+      Telephone.new('303-555-1212')
+    )
+
+    assert_not_equal ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('(555) 777-1212')
+    ), ContactInformation.new(
+      EmailAddress.new('zoe@example.com'),
+      PostalAddress.new(
+        '123 Pearl Street',
+        'Boulder',
+        'CO',
+        '80301',
+        'US'
+      ),
+      Telephone.new('303-555-1210'),
+      Telephone.new('303-555-1212')
+    )
+  end
+
 
   def assert_validates_presence(attr_name, error_message:)
     args = {
