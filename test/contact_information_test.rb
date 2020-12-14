@@ -28,6 +28,13 @@ class ContactInformationTest < ActiveSupport::TestCase
     assert_equal Telephone.new('303-555-1212'), contact_information.secondary_telephone
   end
 
+  test 'validations' do
+    assert_validates_presence :email_address, error_message: 'The email address is required.'
+    assert_validates_presence :postal_address, error_message: 'The postal address is required.'
+    assert_validates_presence :primary_telephone, error_message: 'The primary telephone is required.'
+  end
+
+
   def assert_validates_presence(attr_name, error_message:)
     args = {
       email_address: EmailAddress.new('zoe@example.com'),
@@ -49,11 +56,5 @@ class ContactInformationTest < ActiveSupport::TestCase
     end
 
     assert_equal error.message, error_message
-  end
-
-  test 'validations' do
-    assert_validates_presence :email_address, error_message: 'The email address is required.'
-    assert_validates_presence :postal_address, error_message: 'The postal address is required.'
-    assert_validates_presence :primary_telephone, error_message: 'The primary telephone is required.'
   end
 end
