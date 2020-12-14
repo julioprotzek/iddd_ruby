@@ -1,4 +1,6 @@
 class FullName
+  include Concerns::Assertion
+
   attr_reader :first_name, :last_name
 
   def initialize(first_name, last_name)
@@ -32,19 +34,5 @@ class FullName
 
   def as_formatted_name
     @first_name + ' ' + @last_name
-  end
-
-  private
-
-  def assert_argument_presence(argument, message)
-    raise ArgumentError, message unless argument.present?
-  end
-
-  def assert_argument_length(argument, min, max, message)
-    raise ArgumentError, message unless argument.length.between?(min, max)
-  end
-
-  def assert_argument_true(is_true, message)
-    raise ArgumentError, message unless is_true
   end
 end
