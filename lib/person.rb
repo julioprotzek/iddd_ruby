@@ -18,6 +18,20 @@ class Person
     @contact_information = a_contact_information
   end
 
+  def change_name(a_full_name)
+    Person.new(
+      a_full_name,
+      contact_information
+    )
+  end
+
+  def change_contact_information(a_contact_information)
+    Person.new(
+      full_name,
+      a_contact_information
+    )
+  end
+
   def ==(other)
     self.class == other.class &&
     self.full_name == other.full_name && 

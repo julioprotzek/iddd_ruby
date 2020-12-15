@@ -1,8 +1,14 @@
 require './test/test_helper'
 
 class PersonTest < ActiveSupport::TestCase
+  FIRST_NAME = 'Zoe'
+  LAST_NAME = 'Doe'
+  MARRIED_LAST_NAME = 'Jones-Doe'
+
   setup do
-    @full_name = FullName.new('Zoe', 'Doe')
+    @full_name = FullName.new(FIRST_NAME, LAST_NAME)
+    @married_full_name = FullName.new(FIRST_NAME, MARRIED_LAST_NAME)
+
     @contact_information = ContactInformation.new(
       EmailAddress.new('zoe@example.com'),
       PostalAddress.new(
@@ -14,6 +20,19 @@ class PersonTest < ActiveSupport::TestCase
       ),
       Telephone.new('303-555-1210'),
       Telephone.new('303-555-1212')
+    )
+    
+    @other_contact_information = ContactInformation.new(
+      EmailAddress.new('john@example.com'),
+      PostalAddress.new(
+        '255 Pearl Street',
+        'Boulder',
+        'CO',
+        '70555',
+        'US'
+      ),
+      Telephone.new('111-555-1210'),
+      Telephone.new('111-555-1212')
     )
   end
 
@@ -35,6 +54,20 @@ class PersonTest < ActiveSupport::TestCase
     assert_equal 'The person name is required', error.message
   end
 
+  test 'change name' do
+    person = Person.new(@full_name, @contact_information)
+    married_person = person.change_name(@married_full_name)
+
+    assert_equal @married_full_name, married_person.full_name
+  end
+
+  test 'change contact information' do
+    person = Person.new(@full_name, @contact_information)
+    changed_contact_person = person.change_contact_information(@other_contact_information)
+
+    assert_equal @other_contact_information, changed_contact_person.contact_information
+  end
+
   test 'contact information is required' do
     error = assert_raises ArgumentError do
       Person.new(
@@ -48,6 +81,6 @@ class PersonTest < ActiveSupport::TestCase
 
   test 'equality' do
     assert_equal Person.new(@full_name, @contact_information), Person.new(@full_name, @contact_information)
-    assert_not_equal Person.new(FullName.new('John', 'Doe'), @contact_information), Person.new(@full_name, @contact_information)
+    assert_not_equal Person.new(@married_full_name, @contact_information), Person.new(@full_name, @contact_information)
   end
 end
