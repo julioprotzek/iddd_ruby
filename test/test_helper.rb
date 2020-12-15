@@ -8,5 +8,6 @@ ActiveSupport.test_order = :random
 
 require 'zeitwerk'
 loader = Zeitwerk::Loader.new
-loader.push_dir('lib')
+loader.push_dir('lib/common')
+loader.push_dir('lib/domain')
 loader.setup
