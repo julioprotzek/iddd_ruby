@@ -4,6 +4,7 @@ require './test/common/another_testable_domain_event'
 
 class DomainEventPublisherTest < ActiveSupport::TestCase
   setup do
+    DomainEventPublisher.instance.reset
     @another_event_handled = @event_handled = false
   end
 
@@ -63,6 +64,57 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
   end
 
   test 'handles multiple subscribers to multiple event types' do
+    DomainEventPublisher.instance.reset
+    event_handled_count = 0
+    another_event_handled_count = 0
 
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      event_handled_count += 1
+    end
+
+    DomainEventPublisher.instance.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+      another_event_handled_count +=1
+    end
+
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      event_handled_count += 1
+    end
+
+    DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
+    DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1111))
+
+    assert_equal 2, event_handled_count
+    assert_equal 1, another_event_handled_count
+  end
+
+  test 'reset subscribers' do
+    event_handled_count = 0
+    another_event_handled_count = 0
+
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      event_handled_count += 1
+    end
+
+    DomainEventPublisher.instance.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+      another_event_handled_count +=1
+    end
+
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      event_handled_count += 1
+    end
+
+    DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
+    DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1111))
+    
+    assert_equal 2, event_handled_count
+    assert_equal 1, another_event_handled_count
+
+    DomainEventPublisher.instance.reset
+
+    DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
+    DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1111))
+
+    assert_equal 2, event_handled_count
+    assert_equal 1, another_event_handled_count
   end
 end
