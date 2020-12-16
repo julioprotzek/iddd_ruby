@@ -47,7 +47,19 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
   end
 
   test 'handles subscriber exceptions gracefully' do
-    
+    assert_equal false, DomainEventPublisher.instance.publishing?
+
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      raise StandardError.new('Error from domain event subscription block')
+    end
+
+    error = assert_raises StandardError do
+      DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
+    end
+
+    assert_equal 'Error from domain event subscription block', error.message
+
+    assert_equal false, DomainEventPublisher.instance.publishing?
   end
 
   test 'handles multiple subscribers to multiple event types' do

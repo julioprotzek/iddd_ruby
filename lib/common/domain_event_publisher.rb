@@ -16,9 +16,12 @@ class DomainEventPublisher
 
   def publish(domain_event)
     unless publishing?
-      @publishing = true
-      @subscribers[domain_event.class].call(domain_event)
-      @publishing = false
+      begin
+        @publishing = true
+        @subscribers[domain_event.class].call(domain_event)        
+      ensure
+        @publishing = false
+      end
     end
   end
 end
