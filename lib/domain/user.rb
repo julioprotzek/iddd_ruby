@@ -5,7 +5,11 @@ class User
     @person = a_person
   end
 
-  def change_person_name(a_full_name)
-    @person.change_name(a_full_name)
+  def change_person_name(a_name)
+    @person.change_name(a_name)
+  end
+
+  def change_person_contact_information(a_contact_information)
+    @person.change_contact_information(a_contact_information)
   end
 end

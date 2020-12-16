@@ -26,6 +26,7 @@ class Person
 
   def change_contact_information(a_contact_information)
     self.contact_information = a_contact_information
+    DomainEventPublisher.instance.publish(PersonContactInformationChanged.new(a_contact_information))
   end
 
   def ==(other)
