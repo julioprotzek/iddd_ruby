@@ -6,6 +6,7 @@ class PersonTest < ActiveSupport::TestCase
   MARRIED_LAST_NAME = 'Jones-Doe'
 
   setup do
+    DomainEventPublisher.instance.reset
     @name = FullName.new(FIRST_NAME, LAST_NAME)
     @married_name = FullName.new(FIRST_NAME, MARRIED_LAST_NAME)
 
