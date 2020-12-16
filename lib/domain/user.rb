@@ -12,4 +12,9 @@ class User
   def change_person_contact_information(a_contact_information)
     @person.change_contact_information(a_contact_information)
   end
+
+  def ==(other)
+    self.class == other.class &&
+    self.person == other.person
+  end
 end
