@@ -9,6 +9,7 @@ class User
     self.username = username
     self.password = password
     self.person = person
+    DomainEventPublisher.instance.publish(UserRegistered.new(username, person.name, person.contact_information.email_address))
   end
 
   def change_password(a_current_password, a_new_password)

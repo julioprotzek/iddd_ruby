@@ -29,10 +29,23 @@ class UserTest < ActiveSupport::TestCase
     )
   end
 
-  test 'valid user' do
-    assert_equal 'Zoe', @user.person.name.first_name
-    assert_equal 'zoe@example.com', @user.person.contact_information.email_address.address
-    assert_equal 'zoedoe', @user.username
+  test 'register user' do
+    handled = false
+
+    DomainEventPublisher.instance.subscribe(UserRegistered) do |a_domain_event|
+      assert_equal 'zoedoe', a_domain_event.username
+      assert_equal 'Zoe Doe', a_domain_event.name.as_formatted_name
+      assert_equal 'zoe@example.com', a_domain_event.email_address.address
+      handled = true
+    end
+
+    User.new(
+      username: 'zoedoe',
+      password: FIXTURE_PASSWORD,
+      person: @person
+    )
+
+    assert_equal true, handled
   end
 
   test 'change password' do
