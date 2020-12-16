@@ -3,18 +3,19 @@ class User
 
   attr_reader :username, :person
 
-  delegate :encrypted, to: DomainRegistry.encryption_service
+  delegate :encrypt, to: DomainRegistry.encryption_service
 
   def initialize(username: , password: , person: )
     self.username = username
-    self.password = protect_password('', password)
+    self.password = password
     self.person = person
   end
 
   def change_password(a_current_password, a_new_password)
     assert_presence(a_current_password, 'Current and new password must be provided.')
     assert_equal(@password, a_current_password, 'Current password not confirmed')
-    self.password = protect_password(a_current_password, a_new_password)
+    assert_not_equal(a_current_password, a_new_password, 'The password is unchanged.')
+    self.password = a_new_password
 
     DomainEventPublisher.instance.publish(UserPasswordChanged.new(username))
   end
@@ -37,9 +38,9 @@ class User
     @username = a_username
   end
 
-  def password=(a_protected_password)
-    assert_presence(a_protected_password, 'The password is required.')
-    @password = a_protected_password
+  def password=(a_plain_text_password)
+    assert_presence(a_plain_text_password, 'The password is required.')
+    @password = protect_password(a_plain_text_password)
   end
 
   def person=(a_person)
@@ -47,18 +48,17 @@ class User
     @person = a_person
   end
   
-  def internal_access_only_encrypted_password
+  def internal_access_only_encrypt_password
     @password
   end
   
   private
 
-  def protect_password(current_password, a_new_password)
-    assert_not_equal(current_password, a_new_password, 'The password is unchanged.')
-    assert_passwod_not_weak(a_new_password, 'The password must be stronger.')
-    assert_not_equal(a_new_password, username, 'Username and password must not be the same.')
+  def protect_password(a_plain_text_password)
+    assert_passwod_not_weak(a_plain_text_password, 'The password must be stronger.')
+    assert_not_equal(a_plain_text_password, username, 'Username and password must not be the same.')
 
-    encrypted(a_new_password)
+    encrypt(a_plain_text_password)
   end  
 
   def assert_passwod_not_weak(a_password, message)
