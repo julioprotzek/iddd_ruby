@@ -1,3 +1,5 @@
+ENV['APP_ENV'] = 'test'
+
 require 'minitest/autorun'
 require 'minitest/reporters'
 Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true)]
@@ -10,4 +12,5 @@ require 'zeitwerk'
 loader = Zeitwerk::Loader.new
 loader.push_dir('lib/common')
 loader.push_dir('lib/domain')
+loader.push_dir('lib/infrastructure')
 loader.setup

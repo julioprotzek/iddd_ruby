@@ -12,6 +12,10 @@ module Concerns::Assertion
     raise ArgumentError, message unless argument.length.between?(min, max)
   end
 
+  def assert_equal(argument1, argument2, message)
+    raise ArgumentError, message unless argument1 == argument2
+  end
+
   def assert(is_true, message)
     raise ArgumentError, message unless is_true
   end

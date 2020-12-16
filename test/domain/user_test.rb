@@ -1,8 +1,11 @@
 require './test/test_helper'
 
 class UserTest < ActiveSupport::TestCase
+  FIXTURE_PASSWORD = 'SecretPassword'
+
   setup do
     DomainEventPublisher.instance.reset
+
     @person = Person.new(
       FullName.new('Zoe', 'Doe'),
       ContactInformation.new(
@@ -21,7 +24,7 @@ class UserTest < ActiveSupport::TestCase
 
     @user = User.new(
       username: 'zoedoe',
-      password: 'password123',
+      password: FIXTURE_PASSWORD,
       person: @person
     )
   end
@@ -30,6 +33,18 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'Zoe', @user.person.name.first_name
     assert_equal 'zoe@example.com', @user.person.contact_information.email_address.address
     assert_equal 'zoedoe', @user.username
+  end
+
+  test 'change password' do
+    handled = false
+    DomainEventPublisher.instance.subscribe(UserPasswordChanged) do |a_domain_event|
+      assert_equal @user.username, a_domain_event.username
+      handled = true
+    end
+
+    @user.change_password(FIXTURE_PASSWORD, 'ADifferentPassword')
+
+    assert_equal true, handled
   end
 
   test 'user person contact information changed' do    
@@ -79,21 +94,21 @@ class UserTest < ActiveSupport::TestCase
   test 'equality compares tenant and username' do       
     assert_equal User.new(
       username: 'zoedoe', 
-      password: 'pass123', 
+      password: FIXTURE_PASSWORD ,
       person: @person
     ), User.new(
       username: 'zoedoe', 
-      password: 'pass123',
+      password: FIXTURE_PASSWORD,
       person: @person
     )
 
     assert_not_equal User.new(
       username: 'johnny', 
-      password: 'pass123', 
+      password: FIXTURE_PASSWORD,
       person: @person
     ), User.new(
       username: 'zoedoe', 
-      password: 'pass123',
+      password: FIXTURE_PASSWORD,
       person: @person
     )
   end

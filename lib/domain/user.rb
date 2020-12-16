@@ -1,12 +1,22 @@
 class User
   include Concerns::Assertion
 
-  attr_reader :username, :password, :person
+  attr_reader :username, :person
+
+  delegate :encrypted, to: DomainRegistry.encryption_service
 
   def initialize(username: , password: , person: )
     self.username = username
     self.password = password
     self.person = person
+  end
+
+  def change_password(a_current_password, a_new_password)
+    assert_presence(a_current_password, 'Current and new password must be provided.')
+    assert_equal(@password, a_current_password, 'Current password not confirmed')
+    self.password = a_new_password
+
+    DomainEventPublisher.instance.publish(UserPasswordChanged.new(username))
   end
 
   def change_person_name(a_name)
@@ -29,12 +39,15 @@ class User
 
   def password=(a_password)
     assert_presence(a_password, 'The password is required.')
-    @password = a_password
+    @password = encrypted(a_password)
   end
   
   def person=(a_person)
-    # assert_presence(a_person, 'The person is required.')
     assert_presence_kind_of(a_person, Person, 'The person is required.')
     @person = a_person
+  end
+
+  def internal_access_only_encrypted_password
+    @password
   end
 end
