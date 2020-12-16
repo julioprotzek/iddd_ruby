@@ -19,17 +19,11 @@ class Person
   end
 
   def change_name(a_name)
-    Person.new(
-      a_name,
-      contact_information
-    )
+    self.name = a_name
   end
 
   def change_contact_information(a_contact_information)
-    Person.new(
-      name,
-      a_contact_information
-    )
+    self.contact_information = a_contact_information
   end
 
   def ==(other)

@@ -56,16 +56,16 @@ class PersonTest < ActiveSupport::TestCase
 
   test 'change name' do
     person = Person.new(@name, @contact_information)
-    married_person = person.change_name(@married_name)
+    person.change_name(@married_name)
 
-    assert_equal @married_name, married_person.name
+    assert_equal @married_name, person.name
   end
 
   test 'change contact information' do
     person = Person.new(@name, @contact_information)
-    changed_contact_person = person.change_contact_information(@other_contact_information)
+    person.change_contact_information(@other_contact_information)
 
-    assert_equal @other_contact_information, changed_contact_person.contact_information
+    assert_equal @other_contact_information, person.contact_information
   end
 
   test 'contact information is required' do
