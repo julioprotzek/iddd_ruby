@@ -12,5 +12,5 @@ require 'zeitwerk'
 loader = Zeitwerk::Loader.new
 loader.push_dir('lib/common')
 loader.push_dir('lib/domain')
-loader.push_dir('lib/infrastructure')
+loader.push_dir('lib/infrastructure/services')
 loader.setup

@@ -16,6 +16,14 @@ module Concerns::Assertion
     raise ArgumentError, message unless argument1 == argument2
   end
 
+  def assert_not_equal(argument1, argument2, message)
+    raise ArgumentError, message if argument1 == argument2
+  end
+  
+  def assert_not_nil(argument, message)
+    raise ArgumentError, message if argument.nil?
+  end
+
   def assert(is_true, message)
     raise ArgumentError, message unless is_true
   end

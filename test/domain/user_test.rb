@@ -1,7 +1,7 @@
 require './test/test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  FIXTURE_PASSWORD = 'SecretPassword'
+  FIXTURE_PASSWORD = 'SecretPassword@123'
 
   setup do
     DomainEventPublisher.instance.reset
