@@ -1,16 +1,16 @@
 class Person
   include Concerns::Assertion
 
-  attr_reader :full_name, :contact_information
+  attr_reader :name, :contact_information
 
-  def initialize(a_full_name, a_contact_information)
-    self.full_name = a_full_name
+  def initialize(a_name, a_contact_information)
+    self.name = a_name
     self.contact_information = a_contact_information
   end
 
-  def full_name=(a_full_name)
-    assert_presence(a_full_name, 'The person name is required')
-    @full_name = a_full_name
+  def name=(a_name)
+    assert_presence(a_name, 'The person name is required')
+    @name = a_name
   end
   
   def contact_information=(a_contact_information)
@@ -18,23 +18,23 @@ class Person
     @contact_information = a_contact_information
   end
 
-  def change_name(a_full_name)
+  def change_name(a_name)
     Person.new(
-      a_full_name,
+      a_name,
       contact_information
     )
   end
 
   def change_contact_information(a_contact_information)
     Person.new(
-      full_name,
+      name,
       a_contact_information
     )
   end
 
   def ==(other)
     self.class == other.class &&
-    self.full_name == other.full_name && 
+    self.name == other.name && 
     self.contact_information == other.contact_information
   end
 end

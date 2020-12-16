@@ -6,8 +6,8 @@ class PersonTest < ActiveSupport::TestCase
   MARRIED_LAST_NAME = 'Jones-Doe'
 
   setup do
-    @full_name = FullName.new(FIRST_NAME, LAST_NAME)
-    @married_full_name = FullName.new(FIRST_NAME, MARRIED_LAST_NAME)
+    @name = FullName.new(FIRST_NAME, LAST_NAME)
+    @married_name = FullName.new(FIRST_NAME, MARRIED_LAST_NAME)
 
     @contact_information = ContactInformation.new(
       EmailAddress.new('zoe@example.com'),
@@ -37,9 +37,9 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'valid person' do
-    person = Person.new(@full_name, @contact_information)
+    person = Person.new(@name, @contact_information)
 
-    assert_equal 'Zoe Doe', person.full_name.as_formatted_name
+    assert_equal 'Zoe Doe', person.name.as_formatted_name
     assert_equal 'zoe@example.com', person.contact_information.email_address.address
   end
 
@@ -55,14 +55,14 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'change name' do
-    person = Person.new(@full_name, @contact_information)
-    married_person = person.change_name(@married_full_name)
+    person = Person.new(@name, @contact_information)
+    married_person = person.change_name(@married_name)
 
-    assert_equal @married_full_name, married_person.full_name
+    assert_equal @married_name, married_person.name
   end
 
   test 'change contact information' do
-    person = Person.new(@full_name, @contact_information)
+    person = Person.new(@name, @contact_information)
     changed_contact_person = person.change_contact_information(@other_contact_information)
 
     assert_equal @other_contact_information, changed_contact_person.contact_information
@@ -71,7 +71,7 @@ class PersonTest < ActiveSupport::TestCase
   test 'contact information is required' do
     error = assert_raises ArgumentError do
       Person.new(
-        @full_name,
+        @name,
         nil
       )
     end
@@ -80,7 +80,7 @@ class PersonTest < ActiveSupport::TestCase
   end
 
   test 'equality' do
-    assert_equal Person.new(@full_name, @contact_information), Person.new(@full_name, @contact_information)
-    assert_not_equal Person.new(@married_full_name, @contact_information), Person.new(@full_name, @contact_information)
+    assert_equal Person.new(@name, @contact_information), Person.new(@name, @contact_information)
+    assert_not_equal Person.new(@married_name, @contact_information), Person.new(@name, @contact_information)
   end
 end
