@@ -3,6 +3,11 @@ class DomainEventPublisher
   
   def initialize
     @subscribers = {}
+    @publishing = false
+  end
+
+  def publishing?
+    @publishing
   end
   
   def subscribe(domain_event_klass, &block)
@@ -10,6 +15,10 @@ class DomainEventPublisher
   end
 
   def publish(domain_event)
-    @subscribers[domain_event.class].call(domain_event)
+    unless publishing?
+      @publishing = true
+      @subscribers[domain_event.class].call(domain_event)
+      @publishing = false
+    end
   end
 end

@@ -1,17 +1,10 @@
 require './test/test_helper'
-
-class TestableDomainEvent
-  attr_reader :id, :name
-
-  def initialize(an_id, a_name)
-    @id = an_id
-    @name = a_name
-  end
-end
+require './test/common/testable_domain_event'
+require './test/common/another_testable_domain_event'
 
 class DomainEventPublisherTest < ActiveSupport::TestCase
   setup do
-    @event_handled = false
+    @another_event_handled = @event_handled = false
   end
 
   test 'publish' do
@@ -26,5 +19,38 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
 
     assert_equal true, @event_handled
+  end
+
+  test 'publisher blocked' do
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      assert_equal 123, a_domain_event.id
+      assert_equal 'test', a_domain_event.name
+      @event_handled = true
+
+      # attempt nested publish, which should not work
+      DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1000.0))
+    end
+
+    DomainEventPublisher.instance.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+      # should never be reached due to blocked publisher
+      assert_equal 1000.0, a_domain_event.value
+      @another_event_handled = true
+    end
+
+    assert_equal false, @event_handled
+    assert_equal false, @another_event_handled
+
+    DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
+
+    assert_equal true, @event_handled
+    assert_equal false, @another_event_handled
+  end
+
+  test 'handles subscriber exceptions gracefully' do
+    
+  end
+
+  test 'handles multiple subscribers to multiple event types' do
+
   end
 end
