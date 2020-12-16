@@ -3,24 +3,33 @@ require './test/test_helper'
 class UserTest < ActiveSupport::TestCase
   setup do
     DomainEventPublisher.instance.reset
-
-    @user = User.new(
-      Person.new(
-        FullName.new('Zoe', 'Doe'),
-        ContactInformation.new(
-          EmailAddress.new('zoe@example.com'),
-          PostalAddress.new(
-            '123 Pearl Street',
-            'Boulder',
-            'CO',
-            '80301',
-            'US'
-          ),
-          Telephone.new('303-555-1210'),
-          Telephone.new('777-123-1011')
-        )
+    @person = Person.new(
+      FullName.new('Zoe', 'Doe'),
+      ContactInformation.new(
+        EmailAddress.new('zoe@example.com'),
+        PostalAddress.new(
+          '123 Pearl Street',
+          'Boulder',
+          'CO',
+          '80301',
+          'US'
+        ),
+        Telephone.new('303-555-1210'),
+        Telephone.new('777-123-1011')
       )
     )
+
+    @user = User.new(
+      username: 'zoedoe',
+      password: 'password123',
+      person: @person
+    )
+  end
+
+  test 'valid user' do
+    assert_equal 'Zoe', @user.person.name.first_name
+    assert_equal 'zoe@example.com', @user.person.contact_information.email_address.address
+    assert_equal 'zoedoe', @user.username
   end
 
   test 'user person contact information changed' do    
@@ -67,40 +76,25 @@ class UserTest < ActiveSupport::TestCase
     assert_equal true, handled
   end
 
-  test 'equality' do
-    person = Person.new(
-      FullName.new('Zoe', 'Doe'),
-      ContactInformation.new(
-        EmailAddress.new('zoe@example.com'),
-        PostalAddress.new(
-          '123 Pearl Street',
-          'Boulder',
-          'CO',
-          '80301',
-          'US'
-        ),
-        Telephone.new('303-555-1210'),
-        Telephone.new('777-123-1011')
-      )
+  test 'equality compares tenant and username' do       
+    assert_equal User.new(
+      username: 'zoedoe', 
+      password: 'pass123', 
+      person: @person
+    ), User.new(
+      username: 'zoedoe', 
+      password: 'pass123',
+      person: @person
     )
 
-    married_person = Person.new(
-      FullName.new('Zoe', 'Jones-Doe'),
-      ContactInformation.new(
-        EmailAddress.new('zoe@example.com'),
-        PostalAddress.new(
-          '123 Pearl Street',
-          'Boulder',
-          'CO',
-          '80301',
-          'US'
-        ),
-        Telephone.new('303-555-1210'),
-        Telephone.new('777-123-1011')
-      )
+    assert_not_equal User.new(
+      username: 'johnny', 
+      password: 'pass123', 
+      person: @person
+    ), User.new(
+      username: 'zoedoe', 
+      password: 'pass123',
+      person: @person
     )
-
-    assert_equal User.new(person), User.new(person)
-    assert_not_equal User.new(person), User.new(married_person)
   end
 end

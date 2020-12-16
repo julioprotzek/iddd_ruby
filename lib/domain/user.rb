@@ -1,8 +1,10 @@
 class User
-  attr_reader :person
+  attr_reader :username, :password, :person
 
-  def initialize(a_person)
-    @person = a_person
+  def initialize(username: , password: , person: )
+    @username = username
+    @password = password
+    @person = person
   end
 
   def change_person_name(a_name)
@@ -15,6 +17,6 @@ class User
 
   def ==(other)
     self.class == other.class &&
-    self.person == other.person
+    self.username == other.username
   end
 end
