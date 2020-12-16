@@ -1,6 +1,7 @@
 class DomainEventPublisher
   include Singleton
-  
+  attr_reader :subscribers
+
   def initialize
     reset
   end
@@ -20,7 +21,7 @@ class DomainEventPublisher
   end
 
   def publish(domain_event)
-    if @subscribers.any? && !publishing?
+    if @subscribers[domain_event.class]&.any? && !publishing?
       begin
         @publishing = true
         @subscribers[domain_event.class].each do |handler_block|

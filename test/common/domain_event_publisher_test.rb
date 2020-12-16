@@ -117,4 +117,14 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     assert_equal 2, event_handled_count
     assert_equal 1, another_event_handled_count
   end
+
+  test 'only publishes for the correct subscribers' do
+    event_handled = false
+    DomainEventPublisher.instance.subscribe(TestableDomainEvent) do |a_domain_event|
+      event_handled = true
+    end
+
+    DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1111))
+    assert_equal false, event_handled
+  end
 end
