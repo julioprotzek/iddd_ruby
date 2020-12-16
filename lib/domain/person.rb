@@ -20,6 +20,8 @@ class Person
 
   def change_name(a_name)
     self.name = a_name
+
+    DomainEventPublisher.instance.publish(PersonNameChanged.new(a_name))
   end
 
   def change_contact_information(a_contact_information)
