@@ -18,8 +18,23 @@ class UserTest < IdentityAccessTest
       person: person_entity
     )
 
+    assert handled
+  end
+
+  test 'enablement disabled' do
+    user = user_aggregate
+
     assert user.enabled?
 
+    handled = false
+    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+      assert_equal user.username, a_domain_event.username
+      handled = true
+    end
+
+    user.define_enablement(Enablement.new(enabled: false))
+
+    assert !user.enabled?
     assert handled
   end
 

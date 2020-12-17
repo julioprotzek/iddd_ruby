@@ -30,6 +30,11 @@ class User
     @person.change_contact_information(a_contact_information)
   end
 
+  def define_enablement(an_enablement)
+    self.enablement = an_enablement
+    DomainEventPublisher.instance.publish(UserEnablementChanged.new(username, an_enablement))
+  end
+
   def ==(other)
     self.class == other.class &&
     self.username == other.username
