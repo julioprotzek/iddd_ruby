@@ -38,6 +38,40 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
+  test 'enablement outside date interval' do
+    user = user_aggregate
+
+    assert user.enabled?
+
+    handled = false
+    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+      assert_equal user.username, a_domain_event.username
+      handled = true
+    end
+
+    user.define_enablement(Enablement.new(enabled: true, start_at: Date.tomorrow, end_at: Date.tomorrow + 1.day))
+
+    assert !user.enabled?
+    assert handled
+  end
+
+  test 'enablement within date interval' do
+    user = user_aggregate
+
+    assert user.enabled?
+
+    handled = false
+    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+      assert_equal user.username, a_domain_event.username
+      handled = true
+    end
+
+    user.define_enablement(Enablement.new(enabled: true, start_at: Date.yesterday, end_at: Date.tomorrow))
+
+    assert user.enabled?
+    assert handled
+  end
+
   test 'change password' do
     user = user_aggregate
     handled = false

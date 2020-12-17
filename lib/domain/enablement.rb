@@ -1,7 +1,7 @@
 class Enablement
   include Concerns::Assertion
 
-  attr_reader :start_at, :end_at
+  attr_reader :enabled, :start_at, :end_at
 
   def initialize(enabled: false, start_at: nil, end_at: nil)
     if start_at.present? || end_at.present?
@@ -20,9 +20,11 @@ class Enablement
   end
 
   def enablement_enabled?
-    return enabled? unless @start_at.present? && @end_at.present?
+    enabled? && !time_expired? 
+  end
 
-    Time.now.between?(@start_at, @end_at)
+  def time_expired?
+    @start_at.present? && @end_at.present? && !Time.now.between?(@start_at, @end_at)
   end
 
   def ==(other)
