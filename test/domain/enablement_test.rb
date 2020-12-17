@@ -20,6 +20,15 @@ class EnablementTest < ActiveSupport::TestCase
     assert !enablement.enablement_enabled?
   end
 
+  test 'disabled after end_at date' do
+    enablement = Enablement.new(
+      enabled: true, 
+      start_at: Date.yesterday - 1.day, 
+      end_at: Date.yesterday
+    )
+    assert !enablement.enablement_enabled?
+  end
+
   test 'unsequenced dates' do
     error = assert_raises ArgumentError do
       Enablement.new(
