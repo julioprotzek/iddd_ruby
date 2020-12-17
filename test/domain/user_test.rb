@@ -59,8 +59,8 @@ class UserTest < IdentityAccessTest
     handled = false
 
     DomainEventPublisher.instance.subscribe(PersonNameChanged) do |a_domain_event|
-      assert_equal 'Zoe', a_domain_event.name.first_name
-      assert_equal 'Jones-Doe', a_domain_event.name.last_name
+      assert_equal user.username, a_domain_event.username
+      assert_equal 'Zoe Jones-Doe', a_domain_event.name.as_formatted_name
       handled = true
     end
 
