@@ -41,7 +41,7 @@ class UserTest < IdentityAccessTest
 
     DomainEventPublisher.instance.subscribe(PersonContactInformationChanged) do |a_domain_event|
       assert_equal FIXTURE_USER_EMAIL_ADDRESS_2, a_domain_event.contact_information.email_address.address
-      # assert_equal user.username, a_domain_event.username
+      assert_equal user.username, a_domain_event.username
       handled = true
     end
 

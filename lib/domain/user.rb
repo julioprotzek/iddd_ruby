@@ -46,6 +46,7 @@ class User
 
   def person=(a_person)
     assert_presence_kind_of(a_person, Person, 'The person is required.')
+    a_person.internal_only_user = self
     @person = a_person
   end
   

@@ -26,12 +26,22 @@ class Person
 
   def change_contact_information(a_contact_information)
     self.contact_information = a_contact_information
-    DomainEventPublisher.instance.publish(PersonContactInformationChanged.new(a_contact_information))
+
+    DomainEventPublisher.instance.publish(
+      PersonContactInformationChanged.new(
+        @user.username, 
+        a_contact_information
+      )
+    )
   end
 
   def ==(other)
     self.class == other.class &&
     self.name == other.name && 
     self.contact_information == other.contact_information
+  end
+
+  def internal_only_user=(an_user)
+    @user = an_user
   end
 end
