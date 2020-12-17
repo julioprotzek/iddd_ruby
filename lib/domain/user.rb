@@ -35,14 +35,21 @@ class User
     DomainEventPublisher.instance.publish(UserEnablementChanged.new(username, an_enablement))
   end
 
+  def user_descriptor
+    UserDescriptor.new(
+      username,
+      person.email_address.address
+    )
+  end
+
   def ==(other)
     self.class == other.class &&
     self.username == other.username
   end
 
-  def username=(a_username)
-    assert_presence(a_username, 'The username is required.')
-    @username = a_username
+  def username=(an_username)
+    assert_presence(an_username, 'The username is required.')
+    @username = an_username
   end
 
   def password=(a_plain_text_password)

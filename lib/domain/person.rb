@@ -40,6 +40,10 @@ class Person
     )
   end
 
+  def email_address
+    contact_information.email_address
+  end
+
   def ==(other)
     self.class == other.class &&
     self.name == other.name && 

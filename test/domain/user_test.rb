@@ -72,6 +72,13 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
+  test 'user descriptor' do
+    user = user_aggregate
+    
+    assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.user_descriptor.email_address
+    assert_equal FIXTURE_USERNAME, user.user_descriptor.username
+  end
+
   test 'change password' do
     user = user_aggregate
     handled = false
@@ -87,7 +94,7 @@ class UserTest < IdentityAccessTest
 
   test 'user person contact information changed' do   
     user = user_aggregate
-    assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.person.contact_information.email_address.address
+    assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.person.email_address.address
 
     handled = false
 
@@ -98,7 +105,7 @@ class UserTest < IdentityAccessTest
     end
 
     user.change_person_contact_information(contact_information_2)
-    assert_equal FIXTURE_USER_EMAIL_ADDRESS_2, user.person.contact_information.email_address.address
+    assert_equal FIXTURE_USER_EMAIL_ADDRESS_2, user.person.email_address.address
 
     assert handled
   end
