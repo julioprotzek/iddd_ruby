@@ -59,6 +59,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
     User.new(
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
+      enablement: Enablement.new(enabled: true),
       person: person_entity
     )
   end
@@ -67,6 +68,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
     User.new(
       username: FIXTURE_USERNAME_2,
       password: FIXTURE_PASSWORD,
+      enablement: Enablement.new(enabled: true),
       person: person_entity_2
     )
   end

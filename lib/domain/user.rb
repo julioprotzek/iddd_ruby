@@ -5,9 +5,10 @@ class User
 
   delegate :encrypt, to: DomainRegistry.encryption_service
 
-  def initialize(username: , password: , person: )
+  def initialize(username: , password: , enablement: , person: )
     self.username = username
     self.password = password
+    self.enablement = enablement
     self.person = person
     DomainEventPublisher.instance.publish(UserRegistered.new(username, person.name, person.contact_information.email_address))
   end
@@ -42,6 +43,15 @@ class User
   def password=(a_plain_text_password)
     assert_presence(a_plain_text_password, 'The password is required.')
     @password = protect_password(a_plain_text_password)
+  end
+
+  def enablement=(an_enablement)
+    assert_presence(an_enablement, 'The enablement is required.')
+    @enablement = an_enablement
+  end
+
+  def enabled?
+    @enablement.enablement_enabled?
   end
 
   def person=(a_person)
