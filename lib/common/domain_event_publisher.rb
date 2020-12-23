@@ -27,6 +27,8 @@ class DomainEventPublisher
         @subscribers[domain_event.class].each do |handler_block|
           handler_block.call(domain_event)
         end
+
+        nil
       ensure
         @publishing = false
       end

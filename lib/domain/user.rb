@@ -1,11 +1,12 @@
 class User
   include Concerns::Assertion
 
-  attr_reader :username, :person
+  attr_reader :tenant_id, :username, :person
 
   delegate :encrypt, to: DomainRegistry.encryption_service
 
-  def initialize(username: , password: , enablement: , person: )
+  def initialize(tenant_id:, username:, password:, enablement:, person: )
+    self.tenant_id = tenant_id
     self.username = username
     self.password = password
     self.enablement = enablement
@@ -45,6 +46,11 @@ class User
   def ==(other)
     self.class == other.class &&
     self.username == other.username
+  end
+
+  def tenant_id=(an_tenant_id)
+    assert_presence(an_tenant_id, 'The tenant id is required.')
+    @tenant_id = an_tenant_id
   end
 
   def username=(an_username)

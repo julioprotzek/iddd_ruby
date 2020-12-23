@@ -2,6 +2,7 @@ require './test/domain/identity_access_test'
 
 class UserTest < IdentityAccessTest
   test 'register user' do
+    tenant = tenant_aggregate
     handled = false
 
     DomainEventPublisher.instance.subscribe(UserRegistered) do |a_domain_event|
@@ -12,10 +13,11 @@ class UserTest < IdentityAccessTest
     end
 
     user = User.new(
+      tenant_id: tenant.tenant_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity
+      person: person_entity(tenant)
     )
 
     assert handled
@@ -74,7 +76,7 @@ class UserTest < IdentityAccessTest
 
   test 'user descriptor' do
     user = user_aggregate
-    
+
     assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.user_descriptor.email_address
     assert_equal FIXTURE_USERNAME, user.user_descriptor.username
   end
@@ -92,7 +94,7 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
-  test 'user person contact information changed' do   
+  test 'user person contact information changed' do
     user = user_aggregate
     assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.person.email_address.address
 
@@ -110,7 +112,7 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
-  test 'user person name changed' do    
+  test 'user person name changed' do
     user = user_aggregate
 
     assert_equal 'Doe', user.person.name.last_name
@@ -129,29 +131,35 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
-  test 'equality compares tenant and username' do       
+  test 'equality compares tenant and username' do
+    tenant = tenant_aggregate
+
     assert_equal User.new(
-      username: FIXTURE_USERNAME, 
+      tenant_id: tenant.tenant_id,
+      username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD ,
       enablement: Enablement.new(enabled: true),
-      person: person_entity
+      person: person_entity(tenant)
     ), User.new(
-      username: FIXTURE_USERNAME, 
-      password: FIXTURE_PASSWORD,
-      enablement: Enablement.new(enabled: true),
-      person: person_entity
-    )
-
-    assert_not_equal User.new(
-      username: FIXTURE_USERNAME_2, 
-      password: FIXTURE_PASSWORD,
-      enablement: Enablement.new(enabled: true),
-      person: person_entity
-    ), User.new(
+      tenant_id: tenant.tenant_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity
+      person: person_entity(tenant)
+    )
+
+    assert_not_equal User.new(
+      tenant_id: tenant.tenant_id,
+      username: FIXTURE_USERNAME_2,
+      password: FIXTURE_PASSWORD,
+      enablement: Enablement.new(enabled: true),
+      person: person_entity(tenant)
+    ), User.new(
+      tenant_id: tenant.tenant_id,
+      username: FIXTURE_USERNAME,
+      password: FIXTURE_PASSWORD,
+      enablement: Enablement.new(enabled: true),
+      person: person_entity(tenant)
     )
   end
 end

@@ -3,9 +3,15 @@ class Person
 
   attr_reader :name, :contact_information
 
-  def initialize(a_name, a_contact_information)
+  def initialize(a_tenant_id, a_name, a_contact_information)
+    self.tenant_id = a_tenant_id
     self.name = a_name
     self.contact_information = a_contact_information
+  end
+
+  def tenant_id=(a_tenant_id)
+    assert_presence(a_tenant_id, 'The tenant id is required')
+    @tenant_id = a_tenant_id
   end
 
   def name=(a_name)

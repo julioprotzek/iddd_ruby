@@ -4,6 +4,10 @@ class PasswordService
   STRONG_THRESHOLD = 20
   VERY_STRONG_THRESHOLD = 40
 
+  def generate_strong_password
+    SecureRandom.urlsafe_base64
+  end
+
   def weak?(a_plain_text_password)
     calculate_strength(a_plain_text_password) < STRONG_THRESHOLD
   end

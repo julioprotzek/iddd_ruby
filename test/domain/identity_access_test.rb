@@ -2,6 +2,8 @@ require './test/test_helper'
 
 class IdentityAccessTest < ActiveSupport::TestCase
   FIXTURE_PASSWORD = 'SecretPassword@123'
+  FIXTURE_TENANT_DESCRIPTION = 'This is a test tenant'
+  FIXTURE_TENANT_NAME = 'Test tenant'
   FIXTURE_USER_EMAIL_ADDRESS = 'jdoe@example.com'
   FIXTURE_USER_EMAIL_ADDRESS_2 = 'zdoe@example.com'
   FIXTURE_USERNAME = 'jdoe'
@@ -41,35 +43,77 @@ class IdentityAccessTest < ActiveSupport::TestCase
     )
   end
 
-  def person_entity
+  def person_entity(a_tenant)
     Person.new(
+      a_tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
       contact_information
     )
   end
 
-  def person_entity_2
+  def person_entity_2(a_tenant)
     Person.new(
+      a_tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
       contact_information_2
     )
   end
 
+  def registration_invitation_entity(a_tenant)
+    registration_invitation = a_tenant
+      .offer_registration_invitation("Today-and-Tomorrow #{Time.now.to_i}")
+      .starting_at(Date.today)
+      .ending_at(Date.tomorrow)
+
+    registration_invitation
+  end
+
+  def tenant_aggregate
+    @tenant ||= begin
+      tenant_id = DomainRegistry.tenant_repository.next_identity
+
+      tenant = Tenant.new(
+        tenant_id: tenant_id,
+        name: FIXTURE_TENANT_NAME,
+        description: FIXTURE_TENANT_DESCRIPTION,
+        active: true
+      )
+
+      DomainRegistry.tenant_repository.add(tenant)
+
+      tenant
+    end
+  end
+
   def user_aggregate
-    User.new(
+    tenant = tenant_aggregate
+
+    registration_invitation = registration_invitation_entity(tenant)
+
+    user = tenant.register_user(
+      invitation_identifier: registration_invitation.invitation_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity
+      person: person_entity(tenant)
     )
+
+    user
   end
 
   def user_aggregate_2
-    User.new(
+    tenant = tenant_aggregate
+
+    registration_invitation = registration_invitation_entity(tenant)
+
+    user = tenant.register_user(
+      invitation_identifier: registration_invitation.invitation_id,
       username: FIXTURE_USERNAME_2,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity_2
+      person: person_entity_2(tenant)
     )
+
+    user
   end
 end

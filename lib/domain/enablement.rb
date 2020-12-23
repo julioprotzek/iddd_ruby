@@ -3,6 +3,10 @@ class Enablement
 
   attr_reader :enabled, :start_at, :end_at
 
+  def self.indefinite_enablement
+    Enablement.new(enabled: true)
+  end
+
   def initialize(enabled: false, start_at: nil, end_at: nil)
     if start_at.present? || end_at.present?
       assert_presence_kind_of(start_at, Date, 'The start date must be provided.')

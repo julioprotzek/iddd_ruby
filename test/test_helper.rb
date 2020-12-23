@@ -13,4 +13,5 @@ loader = Zeitwerk::Loader.new
 loader.push_dir('lib/common')
 loader.push_dir('lib/domain')
 loader.push_dir('lib/infrastructure/services')
+loader.push_dir('test/infrastructure/persistence')
 loader.setup
