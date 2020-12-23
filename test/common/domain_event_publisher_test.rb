@@ -105,7 +105,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
 
     DomainEventPublisher.instance.publish(TestableDomainEvent.new(123, 'test'))
     DomainEventPublisher.instance.publish(AnotherTestableDomainEvent.new(1111))
-    
+
     assert_equal 2, event_handled_count
     assert_equal 1, another_event_handled_count
 

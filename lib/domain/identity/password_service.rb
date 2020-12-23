@@ -1,5 +1,5 @@
 class PasswordService
-  include Concerns::Assertion
+  include Assertion
 
   STRONG_THRESHOLD = 20
   VERY_STRONG_THRESHOLD = 40

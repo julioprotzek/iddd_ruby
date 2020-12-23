@@ -1,5 +1,5 @@
 class FullName
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :first_name, :last_name
 

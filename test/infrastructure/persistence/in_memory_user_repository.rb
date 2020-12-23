@@ -17,7 +17,7 @@ class InMemoryUserRepository
     @repository.clear
   end
 
-  private 
+  private
 
   def key_of(an_user)
     "#{an_user.tenant_id}##{an_user.username}"

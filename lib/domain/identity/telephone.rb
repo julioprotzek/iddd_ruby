@@ -1,5 +1,5 @@
 class Telephone
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :number
 

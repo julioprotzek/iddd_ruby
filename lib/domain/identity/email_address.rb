@@ -1,5 +1,5 @@
 class EmailAddress
-  include Concerns::Assertion  
+  include Assertion
   attr_reader :address
   EMAIL_FORMAT = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
 

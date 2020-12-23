@@ -30,13 +30,13 @@ class FullNameTest < ActiveSupport::TestCase
       FullName.new(nil, LAST_NAME)
     end
     assert_equal error.message, 'First name is required.'
-    
+
     error = assert_raises(ArgumentError) do
       FullName.new('', LAST_NAME)
     end
     assert_equal error.message, 'First name is required.'
   end
-  
+
   test 'first name length limit' do
     error = assert_raises(ArgumentError) do
       FullName.new('Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooonnnng', LAST_NAME)
@@ -56,13 +56,13 @@ class FullNameTest < ActiveSupport::TestCase
       FullName.new(FIRST_NAME, nil)
     end
     assert_equal error.message, 'Last name is required.'
-    
+
     error = assert_raises(ArgumentError) do
       FullName.new(FIRST_NAME, '')
     end
     assert_equal error.message, 'Last name is required.'
   end
-  
+
   test 'last name length limit' do
     error = assert_raises(ArgumentError) do
       FullName.new(FIRST_NAME, 'Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooonnnng')
@@ -76,7 +76,7 @@ class FullNameTest < ActiveSupport::TestCase
     end
     assert_equal error.message, 'Last name must be at least one character in length.'
   end
-  
+
   test 'equality' do
     assert_equal FullName.new(FIRST_NAME, LAST_NAME), FullName.new(FIRST_NAME, LAST_NAME)
     assert_not_equal FullName.new(FIRST_NAME, MARRIED_LAST_NAME), FullName.new(FIRST_NAME, LAST_NAME)

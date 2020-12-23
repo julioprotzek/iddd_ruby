@@ -13,8 +13,8 @@ class EnablementTest < ActiveSupport::TestCase
 
   test 'disabled before start_at date' do
     enablement = Enablement.new(
-      enabled: true, 
-      start_at: Date.tomorrow, 
+      enabled: true,
+      start_at: Date.tomorrow,
       end_at: Date.tomorrow + 1.day
     )
     assert !enablement.enablement_enabled?
@@ -22,8 +22,8 @@ class EnablementTest < ActiveSupport::TestCase
 
   test 'disabled after end_at date' do
     enablement = Enablement.new(
-      enabled: true, 
-      start_at: Date.yesterday - 1.day, 
+      enabled: true,
+      start_at: Date.yesterday - 1.day,
       end_at: Date.yesterday
     )
     assert !enablement.enablement_enabled?
@@ -32,8 +32,8 @@ class EnablementTest < ActiveSupport::TestCase
   test 'unsequenced dates' do
     error = assert_raises ArgumentError do
       Enablement.new(
-        enabled: true, 
-        start_at: Date.tomorrow, 
+        enabled: true,
+        start_at: Date.tomorrow,
         end_at: Date.yesterday
       )
     end
@@ -44,22 +44,22 @@ class EnablementTest < ActiveSupport::TestCase
     assert_not_equal Enablement.new(enabled: false), Enablement.new(enabled: true)
 
     assert_equal Enablement.new(
-      enabled: true, 
-      start_at: Date.yesterday, 
+      enabled: true,
+      start_at: Date.yesterday,
       end_at: Date.tomorrow
     ), Enablement.new(
-      enabled: true, 
-      start_at: Date.yesterday, 
+      enabled: true,
+      start_at: Date.yesterday,
       end_at: Date.tomorrow
     )
 
     assert_not_equal Enablement.new(
-      enabled: true, 
-      start_at: Date.yesterday, 
+      enabled: true,
+      start_at: Date.yesterday,
       end_at: Date.tomorrow + 1.day
     ), Enablement.new(
-      enabled: true, 
-      start_at: Date.yesterday, 
+      enabled: true,
+      start_at: Date.yesterday,
       end_at: Date.tomorrow
     )
   end

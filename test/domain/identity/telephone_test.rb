@@ -10,14 +10,14 @@ class TelephoneTest < ActiveSupport::TestCase
     error = assert_raises ArgumentError do
       Telephone.new('')
     end
-    assert_equal error.message, 'Telephone number is required.' 
+    assert_equal error.message, 'Telephone number is required.'
   end
 
   test 'number length limit' do
     error = assert_raises ArgumentError do
       Telephone.new('100200300400500600700800900-100200300400500600700800900')
     end
-    assert_equal error.message, 'Telephone number may not be more than 20 characters.' 
+    assert_equal error.message, 'Telephone number may not be more than 20 characters.'
   end
 
   test 'number format validation' do
@@ -27,7 +27,7 @@ class TelephoneTest < ActiveSupport::TestCase
     error = assert_raises ArgumentError do
       Telephone.new('12313123123123')
     end
-    assert_equal error.message, 'Telephone number or its format is invalid.' 
+    assert_equal error.message, 'Telephone number or its format is invalid.'
   end
 
   test 'equality' do

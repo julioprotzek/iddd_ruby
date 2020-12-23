@@ -20,10 +20,10 @@ class PostalAddressTest < ActiveSupport::TestCase
   test 'validations' do
     assert_validates_presence :street_address, error_message: 'The street address is required.'
     assert_validates_length :street_address, min: 1, max: 100, error_message: 'The street address must be 100 characters or less.'
-    
+
     assert_validates_presence :city, error_message: 'The city is required.'
     assert_validates_length :city, min: 1, max: 100, error_message: 'The city must be 100 characters or less.'
-    
+
     assert_validates_presence :state_province, error_message: 'The state/province is required.'
     assert_validates_length :state_province, min: 1, max: 100, error_message: 'The state/province must be 100 characters or less.'
 

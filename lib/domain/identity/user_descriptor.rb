@@ -1,5 +1,5 @@
 class UserDescriptor
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :username, :email_address
 
@@ -21,6 +21,6 @@ class UserDescriptor
   def ==(other)
     self.class == other.class &&
     self.username == other.username &&
-    self.email_address == other.email_address 
+    self.email_address == other.email_address
   end
 end

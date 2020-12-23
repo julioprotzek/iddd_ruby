@@ -1,5 +1,5 @@
 class Enablement
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :enabled, :start_at, :end_at
 
@@ -24,7 +24,7 @@ class Enablement
   end
 
   def enablement_enabled?
-    enabled? && !time_expired? 
+    enabled? && !time_expired?
   end
 
   def time_expired?

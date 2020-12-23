@@ -1,5 +1,5 @@
 class RegistrationInvitation
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :tenant_id, :invitation_id, :description, :starts_at, :ends_at
 

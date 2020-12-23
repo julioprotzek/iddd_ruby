@@ -14,7 +14,7 @@ class DomainEventPublisher
   def publishing?
     @publishing
   end
-  
+
   def subscribe(domain_event_klass, &handler_block)
     @subscribers[domain_event_klass] ||= []
     @subscribers[domain_event_klass] << handler_block

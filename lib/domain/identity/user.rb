@@ -1,5 +1,5 @@
 class User
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :tenant_id, :username, :person
 
@@ -77,11 +77,11 @@ class User
     a_person.internal_only_user = self
     @person = a_person
   end
-  
+
   def internal_access_only_encrypt_password
     @password
   end
-  
+
   private
 
   def protect_password(a_plain_text_password)
@@ -89,7 +89,7 @@ class User
     assert_not_equal(a_plain_text_password, username, 'Username and password must not be the same.')
 
     encrypt(a_plain_text_password)
-  end  
+  end
 
   def assert_passwod_not_weak(a_password, message)
     raise ArgumentError.new(message) if DomainRegistry.password_service.weak?(a_password)

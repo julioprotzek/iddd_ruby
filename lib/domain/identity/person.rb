@@ -1,5 +1,5 @@
 class Person
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :name, :contact_information
 
@@ -18,7 +18,7 @@ class Person
     assert_presence(a_name, 'The person name is required')
     @name = a_name
   end
-  
+
   def contact_information=(a_contact_information)
     assert_presence(a_contact_information, 'The person contact information is required')
     @contact_information = a_contact_information
@@ -29,7 +29,7 @@ class Person
 
     DomainEventPublisher.instance.publish(
       PersonNameChanged.new(
-        @user.username, 
+        @user.username,
         a_name
       )
     )
@@ -40,7 +40,7 @@ class Person
 
     DomainEventPublisher.instance.publish(
       PersonContactInformationChanged.new(
-        @user.username, 
+        @user.username,
         a_contact_information
       )
     )
@@ -52,7 +52,7 @@ class Person
 
   def ==(other)
     self.class == other.class &&
-    self.name == other.name && 
+    self.name == other.name &&
     self.contact_information == other.contact_information
   end
 

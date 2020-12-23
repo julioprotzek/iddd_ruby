@@ -1,14 +1,14 @@
 class Tenant
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :tenant_id, :name, :description, :registration_invitations
 
   def initialize(tenant_id: , name: , description: , active: false)
     @registration_invitations = Set.new
-    
+
     assert_presence(tenant_id, 'TenantId is required.')
     @tenant_id = tenant_id
-    
+
     assert_presence(name, 'Tenant name is required.')
     assert_length(name, 1, 100, 'Tenant name must be 100 characters or less.')
     @name = name
@@ -16,7 +16,7 @@ class Tenant
     assert_presence(description, 'Tenant description is required.')
     assert_length(name, 1, 100, 'Tenant description must be 100 characters or less.')
     @description = description
-    
+
     @active = active
   end
 
@@ -72,7 +72,7 @@ class Tenant
         password: password,
         enablement: enablement,
         person: person
-      ) 
+      )
     end
   end
 
@@ -80,7 +80,7 @@ class Tenant
     invitation = find_invitation_by_indentifier(an_invitation_identifier)
     registration_invitations.delete(invitation)
   end
-  
+
   private
 
   def find_invitation_by_indentifier(an_invitation_identifier)

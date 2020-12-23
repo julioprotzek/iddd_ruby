@@ -1,5 +1,5 @@
 class Group
-  include Concerns::Assertion
+  include Assertion
 
   ROLE_GROUP_PREFIX = 'ROLE-INTERNAL-GROUP: '
 

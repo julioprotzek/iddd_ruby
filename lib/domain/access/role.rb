@@ -1,5 +1,5 @@
 class Role
-  include Concerns::Assertion
+  include Assertion
 
   attr_reader :tenant_id, :name, :description, :supports_nesting
 

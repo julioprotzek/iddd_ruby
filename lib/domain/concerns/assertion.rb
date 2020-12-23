@@ -1,4 +1,4 @@
-module Concerns::Assertion
+module Assertion
   def assert_presence(argument, message)
     raise ArgumentError, message unless argument.present?
   end
@@ -19,7 +19,7 @@ module Concerns::Assertion
   def assert_not_equal(argument1, argument2, message)
     raise ArgumentError, message if argument1 == argument2
   end
-  
+
   def assert_not_nil(argument, message)
     raise ArgumentError, message if argument.nil?
   end

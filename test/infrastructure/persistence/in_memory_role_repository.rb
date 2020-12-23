@@ -17,7 +17,7 @@ class InMemoryRoleRepository
     @repository.clear
   end
 
-  private 
+  private
 
   def key_of(a_role)
     "#{a_role.tenant_id}##{a_role.name}"
