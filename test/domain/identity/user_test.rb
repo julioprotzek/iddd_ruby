@@ -23,10 +23,14 @@ class UserTest < IdentityAccessTest
     assert handled
   end
 
-  test 'enablement disabled' do
+  test 'enablement enabled' do
     user = user_aggregate
 
     assert user.enabled?
+  end
+
+  test 'enablement disabled' do
+    user = user_aggregate
 
     handled = false
     DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
@@ -89,9 +93,35 @@ class UserTest < IdentityAccessTest
       handled = true
     end
 
-    user.change_password(FIXTURE_PASSWORD, 'ADifferentPassword')
+    user.change_password(from: FIXTURE_PASSWORD, to: 'ADifferentPassword')
 
     assert handled
+  end
+
+  test 'change password fails' do
+    user = user_aggregate
+
+    error = assert_raise ArgumentError do
+      user.change_password(from: 'no clue', to: 'ADifferentPassword')
+    end
+
+    assert_equal 'Current password not confirmed', error.message
+  end
+
+  test 'password hashed on construction' do
+    user = user_aggregate
+
+    assert_not_equal FIXTURE_PASSWORD, user.internal_access_only_encrypted_password
+  end
+
+  test 'password hashed on change' do
+    user = user_aggregate
+
+    strong_password = DomainRegistry.password_service.generate_strong_password
+    user.change_password(from: FIXTURE_PASSWORD, to: strong_password)
+
+    assert_not_equal FIXTURE_PASSWORD, user.internal_access_only_encrypted_password
+    assert_not_equal strong_password, user.internal_access_only_encrypted_password
   end
 
   test 'user person contact information changed' do
