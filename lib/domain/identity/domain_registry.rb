@@ -35,5 +35,9 @@ class DomainRegistry
     def role_repository
       @@role_repository ||= InMemoryRoleRepository.new
     end
+
+    def group_repository
+      @@group_repository ||= InMemoryGroupRepository.new
+    end
   end
 end

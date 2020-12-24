@@ -51,6 +51,16 @@ class Tenant
     invitation
   end
 
+  def provision_group(a_name, a_description)
+    assert_tenant_is_active
+
+    group = Group.new(tenant_id, a_name, a_description)
+
+    DomainEventPublisher.instance.publish(GroupProvisioned.new(tenant_id, a_name))
+
+    group
+  end
+
   def provision_role(name:, description:, supports_nesting: false)
     assert_tenant_is_active
 
