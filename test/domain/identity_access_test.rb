@@ -61,7 +61,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
 
   def registration_invitation_entity_for(a_tenant)
     registration_invitation = a_tenant
-      .offer_registration_invitation("Today-and-Tomorrow #{Time.now.to_i}")
+      .offer_registration_invitation("Today-and-Tomorrow #{SecureRandom.rand}")
       .starting_at(Date.today)
       .ending_at(Date.tomorrow)
 

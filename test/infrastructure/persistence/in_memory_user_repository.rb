@@ -17,6 +17,25 @@ class InMemoryUserRepository
     @repository.clear
   end
 
+  def find_by(tenant_id:, username:)
+    key = "#{tenant_id}##{username}"
+    @repository[key]
+  end
+
+  def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)
+    @repository
+      .values
+      .select do |an_user|
+        next unless tenant_id == an_user.tenant_id
+
+        name = an_user.person.name
+        next unless name.first_name.starts_with?(first_name_prefix)
+        next unless name.last_name.starts_with?(last_name_prefix)
+
+        true
+      end
+  end
+
   private
 
   def key_of(an_user)
