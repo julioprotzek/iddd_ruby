@@ -43,7 +43,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
     )
   end
 
-  def person_entity(a_tenant)
+  def person_entity_for(a_tenant)
     Person.new(
       a_tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
@@ -51,7 +51,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
     )
   end
 
-  def person_entity_2(a_tenant)
+  def person_entity_2_for(a_tenant)
     Person.new(
       a_tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
@@ -59,7 +59,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
     )
   end
 
-  def registration_invitation_entity(a_tenant)
+  def registration_invitation_entity_for(a_tenant)
     registration_invitation = a_tenant
       .offer_registration_invitation("Today-and-Tomorrow #{Time.now.to_i}")
       .starting_at(Date.today)
@@ -88,14 +88,14 @@ class IdentityAccessTest < ActiveSupport::TestCase
   def user_aggregate
     tenant = tenant_aggregate
 
-    registration_invitation = registration_invitation_entity(tenant)
+    registration_invitation = registration_invitation_entity_for(tenant)
 
     user = tenant.register_user(
       invitation_identifier: registration_invitation.invitation_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     )
 
     user
@@ -104,14 +104,14 @@ class IdentityAccessTest < ActiveSupport::TestCase
   def user_aggregate_2
     tenant = tenant_aggregate
 
-    registration_invitation = registration_invitation_entity(tenant)
+    registration_invitation = registration_invitation_entity_for(tenant)
 
     user = tenant.register_user(
       invitation_identifier: registration_invitation.invitation_id,
       username: FIXTURE_USERNAME_2,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity_2(tenant)
+      person: person_entity_2_for(tenant)
     )
 
     user

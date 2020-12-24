@@ -17,7 +17,7 @@ class UserTest < IdentityAccessTest
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     )
 
     assert handled
@@ -139,13 +139,13 @@ class UserTest < IdentityAccessTest
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD ,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     ), User.new(
       tenant_id: tenant.tenant_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     )
 
     assert_not_equal User.new(
@@ -153,13 +153,13 @@ class UserTest < IdentityAccessTest
       username: FIXTURE_USERNAME_2,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     ), User.new(
       tenant_id: tenant.tenant_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     )
   end
 end

@@ -101,14 +101,14 @@ class TenantTest < IdentityAccessTest
   test 'register user' do
     tenant = tenant_aggregate
 
-    registration_invitation = registration_invitation_entity(tenant)
+    registration_invitation = registration_invitation_entity_for(tenant)
 
     user = tenant.register_user(
       invitation_identifier: registration_invitation.invitation_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.new(enabled: true),
-      person: person_entity(tenant)
+      person: person_entity_for(tenant)
     )
 
     assert_not_nil user
