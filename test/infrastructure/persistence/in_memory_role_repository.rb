@@ -9,6 +9,10 @@ class InMemoryRoleRepository
     @repository[key] = a_role
   end
 
+  def all_roles(a_tenant_id)
+    @repository.values.select{ |a_role| a_role.tenant_id == tenant_id }
+  end
+
   def remove(a_role)
     @repository.delete(key_of(a_role))
   end
