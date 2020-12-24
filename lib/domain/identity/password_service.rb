@@ -39,7 +39,7 @@ class PasswordService
     upper_count = 0
     symbol_count = 0
 
-    a_plain_text_password.split.each do |char|
+    a_plain_text_password.split('').each do |char|
       case char
       when /\d/ # digit
         digit_count += 1
