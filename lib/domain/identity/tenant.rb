@@ -6,16 +6,9 @@ class Tenant
   def initialize(tenant_id: , name: , description: , active: false)
     @registration_invitations = Set.new
 
-    assert_presence(tenant_id, 'TenantId is required.')
-    @tenant_id = tenant_id
-
-    assert_presence(name, 'Tenant name is required.')
-    assert_length(name, 1, 100, 'Tenant name must be 100 characters or less.')
-    @name = name
-
-    assert_presence(description, 'Tenant description is required.')
-    assert_length(name, 1, 100, 'Tenant description must be 100 characters or less.')
-    @description = description
+    self.tenant_id = tenant_id
+    self.name = name
+    self.description = description
 
     @active = active
   end
@@ -111,5 +104,25 @@ class Tenant
 
   def assert_tenant_is_active
     assert(active?, 'Tenant is not active.')
+  end
+
+  def tenant_id=(a_tenant_id)
+    assert_presence(a_tenant_id, 'TenantId is required.')
+
+    @tenant_id = a_tenant_id
+  end
+
+  def name=(a_name)
+    assert_presence(a_name, 'Tenant name is required.')
+    assert_length(a_name, 1, 100, 'Tenant name must be 100 characters or less.')
+
+    @name = a_name
+  end
+
+  def description=(a_description)
+    assert_presence(a_description, 'Tenant description is required.')
+    assert_length(a_description, 1, 100, 'Tenant description must be 100 characters or less.')
+
+    @description = a_description
   end
 end
