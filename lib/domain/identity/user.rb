@@ -46,7 +46,12 @@ class User
 
   def ==(other)
     self.class == other.class &&
+    self.tenant_id == other.tenant_id &&
     self.username == other.username
+  end
+
+  def eql?(other)
+    self == other
   end
 
   def tenant_id=(an_tenant_id)

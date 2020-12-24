@@ -24,6 +24,13 @@ class DomainRegistry
       )
     end
 
+    def group_member_service
+      GroupMemberService.new(
+        group_repository: group_repository,
+        user_repository: user_repository
+      )
+    end
+
     def tenant_repository
       @@tenant_repository ||= InMemoryTenantRepository.new
     end

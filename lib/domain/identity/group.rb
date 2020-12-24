@@ -3,13 +3,29 @@ class Group
 
   ROLE_GROUP_PREFIX = 'ROLE-INTERNAL-GROUP: '
 
-  attr_reader :tenant_id, :name, :description
+  attr_reader :tenant_id, :name, :description, :group_members
 
   def initialize(a_tenant_id, a_name, a_description)
     self.tenant_id = a_tenant_id
     self.name = a_name
     self.description = a_description
-    @group_members = {}
+    @group_members = Set.new
+  end
+
+  def add_group(a_group, a_group_member_service)
+    assert_presence(a_group, 'Group must be provided.')
+    assert_equal(tenant_id, a_group.tenant_id, 'Wrong tenant for this group.')
+    assert(!a_group_member_service.member_group?(a_group, self), 'Group recurrsion.')
+
+    if group_members.add?(a_group) && !internal_group?
+      DomainEventPublisher.instance.publish(
+        GroupGroupAdded.new(
+          tenant_id,
+          name,
+          a_group.name
+        )
+      )
+    end
   end
 
   def add_user(an_user)
@@ -17,11 +33,25 @@ class Group
     assert_equal(tenant_id, an_user.tenant_id, 'Wrong tenant for this group.')
     assert(an_user.enabled?, 'User is not enabled.')
 
-    return if @group_members.key?(an_user.username)
+    if group_members.add?(an_user) && !internal_group?
+      DomainEventPublisher.instance.publish(
+        GroupUserAdded.new(
+          tenant_id,
+          name,
+          an_user.username
+        )
+      )
+    end
+  end
 
-    @group_members[an_user.username] = an_user
+  def ==(other)
+    self.class == other.class &&
+    self.tenant_id == other.tenant_id &&
+    self.name == other.name
+  end
 
-    DomainEventPublisher.instance.publish(GroupUserAdded.new(tenant_id, name, an_user.username)) unless internal_group?
+  def eql?(other)
+    self == other
   end
 
   private
