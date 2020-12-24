@@ -42,13 +42,33 @@ class TenantTest < IdentityAccessTest
 
   test 'create open ended invitation' do
     tenant = tenant_aggregate
-    tenant.offer_registration_invitation('Open-Ended').open_ended
+
+    tenant
+      .offer_registration_invitation('Open-Ended')
+      .open_ended
+
     assert_not_nil tenant.redefine_registration_invitation_as('Open-Ended')
   end
 
-  test 'close ended invitation availability' do
+  test 'available close ended invitation' do
     tenant = tenant_aggregate
-    tenant.offer_registration_invitation('Today-and-Tomorrow').starting_at(Date.today).ending_at(Date.tomorrow)
-    assert tenant.registration_available_through?('Today-and-Tomorrow')
+
+    tenant
+      .offer_registration_invitation('Today-and-Tomorrow')
+      .starting_at(Date.today)
+      .ending_at(Date.tomorrow)
+
+      assert tenant.registration_available_through?('Today-and-Tomorrow')
+  end
+
+  test 'unavailable close ended invitation' do
+    tenant = tenant_aggregate
+
+    tenant
+      .offer_registration_invitation('Tomorrow-and-Day-After-Tomorrow')
+      .starting_at(Date.tomorrow)
+      .ending_at(Date.tomorrow + 1.day)
+
+      assert !tenant.registration_available_through?('Tomorrow-and-Day-After-Tomorrow')
   end
 end
