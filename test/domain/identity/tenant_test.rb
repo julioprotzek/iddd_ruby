@@ -45,4 +45,10 @@ class TenantTest < IdentityAccessTest
     tenant.offer_registration_invitation('Open-Ended').open_ended
     assert_not_nil tenant.redefine_registration_invitation_as('Open-Ended')
   end
+
+  test 'close ended invitation availability' do
+    tenant = tenant_aggregate
+    tenant.offer_registration_invitation('Today-and-Tomorrow').starting_at(Date.today).ending_at(Date.tomorrow)
+    assert tenant.registration_available_through?('Today-and-Tomorrow')
+  end
 end

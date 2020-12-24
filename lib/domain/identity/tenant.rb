@@ -24,7 +24,7 @@ class Tenant
     @active
   end
 
-  def registration_is_available_through?(a_invitation_identifier)
+  def registration_available_through?(a_invitation_identifier)
     assert_tenant_is_active
 
     invitation = find_invitation_by_indentifier(a_invitation_identifier)
@@ -33,7 +33,7 @@ class Tenant
 
   def offer_registration_invitation(a_description)
     assert_tenant_is_active
-    assert(!registration_is_available_through?(a_description), 'Invitation already exists.')
+    assert(!registration_available_through?(a_description), 'Invitation already exists.')
 
     invitation = RegistrationInvitation.new(
       tenant_id: tenant_id,
@@ -74,7 +74,7 @@ class Tenant
   def register_user(invitation_identifier:, username:, password:, enablement:, person:)
     assert_tenant_is_active
 
-    if registration_is_available_through?(invitation_identifier)
+    if registration_available_through?(invitation_identifier)
       person.tenant_id = tenant_id
       User.new(
         tenant_id: tenant_id,
