@@ -97,4 +97,26 @@ class TenantTest < IdentityAccessTest
 
     assert_equal 1, tenant.all_unavailable_registration_invitations.size
   end
+
+  test 'register user' do
+    tenant = tenant_aggregate
+
+    registration_invitation = registration_invitation_entity(tenant)
+
+    user = tenant.register_user(
+      invitation_identifier: registration_invitation.invitation_id,
+      username: FIXTURE_USERNAME,
+      password: FIXTURE_PASSWORD,
+      enablement: Enablement.new(enabled: true),
+      person: person_entity(tenant)
+    )
+
+    assert_not_nil user
+
+    DomainRegistry.user_repository.add(user)
+
+    assert_not_nil user.enablement
+    assert_not_nil user.person
+    assert_not_nil user.user_descriptor
+  end
 end

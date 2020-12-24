@@ -1,7 +1,7 @@
 class User
   include Assertion
 
-  attr_reader :tenant_id, :username, :person
+  attr_reader :tenant_id, :username, :person, :enablement
 
   delegate :encrypt, to: DomainRegistry.encryption_service
 
