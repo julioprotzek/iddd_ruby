@@ -20,6 +20,18 @@ class Tenant
     @active = active
   end
 
+  def all_available_registration_invitations
+    assert_tenant_is_active
+
+    registration_invitations.select(&:available?)
+  end
+
+  def all_unavailable_registration_invitations
+    assert_tenant_is_active
+
+    registration_invitations.excluding(&:available?)
+  end
+
   def active?
     @active
   end
@@ -41,7 +53,7 @@ class Tenant
       description: a_description
     )
 
-    registration_invitations.add(invitation)
+    registration_invitations << invitation
 
     invitation
   end
