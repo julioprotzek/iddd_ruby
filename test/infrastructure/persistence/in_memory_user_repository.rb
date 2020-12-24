@@ -36,6 +36,16 @@ class InMemoryUserRepository
       end
   end
 
+  def user_from_authentic_credentials(a_tenant_id, an_username, an_encrypted_password)
+    @repository
+      .values
+      .find do |an_user|
+        a_tenant_id == an_user.tenant_id &&
+        an_username == an_user.username &&
+        an_user.internal_access_only_encrypted_password == an_encrypted_password
+      end
+  end
+
   private
 
   def key_of(an_user)

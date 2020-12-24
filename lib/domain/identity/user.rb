@@ -38,6 +38,7 @@ class User
 
   def user_descriptor
     UserDescriptor.new(
+      tenant_id,
       username,
       person.email_address.address
     )
