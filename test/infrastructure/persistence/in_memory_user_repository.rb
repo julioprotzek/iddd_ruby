@@ -9,18 +9,6 @@ class InMemoryUserRepository
     @repository[key] = an_user
   end
 
-  def remove(an_user)
-    @repository.delete(key_of(an_user))
-  end
-
-  def clean
-    @repository.clear
-  end
-
-  def find_by(tenant_id:, username:)
-    @repository[key_with(tenant_id, username)]
-  end
-
   def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)
     @repository
       .values
@@ -35,6 +23,10 @@ class InMemoryUserRepository
       end
   end
 
+  def remove(an_user)
+    @repository.delete(key_of(an_user))
+  end
+
   def user_from_authentic_credentials(a_tenant_id, an_username, an_encrypted_password)
     @repository
       .values
@@ -43,6 +35,14 @@ class InMemoryUserRepository
         an_username == an_user.username &&
         an_user.internal_access_only_encrypted_password == an_encrypted_password
       end
+  end
+
+  def find_by(tenant_id:, username:)
+    @repository[key_with(tenant_id, username)]
+  end
+
+  def clean
+    @repository.clear
   end
 
   private
