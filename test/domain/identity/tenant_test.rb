@@ -39,4 +39,10 @@ class TenantTest < IdentityAccessTest
     assert_equal FIXTURE_TENANT_NAME, tenant.name
     assert_equal FIXTURE_TENANT_DESCRIPTION, tenant.description
   end
+
+  test 'create open ended invitation' do
+    tenant = tenant_aggregate
+    tenant.offer_registration_invitation('Open-Ended').open_ended
+    assert_not_nil tenant.redefine_registration_invitation_as('Open-Ended')
+  end
 end

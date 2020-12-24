@@ -61,6 +61,16 @@ class Tenant
     role
   end
 
+  def redefine_registration_invitation_as(an_invitation_identifier)
+    assert_tenant_is_active
+
+    invitation = find_invitation_by_indentifier(an_invitation_identifier)
+
+    invitation.redefine_as.open_ended if invitation.present?
+
+    invitation
+  end
+
   def register_user(invitation_identifier:, username:, password:, enablement:, person:)
     assert_tenant_is_active
 
