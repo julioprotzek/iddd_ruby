@@ -18,8 +18,7 @@ class InMemoryUserRepository
   end
 
   def find_by(tenant_id:, username:)
-    key = "#{tenant_id}##{username}"
-    @repository[key]
+    @repository[key_with(tenant_id, username)]
   end
 
   def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)
@@ -49,6 +48,10 @@ class InMemoryUserRepository
   private
 
   def key_of(an_user)
-    "#{an_user.tenant_id}##{an_user.username}"
+    key_with(an_user.tenant_id, an_user.username)
+  end
+
+  def key_with(a_tenant_id, an_username)
+    "#{a_tenant_id}##{an_username}"
   end
 end

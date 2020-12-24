@@ -20,6 +20,10 @@ class InMemoryRoleRepository
   private
 
   def key_of(a_role)
-    "#{a_role.tenant_id}##{a_role.name}"
+    key_with(a_role.tenant_id, a_role.name)
+  end
+
+  def key_with(a_tenant_id, a_name)
+    "#{a_tenant_id}##{a_name}"
   end
 end
