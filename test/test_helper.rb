@@ -18,6 +18,8 @@ loader.push_dir('lib/domain')
 loader.push_dir('lib/domain/access')
 loader.push_dir('lib/domain/identity')
 loader.push_dir('lib/infrastructure/services')
+loader.push_dir('lib/application')
+loader.push_dir('lib/application/command')
 
 loader.push_dir('test/infrastructure/persistence')
 

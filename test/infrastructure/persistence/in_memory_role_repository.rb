@@ -32,6 +32,6 @@ class InMemoryRoleRepository
   end
 
   def key_with(tenant_id, role_name)
-    "#{tenant_id}##{role_name}"
+    "#{tenant_id.id}##{role_name}"
   end
 end

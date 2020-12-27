@@ -52,6 +52,6 @@ class InMemoryUserRepository
   end
 
   def key_with(tenant_id, username)
-    "#{tenant_id}##{username}"
+    "#{tenant_id.id}##{username}"
   end
 end

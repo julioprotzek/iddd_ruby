@@ -33,6 +33,6 @@ class InMemoryGroupRepository
   end
 
   def key_with(tenant_id, name)
-    "#{tenant_id}##{name}"
+    "#{tenant_id.id}##{name}"
   end
 end
