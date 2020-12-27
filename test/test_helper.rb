@@ -12,9 +12,13 @@ require 'zeitwerk'
 loader = Zeitwerk::Loader.new
 loader.push_dir('lib/common')
 loader.push_dir('lib/common/domain')
+loader.push_dir('lib/common/event')
+
 loader.push_dir('lib/domain')
 loader.push_dir('lib/domain/access')
 loader.push_dir('lib/domain/identity')
 loader.push_dir('lib/infrastructure/services')
+
 loader.push_dir('test/infrastructure/persistence')
+
 loader.setup

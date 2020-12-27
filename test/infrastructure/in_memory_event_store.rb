@@ -18,10 +18,10 @@ class InMemoryEventStore
 
   def append(domain_event)
     stored_events << StoredEvent.new(
-      domain_event.class.name,
-      domain_event.occurred_at,
-      EventSerializer.serialize(domain_event),
-      @stored_events.size + 1
+      type_name: domain_event.class.name,
+      ocurred_at: domain_event.occurred_at,
+      event_body: EventSerializer.serialize(domain_event),
+      event_id: @stored_events.size + 1
     )
   end
 

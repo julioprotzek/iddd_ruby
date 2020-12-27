@@ -13,7 +13,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
 
   setup do
     DomainEventPublisher.reset
-    # event_store.clean
+    event_store.clean
     DomainRegistry.group_repository.clean
     DomainRegistry.role_repository.clean
     DomainRegistry.tenant_repository.clean
@@ -21,7 +21,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
   end
 
   def event_store
-    # InMemoryEventStore.new
+    @event_store ||= InMemoryEventStore.new
   end
 
   def group_1_aggregate
