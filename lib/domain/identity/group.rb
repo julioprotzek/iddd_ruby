@@ -44,6 +44,18 @@ class Group
     end
   end
 
+  def member?(an_user, a_group_member_service)
+    assert_presence(an_user, 'User must be provided.')
+    assert_equal(tenant_id, an_user.tenant_id, 'Wrong tenant for this group.')
+    assert(an_user.enabled?, 'User is not enabled.')
+
+    if an_user.in?(group_members)
+      return a_group_member_service.confirm_user(self, an_user)
+    else
+      return a_group_member_service.in_nested_group?(self, an_user)
+    end
+  end
+
   def ==(other)
     self.class == other.class &&
     self.tenant_id == other.tenant_id &&

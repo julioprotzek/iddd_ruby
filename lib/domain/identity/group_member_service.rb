@@ -17,12 +17,28 @@ class GroupMemberService
         is_member = a_member_group == member
         break if is_member
 
-        is_member = member_group?(member, a_member_group)
+        group = group_repository.group_named(member.tenant_id, member.name)
+        is_member = group.present? && member_group?(group, a_member_group)
         break if is_member
       end
     end
 
     is_member
+  end
+
+  def in_nested_group?(a_group, an_user)
+    in_nested_group = false
+
+    a_group.group_members.each do |member|
+      if member.is_a?(Group)
+        group = group_repository.group_named(member.tenant_id, member.name)
+
+        in_nested_group = group.present? && group.member?(an_user, self)
+        break if in_nested_group
+      end
+    end
+
+    in_nested_group
   end
 
   private
