@@ -5,6 +5,7 @@ class GroupTest < IdentityAccessTest
     @group_group_added_count = 0
     @group_user_added_count = 0
     @group_group_removed_count = 0
+    @group_user_removed_count = 0
   end
 
   test 'provision group' do
@@ -62,5 +63,23 @@ class GroupTest < IdentityAccessTest
     group_a.remove_group(group_b)
     assert_equal 0, group_a.members.size
     assert_equal 1, @group_group_removed_count
+  end
+
+  test 'remove user' do
+    DomainEventPublisher.subscribe(GroupUserRemoved){ @group_user_removed_count += 1 }
+
+    tenant = tenant_aggregate
+    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    group_a.add_user(user)
+
+    assert_equal 1, group_a.members.size
+    group_a.remove_user(user)
+    assert_equal 0, group_a.members.size
+    assert_equal 1, @group_user_removed_count
   end
 end

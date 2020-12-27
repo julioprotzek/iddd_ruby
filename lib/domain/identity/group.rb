@@ -70,6 +70,20 @@ class Group
     end
   end
 
+  def remove_user(user)
+    assert_presence(user, 'User must be provided.')
+    assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
+
+    # Not a nested remove, only a direct member
+    if members.delete?(user) && !internal_group?
+      DomainEventPublisher.publish(GroupUserRemoved.new(
+        tenant_id,
+        name,
+        user.username
+      ))
+    end
+  end
+
   def ==(other)
     self.class == other.class &&
     self.tenant_id == other.tenant_id &&
