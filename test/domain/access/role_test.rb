@@ -76,7 +76,7 @@ class RoleTest < IdentityAccessTest
     assert_equal 'May not find internal groups.', error.message
   end
 
-  test 'internal group events are not published' do
+  test 'internal group added events are not published' do
     DomainEventPublisher.subscribe(GroupAssignedToRole){ @role_something_assigned_count += 1 }
     DomainEventPublisher.subscribe(GroupGroupAdded){ @group_something_added_count += 1 }
     DomainEventPublisher.subscribe(UserAssignedToRole){ @role_something_assigned_count += 1 }
@@ -97,5 +97,30 @@ class RoleTest < IdentityAccessTest
 
     assert_equal 2, @role_something_assigned_count
     assert_equal 1, @group_something_added_count
+  end
+
+  test 'internal group removed events are not published' do
+    DomainEventPublisher.subscribe(GroupUnassignedFromRole){ @role_something_unassigned_count += 1 }
+    DomainEventPublisher.subscribe(GroupGroupRemoved){ @group_something_removed_count += 1 }
+    DomainEventPublisher.subscribe(UserUnassignedFromRole){ @role_something_unassigned_count += 1 }
+    DomainEventPublisher.subscribe(GroupUserRemoved){ @group_something_removed_count += 1 }
+
+    tenant = tenant_aggregate
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
+    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    DomainRegistry.group_repository.add(managers_group)
+
+    manager_role.assign_user(user)
+    manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
+    DomainRegistry.role_repository.add(manager_role)
+
+    manager_role.unassign_user(user)
+    manager_role.unassign_group(managers_group)
+
+    assert_equal 2, @role_something_unassigned_count
+    assert_equal 0, @group_something_removed_count
   end
 end

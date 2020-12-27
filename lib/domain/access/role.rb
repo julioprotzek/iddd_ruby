@@ -50,6 +50,26 @@ class Role
     @supports_nesting == true
   end
 
+  def unassign_group(group)
+    assert(supports_nesting?, 'This role does not support group nesting.')
+    assert_presence(group, 'Group must be provided.')
+    assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
+
+    self.group.remove_group(group)
+
+    DomainEventPublisher.publish(GroupUnassignedFromRole.new(tenant_id, name, group.name))
+
+  end
+
+  def unassign_user(user)
+    assert_presence(user, 'User must be provided.')
+    assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this user.')
+
+    self.group.remove_user(user)
+
+    DomainEventPublisher.publish(UserUnassignedFromRole.new(tenant_id, name, user.username))
+  end
+
   private
 
   def create_internal_group
