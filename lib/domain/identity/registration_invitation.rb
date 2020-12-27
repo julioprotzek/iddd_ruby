@@ -4,16 +4,9 @@ class RegistrationInvitation
   attr_reader :tenant_id, :invitation_id, :description, :starts_at, :ends_at
 
   def initialize(tenant_id:, invitation_id:, description:)
-    assert_presence(tenant_id, 'The tenant id is required')
-    @tenant_id = tenant_id
-
-    assert_presence(invitation_id, 'The invitation id is required.')
-    assert_length(invitation_id, 1, 36, 'The invitation id must be 36 characters of less.')
-    @invitation_id = invitation_id
-
-    assert_presence(description, 'The description is required.')
-    assert_length(description, 1, 100, 'The description must be 100 characters of less.')
-    @description = description
+    self.tenant_id = tenant_id
+    self.invitation_id = invitation_id
+    self.description = description
 
     assert_valid_invitation_dates
   end
@@ -76,6 +69,26 @@ class RegistrationInvitation
   end
 
   private
+
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'The tenant id is required')
+
+    @tenant_id = tenant_id
+  end
+
+  def invitation_id=(invitation_id)
+    assert_presence(invitation_id, 'The invitation id is required.')
+    assert_length(invitation_id, 1, 36, 'The invitation id must be 36 characters of less.')
+
+    @invitation_id = invitation_id
+  end
+
+  def description=(description)
+    assert_presence(description, 'The description is required.')
+    assert_length(description, 1, 100, 'The description must be 100 characters of less.')
+
+    @description = description
+  end
 
   def assert_valid_invitation_dates
     # either both dates must be null, or both dates must be set

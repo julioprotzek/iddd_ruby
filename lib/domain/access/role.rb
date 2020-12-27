@@ -4,15 +4,9 @@ class Role
   attr_reader :tenant_id, :name, :description, :supports_nesting
 
   def initialize(tenant_id, name, description, supports_nesting)
-    assert_presence(tenant_id, 'The tenant id is required')
-    @tenant_id = tenant_id
-
-    assert_presence(name, 'Role name is required')
-    @name = name
-
-    assert_presence(description, 'Role description is required')
-    assert_length(description, 1, 250, 'Role description must have 250 characters or less.')
-    @description = description
+    self.tenant_id= tenant_id
+    self.name= name
+    self.description= description
 
     @supports_nesting = supports_nesting
 
@@ -38,6 +32,8 @@ class Role
     ))
   end
 
+  private
+
   def create_internal_group
     group_name = Group::ROLE_GROUP_PREFIX + SecureRandom.uuid.upcase
 
@@ -46,5 +42,21 @@ class Role
       group_name,
       "Role backing group for: #{name}"
     )
+  end
+
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'The tenant id is required')
+    @tenant_id = tenant_id
+  end
+
+  def name=(name)
+    assert_presence(name, 'Role name is required')
+    @name = name
+  end
+
+  def description=(description)
+    assert_presence(description, 'Role description is required')
+    assert_length(description, 1, 250, 'Role description must have 250 characters or less.')
+    @description = description
   end
 end
