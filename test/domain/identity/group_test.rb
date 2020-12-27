@@ -10,19 +10,18 @@ class GroupTest < IdentityAccessTest
 
   test 'provision group' do
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
     assert_equal 1, DomainRegistry.group_repository.all_groups(tenant.tenant_id).size
   end
 
   test 'add group' do
-    group_group_added_count = 0
     DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
 
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
-    group_b = tenant.provision_group('GroupB', 'A group named GroupB')
+    group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
     DomainRegistry.group_repository.add(group_b)
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
@@ -35,7 +34,7 @@ class GroupTest < IdentityAccessTest
     DomainEventPublisher.subscribe(GroupUserAdded){ @group_user_added_count += 1 }
 
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('Group A', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'Group A', description: 'A group named GroupA')
     user = user_aggregate
     DomainRegistry.user_repository.add(user)
     group_a.add_user(user)
@@ -51,10 +50,10 @@ class GroupTest < IdentityAccessTest
 
     tenant = tenant_aggregate
 
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
 
-    group_b = tenant.provision_group('GroupB', 'A group named GroupB')
+    group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
     DomainRegistry.group_repository.add(group_b)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
@@ -69,7 +68,7 @@ class GroupTest < IdentityAccessTest
     DomainEventPublisher.subscribe(GroupUserRemoved){ @group_user_removed_count += 1 }
 
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
 
     user = user_aggregate
@@ -88,10 +87,10 @@ class GroupTest < IdentityAccessTest
 
     tenant = tenant_aggregate
 
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
 
-    group_b = tenant.provision_group('GroupB', 'A group named GroupB')
+    group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
     DomainRegistry.group_repository.add(group_b)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
@@ -149,7 +148,7 @@ class GroupTest < IdentityAccessTest
 
   test 'no role internal groups in find_all_groups' do
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
 
     role_a = tenant.provision_role(name: 'RoleA', description: 'A role of A.')

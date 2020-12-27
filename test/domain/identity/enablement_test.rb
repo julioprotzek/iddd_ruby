@@ -30,7 +30,7 @@ class EnablementTest < ActiveSupport::TestCase
   end
 
   test 'unsequenced dates' do
-    error = assert_raises ArgumentError do
+    assert_raises ArgumentError do
       Enablement.new(
         enabled: true,
         start_at: Date.tomorrow,

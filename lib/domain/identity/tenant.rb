@@ -67,7 +67,7 @@ class Tenant
     invitation
   end
 
-  def provision_group(name, description)
+  def provision_group(name:, description:)
     assert_tenant_is_active
 
     group = Group.new(tenant_id, name, description)

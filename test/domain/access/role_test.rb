@@ -34,7 +34,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.user_repository.add(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
-    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
     DomainRegistry.group_repository.add(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
@@ -52,7 +52,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.user_repository.add(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
-    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
     DomainRegistry.group_repository.add(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
@@ -87,7 +87,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.user_repository.add(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
-    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
     DomainRegistry.group_repository.add(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
@@ -110,7 +110,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.user_repository.add(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
-    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
     DomainRegistry.group_repository.add(managers_group)
 
     manager_role.assign_user(user)

@@ -7,7 +7,7 @@ class GroupRepositoryTest < IdentityAccessTest
 
   test 'remove group referenced user' do
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group member A.')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group member A.')
     user = user_aggregate
     DomainRegistry.user_repository.add(user)
     group_a.add_user(user)
@@ -25,7 +25,7 @@ class GroupRepositoryTest < IdentityAccessTest
 
   test 'remove repository group' do
     tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
     DomainRegistry.group_repository.add(group_a)
     not_nil_group = DomainRegistry.group_repository.group_named(tenant.tenant_id, 'GroupA')
     assert_not_nil not_nil_group
