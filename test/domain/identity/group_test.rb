@@ -177,4 +177,23 @@ class GroupTest < IdentityAccessTest
     assert_equal 'Group recurrsion.', error.message
     assert_equal 2, @group_group_added_count
   end
+
+  test 'no role internal groups in find_all_groups' do
+    tenant = tenant_aggregate
+    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+
+    role_a = tenant.provision_role(name: 'RoleA', description: 'A role of A.')
+    DomainRegistry.role_repository.add(role_a)
+
+    role_b = tenant.provision_role(name: 'RoleB', description: 'A role of B.')
+    DomainRegistry.role_repository.add(role_b)
+
+    role_c = tenant.provision_role(name: 'RoleC', description: 'A role of C.')
+    DomainRegistry.role_repository.add(role_c)
+
+    groups = DomainRegistry.group_repository.all_groups(tenant.tenant_id)
+
+    assert_equal 1, groups.size
+  end
 end
