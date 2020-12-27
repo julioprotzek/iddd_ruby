@@ -136,4 +136,20 @@ class GroupTest < IdentityAccessTest
     assert group_a.member?(user, DomainRegistry.group_member_service)
     assert_equal 1, @group_group_added_count
   end
+
+  test 'user is not member' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    # test alternate creation via constructor
+    group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+    group_b = Group.new(user.tenant_id, 'GroupB', 'A group named GroupB')
+    DomainRegistry.group_repository.add(group_b)
+
+    group_a.add_group(group_b, DomainRegistry.group_member_service)
+
+    assert !group_b.member?(user, DomainRegistry.group_member_service)
+    assert !group_a.member?(user, DomainRegistry.group_member_service)
+  end
 end
