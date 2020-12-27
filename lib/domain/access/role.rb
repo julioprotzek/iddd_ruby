@@ -3,7 +3,7 @@ class Role
 
   attr_reader :tenant_id, :name, :description
 
-  def initialize(tenant_id, name, description, supports_nesting)
+  def initialize(tenant_id, name, description, supports_nesting = false)
     self.tenant_id= tenant_id
     self.name= name
     self.description= description

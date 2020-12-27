@@ -45,4 +45,22 @@ class RoleTest < IdentityAccessTest
     assert managers_group.member?(user, DomainRegistry.group_member_service)
     assert manager_role.in_role?(user, DomainRegistry.group_member_service)
   end
+
+  test 'user is not in role' do
+    tenant = tenant_aggregate
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
+    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    DomainRegistry.group_repository.add(managers_group)
+
+    manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
+    DomainRegistry.role_repository.add(manager_role)
+    accountant_role = Role.new(user.tenant_id, 'Accountant', 'An accountant role.')
+    DomainRegistry.role_repository.add(accountant_role)
+
+    assert !manager_role.in_role?(user, DomainRegistry.group_member_service)
+    assert !accountant_role.in_role?(user, DomainRegistry.group_member_service)
+  end
 end
