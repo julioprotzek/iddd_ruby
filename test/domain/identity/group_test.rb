@@ -152,4 +152,29 @@ class GroupTest < IdentityAccessTest
     assert !group_b.member?(user, DomainRegistry.group_member_service)
     assert !group_a.member?(user, DomainRegistry.group_member_service)
   end
+
+  test 'no recursive groupings' do
+    DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
+
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    # test alternate creation via constructor
+    group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+    group_b = Group.new(user.tenant_id, 'GroupB', 'A group named GroupB')
+    DomainRegistry.group_repository.add(group_b)
+    group_c = Group.new(user.tenant_id, 'GroupC', 'A group named GroupC')
+    DomainRegistry.group_repository.add(group_c)
+
+    group_a.add_group(group_b, DomainRegistry.group_member_service)
+    group_b.add_group(group_c, DomainRegistry.group_member_service)
+
+    error = assert_raise StandardError do
+      group_c.add_group(group_a, DomainRegistry.group_member_service)
+    end
+
+    assert_equal 'Group recurrsion.', error.message
+    assert_equal 2, @group_group_added_count
+  end
 end
