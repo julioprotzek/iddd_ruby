@@ -54,6 +54,22 @@ class User
     self == other
   end
 
+  def enabled?
+    @enablement.enablement_enabled?
+  end
+
+  def person=(person)
+    assert_presence_kind_of(person, Person, 'The person is required.')
+    person.internal_only_user = self
+    @person = person
+  end
+
+  def internal_access_only_encrypted_password
+    @password
+  end
+
+  private
+
   def tenant_id=(tenant_id)
     assert_presence(tenant_id, 'The tenant id is required.')
     @tenant_id = tenant_id
@@ -73,22 +89,6 @@ class User
     assert_presence(enablement, 'The enablement is required.')
     @enablement = enablement
   end
-
-  def enabled?
-    @enablement.enablement_enabled?
-  end
-
-  def person=(person)
-    assert_presence_kind_of(person, Person, 'The person is required.')
-    person.internal_only_user = self
-    @person = person
-  end
-
-  def internal_access_only_encrypted_password
-    @password
-  end
-
-  private
 
   def protect_password(plain_text_password)
     assert_passwod_not_weak(plain_text_password, 'The password must be stronger.')

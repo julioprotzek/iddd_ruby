@@ -9,16 +9,6 @@ class Person
     self.contact_information = contact_information
   end
 
-  def tenant_id=(tenant_id)
-    assert_presence(tenant_id, 'The tenant id is required')
-    @tenant_id = tenant_id
-  end
-
-  def name=(name)
-    assert_presence(name, 'The person name is required')
-    @name = name
-  end
-
   def contact_information=(contact_information)
     assert_presence(contact_information, 'The person contact information is required')
     @contact_information = contact_information
@@ -58,5 +48,17 @@ class Person
 
   def internal_only_user=(user)
     @user = user
+  end
+
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'The tenant id is required')
+    @tenant_id = tenant_id
+  end
+
+  private
+
+  def name=(name)
+    assert_presence(name, 'The person name is required')
+    @name = name
   end
 end

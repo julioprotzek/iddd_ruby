@@ -10,28 +10,6 @@ class ContactInformation
     self.secondary_telephone = secondary_telephone
   end
 
-  def email_address=(email_address)
-    assert_presence(email_address, 'The email address is required.')
-
-    @email_address = email_address
-  end
-
-  def postal_address=(postal_address)
-    assert_presence(postal_address, 'The postal address is required.')
-
-    @postal_address = postal_address
-  end
-
-  def primary_telephone=(primary_telephone)
-    assert_presence(primary_telephone, 'The primary telephone is required.')
-
-    @primary_telephone = primary_telephone
-  end
-
-  def secondary_telephone=(secondary_telephone)
-    @secondary_telephone = secondary_telephone
-  end
-
   def change_email_address(email_address)
     self.class.new(
       email_address,
@@ -74,5 +52,29 @@ class ContactInformation
     self.postal_address == other.postal_address &&
     self.primary_telephone == other.primary_telephone &&
     self.secondary_telephone == other.secondary_telephone
+  end
+
+  private
+
+  def email_address=(email_address)
+    assert_presence(email_address, 'The email address is required.')
+
+    @email_address = email_address
+  end
+
+  def postal_address=(postal_address)
+    assert_presence(postal_address, 'The postal address is required.')
+
+    @postal_address = postal_address
+  end
+
+  def primary_telephone=(primary_telephone)
+    assert_presence(primary_telephone, 'The primary telephone is required.')
+
+    @primary_telephone = primary_telephone
+  end
+
+  def secondary_telephone=(secondary_telephone)
+    @secondary_telephone = secondary_telephone
   end
 end

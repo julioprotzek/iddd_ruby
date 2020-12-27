@@ -11,6 +11,17 @@ class PostalAddress
     self.country_code= country_code
   end
 
+  def ==(other)
+    self.class == other.class &&
+    self.street_address == other.street_address &&
+    self.city == other.city &&
+    self.state_province == other.state_province &&
+    self.postal_code == other.postal_code &&
+    self.country_code == other.country_code
+  end
+
+  private
+
   def street_address=(street_address)
     assert_presence(street_address, 'The street address is required.')
     assert_length(street_address, 1, 100, 'The street address must be 100 characters or less.')
@@ -44,14 +55,5 @@ class PostalAddress
     assert_length(country_code, 2, 2, 'The country code must be two characters or less.')
 
     @country_code = country_code
-  end
-
-  def ==(other)
-    self.class == other.class &&
-    self.street_address == other.street_address &&
-    self.city == other.city &&
-    self.state_province == other.state_province &&
-    self.postal_code == other.postal_code &&
-    self.country_code == other.country_code
   end
 end
