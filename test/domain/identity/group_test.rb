@@ -44,4 +44,23 @@ class GroupTest < IdentityAccessTest
     assert group_a.member?(user, DomainRegistry.group_member_service)
     assert_equal 1, @group_user_added_count
   end
+
+  test 'remove group' do
+    DomainEventPublisher.subscribe(GroupGroupRemoved){ @group_group_removed_count += 1 }
+
+    tenant = tenant_aggregate
+
+    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+
+    group_b = tenant.provision_group('GroupB', 'A group named GroupB')
+    DomainRegistry.group_repository.add(group_b)
+
+    group_a.add_group(group_b, DomainRegistry.group_member_service)
+
+    assert_equal 1, group_a.members.size
+    group_a.remove_group(group_b)
+    assert_equal 0, group_a.members.size
+    assert_equal 1, @group_group_removed_count
+  end
 end
