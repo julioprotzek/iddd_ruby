@@ -113,4 +113,27 @@ class GroupTest < IdentityAccessTest
 
     assert_nil nil_group
   end
+
+  test 'user is member of nested group' do
+    DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
+
+    tenant = tenant_aggregate
+
+    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
+    DomainRegistry.group_repository.add(group_a)
+
+    group_b = tenant.provision_group('GroupB', 'A group named GroupB')
+    DomainRegistry.group_repository.add(group_b)
+
+    group_a.add_group(group_b, DomainRegistry.group_member_service)
+
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    group_b.add_user(user)
+
+    assert group_b.member?(user, DomainRegistry.group_member_service)
+    assert group_a.member?(user, DomainRegistry.group_member_service)
+    assert_equal 1, @group_group_added_count
+  end
 end
