@@ -20,9 +20,9 @@ class Group
     if members.add?(group) && !internal_group?
       DomainEventPublisher.publish(
         GroupGroupAdded.new(
-          tenant_id,
-          name,
-          group.name
+          tenant_id: tenant_id,
+          group_name: name,
+          nested_group_name: group.name
         )
       )
     end
@@ -36,9 +36,9 @@ class Group
     if members.add?(user) && !internal_group?
       DomainEventPublisher.publish(
         GroupUserAdded.new(
-          tenant_id,
-          name,
-          user.username
+          tenant_id: tenant_id,
+          group_name: name,
+          username: user.username
         )
       )
     end
@@ -62,11 +62,13 @@ class Group
 
     # Not a nested remove, only a direct member
     if members.delete?(group) && !internal_group?
-      DomainEventPublisher.publish(GroupGroupRemoved.new(
-        tenant_id,
-        name,
-        group.name
-      ))
+      DomainEventPublisher.publish(
+        GroupGroupRemoved.new(
+          tenant_id: tenant_id,
+          group_name: name,
+          nested_group_name: group.name
+        )
+      )
     end
   end
 
@@ -76,11 +78,13 @@ class Group
 
     # Not a nested remove, only a direct member
     if members.delete?(user) && !internal_group?
-      DomainEventPublisher.publish(GroupUserRemoved.new(
-        tenant_id,
-        name,
-        user.username
-      ))
+      DomainEventPublisher.publish(
+        GroupUserRemoved.new(
+          tenant_id: tenant_id,
+          group_name: name,
+          username: user.username
+        )
+      )
     end
   end
 

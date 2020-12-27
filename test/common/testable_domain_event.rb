@@ -1,7 +1,7 @@
 class TestableDomainEvent
   attr_reader :event_version, :occurred_at, :id, :name
 
-  def initialize(id, name)
+  def initialize(id: id, name: name)
     @event_version = 1
     @id = id
     @name = name

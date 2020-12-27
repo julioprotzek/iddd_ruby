@@ -17,7 +17,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
 
     assert_equal false, @event_handled
 
-    DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
 
     assert_equal true, @event_handled
   end
@@ -29,7 +29,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
       @event_handled = true
 
       # attempt nested publish, which should not work
-      DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1000.0))
+      DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1000.0))
     end
 
     DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |domain_event|
@@ -41,7 +41,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     assert_equal false, @event_handled
     assert_equal false, @another_event_handled
 
-    DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
 
     assert_equal true, @event_handled
     assert_equal false, @another_event_handled
@@ -55,7 +55,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     end
 
     error = assert_raises StandardError do
-      DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
+      DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
     end
 
     assert_equal 'Error from domain event subscription block', error.message
@@ -80,8 +80,8 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
       event_handled_count += 1
     end
 
-    DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
-    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1111))
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
+    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1111))
 
     assert_equal 2, event_handled_count
     assert_equal 1, another_event_handled_count
@@ -103,16 +103,16 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
       event_handled_count += 1
     end
 
-    DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
-    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1111))
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
+    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1111))
 
     assert_equal 2, event_handled_count
     assert_equal 1, another_event_handled_count
 
     DomainEventPublisher.reset
 
-    DomainEventPublisher.publish(TestableDomainEvent.new(123, 'test'))
-    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1111))
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
+    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1111))
 
     assert_equal 2, event_handled_count
     assert_equal 1, another_event_handled_count
@@ -124,7 +124,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
       event_handled = true
     end
 
-    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1111))
+    DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1111))
     assert_equal false, event_handled
   end
 end

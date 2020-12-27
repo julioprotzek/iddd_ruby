@@ -18,7 +18,7 @@ class TenantProvisionService
 
     register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_telephone, secondary_telephone)
 
-    DomainEventPublisher.publish(TenantProvisioned.new(tenant.tenant_id))
+    DomainEventPublisher.publish(TenantProvisioned.new(tenant_id: tenant.tenant_id))
 
     tenant
   end
@@ -57,13 +57,15 @@ class TenantProvisionService
     admin_role.assign_user(admin_user)
     role_repository.add(admin_role)
 
-    DomainEventPublisher.publish(TenantAdministratorRegistered.new(
-      tenant.tenant_id,
-      tenant.name,
-      administrator_name,
-      email_address,
-      admin_user.username,
-      strong_password
-    ))
+    DomainEventPublisher.publish(
+      TenantAdministratorRegistered.new(
+        tenant_id: tenant.tenant_id,
+        tenant_name: tenant.name,
+        administrator_name: administrator_name,
+        email_address: email_address,
+        username: admin_user.username,
+        temporary_password: strong_password
+      )
+    )
   end
 end

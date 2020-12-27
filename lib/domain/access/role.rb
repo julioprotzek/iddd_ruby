@@ -20,7 +20,13 @@ class Role
 
     self.group.add_group(group, group_member_service)
 
-    DomainEventPublisher.publish(GroupAssignedToRole.new(tenant_id, name, group.name))
+    DomainEventPublisher.publish(
+      GroupAssignedToRole.new(
+        tenant_id: tenant_id,
+        role_name: name,
+        group_name: group.name
+      )
+    )
   end
 
   def assign_user(user)
@@ -32,14 +38,16 @@ class Role
     # NOTE: Consider what a consuming Bounded Context would
     # need to do if this event was not enriched with the
     # last three user person properties. (Hint: A lot.)
-    DomainEventPublisher.publish(UserAssignedToRole.new(
-      tenant_id,
-      name,
-      user.username,
-      user.person.name.first_name,
-      user.person.name.last_name,
-      user.person.email_address.address
-    ))
+    DomainEventPublisher.publish(
+      UserAssignedToRole.new(
+        tenant_id: tenant_id,
+        role_name: name,
+        username: user.username,
+        first_name: user.person.name.first_name,
+        last_name: user.person.name.last_name,
+        email_address: user.person.email_address.address,
+      )
+    )
   end
 
   def in_role?(user, group_member_service)
@@ -57,7 +65,13 @@ class Role
 
     self.group.remove_group(group)
 
-    DomainEventPublisher.publish(GroupUnassignedFromRole.new(tenant_id, name, group.name))
+    DomainEventPublisher.publish(
+      GroupUnassignedFromRole.new(
+        tenant_id: tenant_id,
+        role_name: name,
+        group_name: group.name
+      )
+    )
 
   end
 
@@ -67,7 +81,13 @@ class Role
 
     self.group.remove_user(user)
 
-    DomainEventPublisher.publish(UserUnassignedFromRole.new(tenant_id, name, user.username))
+    DomainEventPublisher.publish(
+      UserUnassignedFromRole.new(
+        tenant_id: tenant_id,
+        role_name: name,
+        username: user.username
+      )
+    )
   end
 
   private

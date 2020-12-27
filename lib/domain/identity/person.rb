@@ -19,8 +19,8 @@ class Person
 
     DomainEventPublisher.publish(
       PersonNameChanged.new(
-        @user.username,
-        name
+        username: @user.username,
+        name: name
       )
     )
   end
@@ -30,8 +30,8 @@ class Person
 
     DomainEventPublisher.publish(
       PersonContactInformationChanged.new(
-        @user.username,
-        contact_information
+        username: @user.username,
+        contact_information: contact_information
       )
     )
   end

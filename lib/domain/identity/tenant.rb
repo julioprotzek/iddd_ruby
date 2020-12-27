@@ -17,7 +17,11 @@ class Tenant
     unless active?
       @active = true
 
-      DomainEventPublisher.publish(TenantActivated.new(tenant_id))
+      DomainEventPublisher.publish(
+        TenantActivated.new(
+          tenant_id: tenant_id
+        )
+      )
     end
   end
 
@@ -29,7 +33,11 @@ class Tenant
     if active?
       @active = false
 
-      DomainEventPublisher.publish(TenantDeactivated.new(tenant_id))
+      DomainEventPublisher.publish(
+        TenantDeactivated.new(
+          tenant_id: tenant_id
+        )
+      )
     end
   end
 
@@ -72,7 +80,12 @@ class Tenant
 
     group = Group.new(tenant_id, name, description)
 
-    DomainEventPublisher.publish(GroupProvisioned.new(tenant_id, name))
+    DomainEventPublisher.publish(
+      GroupProvisioned.new(
+        tenant_id: tenant_id,
+        name: name
+      )
+    )
 
     group
   end
@@ -87,7 +100,12 @@ class Tenant
       supports_nesting
     )
 
-    DomainEventPublisher.publish(RoleProvisioned.new(tenant_id, name))
+    DomainEventPublisher.publish(
+      RoleProvisioned.new(
+        tenant_id: tenant_id,
+        name: name
+      )
+    )
 
     role
   end

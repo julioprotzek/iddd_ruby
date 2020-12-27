@@ -11,7 +11,13 @@ class User
     self.password = password
     self.enablement = enablement
     self.person = person
-    DomainEventPublisher.publish(UserRegistered.new(username, person.name, person.contact_information.email_address))
+    DomainEventPublisher.publish(
+      UserRegistered.new(
+        username: username,
+        name: person.name,
+        email_address: person.contact_information.email_address
+      )
+    )
   end
 
   def change_password(from:, to:)
@@ -20,7 +26,7 @@ class User
     assert_not_equal(from, to, 'The password is unchanged.')
     self.password = to
 
-    DomainEventPublisher.publish(UserPasswordChanged.new(username))
+    DomainEventPublisher.publish(UserPasswordChanged.new(username: username))
   end
 
   def change_person_name(name)
@@ -33,7 +39,12 @@ class User
 
   def define_enablement(enablement)
     self.enablement = enablement
-    DomainEventPublisher.publish(UserEnablementChanged.new(username, enablement))
+    DomainEventPublisher.publish(
+      UserEnablementChanged.new(
+        username: username,
+        enablement: enablement
+      )
+    )
   end
 
   def user_descriptor
