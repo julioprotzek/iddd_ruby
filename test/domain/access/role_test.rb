@@ -63,4 +63,16 @@ class RoleTest < IdentityAccessTest
     assert !manager_role.in_role?(user, DomainRegistry.group_member_service)
     assert !accountant_role.in_role?(user, DomainRegistry.group_member_service)
   end
+
+  test 'no role internal groups in find group by name' do
+    tenant = tenant_aggregate
+    role_a = tenant.provision_role(name: 'RoleA', description: 'A role of A')
+    DomainRegistry.role_repository.add(role_a)
+
+    error = assert_raises do
+      DomainRegistry.group_repository.group_named(tenant.tenant_id, role_a.group.name)
+    end
+
+    assert_equal 'May not find internal groups.', error.message
+  end
 end

@@ -1,7 +1,7 @@
 class Role
   include Assertion
 
-  attr_reader :tenant_id, :name, :description
+  attr_reader :tenant_id, :name, :description, :group
 
   def initialize(tenant_id, name, description, supports_nesting = false)
     self.tenant_id= tenant_id
@@ -18,7 +18,7 @@ class Role
     assert_presence(group, 'Group must be provided.')
     assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
 
-    @group.add_group(group, group_member_service)
+    self.group.add_group(group, group_member_service)
 
     DomainEventPublisher.publish(GroupAssignedToRole.new(tenant_id, name, group.name))
   end
@@ -27,7 +27,7 @@ class Role
     assert_presence(tenant_id, 'User must be provided.')
     assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this user.')
 
-    @group.add_user(user)
+    self.group.add_user(user)
 
     # NOTE: Consider what a consuming Bounded Context would
     # need to do if this event was not enriched with the
@@ -43,7 +43,7 @@ class Role
   end
 
   def in_role?(user, group_member_service)
-    @group.member?(user, group_member_service)
+    self.group.member?(user, group_member_service)
   end
 
   def supports_nesting?
