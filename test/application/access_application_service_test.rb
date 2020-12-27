@@ -48,4 +48,37 @@ class AccessApplicationServiceTest < ApplicationServiceTest
       role_name: role.name
     )
   end
+
+  test 'user in role' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    role = role_aggregate
+    DomainRegistry.role_repository.add(role)
+
+
+    user_not_in_role = ApplicationServiceRegistry.access_application_service.user_in_role(
+      tenant_id: user.tenant_id.id,
+      username: user.username,
+      role_name: role.name
+    )
+
+    assert_nil user_not_in_role
+
+    ApplicationServiceRegistry.access_application_service.assign_user_to_role(
+      AssignUserToRoleCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        role_name: role.name
+      )
+    )
+
+    user_in_role = ApplicationServiceRegistry.access_application_service.user_in_role(
+      tenant_id: user.tenant_id.id,
+      username: user.username,
+      role_name: role.name
+    )
+
+    assert_not_nil user_in_role
+  end
 end
