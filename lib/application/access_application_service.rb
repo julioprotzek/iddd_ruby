@@ -20,6 +20,19 @@ class AccessApplicationService
     user_in_role(**attrs).present?
   end
 
+  def provision_role(command)
+    tenant_id = TenantId.new(command.tenant_id)
+    tenant = tenant_repository.tenant_of_id(tenant_id)
+
+    role = tenant.provision_role(
+      name: command.role_name,
+      description: command.role_description,
+      supports_nesting: command.supports_nesting?
+    )
+
+    role_repository.add(role)
+  end
+
   def user_in_role(tenant_id:, username:, role_name:)
     user_in_role = nil
 

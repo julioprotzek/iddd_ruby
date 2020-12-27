@@ -1,5 +1,5 @@
 class AssignUserToRoleCommand
-  attr_reader :tenant_id, :username, :role_name
+  attr_accessor :tenant_id, :username, :role_name
 
   def initialize(tenant_id:, username:, role_name:)
     @tenant_id = tenant_id
