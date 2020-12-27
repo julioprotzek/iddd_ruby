@@ -4,6 +4,7 @@ class GroupTest < IdentityAccessTest
   setup do
     @group_group_added_count = 0
     @group_user_added_count = 0
+    @group_group_removed_count = 0
   end
 
   test 'provision group' do
@@ -24,8 +25,8 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.group_repository.add(group_b)
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
-    assert_equal 1, group_a.group_members.size
-    assert_equal 0, group_b.group_members.size
+    assert_equal 1, group_a.members.size
+    assert_equal 0, group_b.members.size
     assert_equal 1, @group_group_added_count
   end
 
@@ -39,13 +40,8 @@ class GroupTest < IdentityAccessTest
     group_a.add_user(user)
     DomainRegistry.group_repository.add(group_a)
 
-    assert_equal 1, group_a.group_members.size
+    assert_equal 1, group_a.members.size
     assert group_a.member?(user, DomainRegistry.group_member_service)
     assert_equal 1, @group_user_added_count
-  end
-
-
-  test 'remove group' do
-
   end
 end

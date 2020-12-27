@@ -12,7 +12,7 @@ class GroupMemberService
   def member_group?(a_group, a_member_group)
     is_member = false
 
-    a_group.group_members.each do |member|
+    a_group.members.each do |member|
       if member.is_a?(Group)
         is_member = a_member_group == member
         break if is_member
@@ -29,7 +29,7 @@ class GroupMemberService
   def in_nested_group?(a_group, an_user)
     in_nested_group = false
 
-    a_group.group_members.each do |member|
+    a_group.members.each do |member|
       if member.is_a?(Group)
         group = group_repository.group_named(member.tenant_id, member.name)
 
