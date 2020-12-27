@@ -1,4 +1,5 @@
 class TenantProvisionService
+  attr_reader :tenant_repository, :user_repository, :role_repository
   def initialize(tenant_repository:, user_repository:, role_repository: )
     @tenant_repository = tenant_repository
     @user_repository = user_repository
@@ -13,7 +14,7 @@ class TenantProvisionService
       active: true
     )
 
-    @tenant_repository.add(tenant)
+    tenant_repository.add(tenant)
 
     register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_telephone, secondary_telephone)
 
@@ -47,14 +48,14 @@ class TenantProvisionService
     )
 
     tenant.withdraw_invitation(invitation.invitation_id)
-    @user_repository.add(admin_user)
+    user_repository.add(admin_user)
     admin_role = tenant.provision_role(
       name: 'Administrator',
       description: "Default #{tenant.name} administrator.",
 
     )
     admin_role.assign_user(admin_user)
-    @role_repository.add(admin_role)
+    role_repository.add(admin_role)
 
     DomainEventPublisher.publish(TenantAdministratorRegistered.new(
       tenant.tenant_id,
