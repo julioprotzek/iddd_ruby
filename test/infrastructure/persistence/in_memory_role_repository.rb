@@ -17,6 +17,10 @@ class InMemoryRoleRepository
     @repository.delete(key_of(role))
   end
 
+  def role_named(tenant_id, role_name)
+    @repository[key_with(tenant_id, role_name)]
+  end
+
   def clean
     @repository.clear
   end
@@ -27,7 +31,7 @@ class InMemoryRoleRepository
     key_with(role.tenant_id, role.name)
   end
 
-  def key_with(tenant_id, name)
-    "#{tenant_id}##{name}"
+  def key_with(tenant_id, role_name)
+    "#{tenant_id}##{role_name}"
   end
 end

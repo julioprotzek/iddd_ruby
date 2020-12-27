@@ -31,6 +31,14 @@ class DomainRegistry
       )
     end
 
+    def authorization_service
+      AuthorizationService.new(
+        user_repository: user_repository,
+        group_repository: group_repository,
+        role_repository: role_repository
+      )
+    end
+
     def tenant_repository
       @@tenant_repository ||= InMemoryTenantRepository.new
     end
