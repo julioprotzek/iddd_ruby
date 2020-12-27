@@ -1,19 +1,27 @@
 class DomainRegistry
   class << self
-    def encryption_service
-      BCryptEncryptionService
-    end
-
-    def password_service
-      PasswordService.new
-    end
-
     def authentication_service
       AuthenticationService.new(
         tenant_repository: tenant_repository,
         user_repository: user_repository,
         encryption_service: encryption_service
       )
+    end
+
+    def authorization_service
+      AuthorizationService.new(
+        user_repository: user_repository,
+        group_repository: group_repository,
+        role_repository: role_repository
+      )
+    end
+
+    def encryption_service
+      BCryptEncryptionService
+    end
+
+    def password_service
+      PasswordService.new
     end
 
     def tenant_provision_service
@@ -28,14 +36,6 @@ class DomainRegistry
       GroupMemberService.new(
         group_repository: group_repository,
         user_repository: user_repository
-      )
-    end
-
-    def authorization_service
-      AuthorizationService.new(
-        user_repository: user_repository,
-        group_repository: group_repository,
-        role_repository: role_repository
       )
     end
 
