@@ -15,9 +15,7 @@ class GroupTest < IdentityAccessTest
 
   test 'add group' do
     group_group_added_count = 0
-    DomainEventPublisher.instance.subscribe(GroupGroupAdded) do |a_domain_event|
-      @group_group_added_count += 1
-    end
+    DomainEventPublisher.instance.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group('GroupA', 'A group named GroupA')
@@ -32,9 +30,7 @@ class GroupTest < IdentityAccessTest
   end
 
   test 'add user' do
-    DomainEventPublisher.instance.subscribe(GroupUserAdded) do |a_domain_event|
-      @group_user_added_count += 1
-    end
+    DomainEventPublisher.instance.subscribe(GroupUserAdded){ @group_user_added_count += 1 }
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group('Group A', 'A group named GroupA')
