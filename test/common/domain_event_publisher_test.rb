@@ -9,9 +9,9 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
   end
 
   test 'publish' do
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
-      assert_equal 123, a_domain_event.id
-      assert_equal 'test', a_domain_event.name
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
+      assert_equal 123, domain_event.id
+      assert_equal 'test', domain_event.name
       @event_handled = true
     end
 
@@ -23,18 +23,18 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
   end
 
   test 'publisher blocked' do
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
-      assert_equal 123, a_domain_event.id
-      assert_equal 'test', a_domain_event.name
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
+      assert_equal 123, domain_event.id
+      assert_equal 'test', domain_event.name
       @event_handled = true
 
       # attempt nested publish, which should not work
       DomainEventPublisher.publish(AnotherTestableDomainEvent.new(1000.0))
     end
 
-    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |domain_event|
       # should never be reached due to blocked publisher
-      assert_equal 1000.0, a_domain_event.value
+      assert_equal 1000.0, domain_event.value
       @another_event_handled = true
     end
 
@@ -50,7 +50,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
   test 'handles subscriber exceptions gracefully' do
     assert_equal false, DomainEventPublisher.publishing?
 
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       raise StandardError.new('Error from domain event subscription block')
     end
 
@@ -68,15 +68,15 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     event_handled_count = 0
     another_event_handled_count = 0
 
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       event_handled_count += 1
     end
 
-    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |domain_event|
       another_event_handled_count +=1
     end
 
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       event_handled_count += 1
     end
 
@@ -91,15 +91,15 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     event_handled_count = 0
     another_event_handled_count = 0
 
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       event_handled_count += 1
     end
 
-    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(AnotherTestableDomainEvent) do |domain_event|
       another_event_handled_count +=1
     end
 
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       event_handled_count += 1
     end
 
@@ -120,7 +120,7 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
 
   test 'only publishes for the correct subscribers' do
     event_handled = false
-    DomainEventPublisher.subscribe(TestableDomainEvent) do |a_domain_event|
+    DomainEventPublisher.subscribe(TestableDomainEvent) do |domain_event|
       event_handled = true
     end
 

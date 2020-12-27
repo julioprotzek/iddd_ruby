@@ -43,24 +43,24 @@ class IdentityAccessTest < ActiveSupport::TestCase
     )
   end
 
-  def person_entity_for(a_tenant)
+  def person_entity_for(tenant)
     Person.new(
-      a_tenant.tenant_id,
+      tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
       contact_information
     )
   end
 
-  def person_entity_2_for(a_tenant)
+  def person_entity_2_for(tenant)
     Person.new(
-      a_tenant.tenant_id,
+      tenant.tenant_id,
       FullName.new('Zoe', 'Doe'),
       contact_information_2
     )
   end
 
-  def registration_invitation_entity_for(a_tenant)
-    registration_invitation = a_tenant
+  def registration_invitation_entity_for(tenant)
+    registration_invitation = tenant
       .offer_registration_invitation("Today-and-Tomorrow #{SecureRandom.rand}")
       .starting_at(Date.today)
       .ending_at(Date.tomorrow)

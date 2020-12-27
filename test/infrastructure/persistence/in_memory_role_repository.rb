@@ -3,18 +3,18 @@ class InMemoryRoleRepository
     @repository = {}
   end
 
-  def add(a_role)
-    key = key_of(a_role)
+  def add(role)
+    key = key_of(role)
     raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = a_role
+    @repository[key] = role
   end
 
-  def all_roles(a_tenant_id)
-    @repository.values.select{ |a_role| a_role.tenant_id == tenant_id }
+  def all_roles(tenant_id)
+    @repository.values.select{ |role| role.tenant_id == tenant_id }
   end
 
-  def remove(a_role)
-    @repository.delete(key_of(a_role))
+  def remove(role)
+    @repository.delete(key_of(role))
   end
 
   def clean
@@ -23,11 +23,11 @@ class InMemoryRoleRepository
 
   private
 
-  def key_of(a_role)
-    key_with(a_role.tenant_id, a_role.name)
+  def key_of(role)
+    key_with(role.tenant_id, role.name)
   end
 
-  def key_with(a_tenant_id, a_name)
-    "#{a_tenant_id}##{a_name}"
+  def key_with(tenant_id, name)
+    "#{tenant_id}##{name}"
   end
 end

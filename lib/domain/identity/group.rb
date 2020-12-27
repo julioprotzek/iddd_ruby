@@ -5,54 +5,54 @@ class Group
 
   attr_reader :tenant_id, :name, :description, :members
 
-  def initialize(a_tenant_id, a_name, a_description)
-    self.tenant_id = a_tenant_id
-    self.name = a_name
-    self.description = a_description
+  def initialize(tenant_id, name, description)
+    self.tenant_id = tenant_id
+    self.name = name
+    self.description = description
     @members = Set.new
   end
 
-  def add_group(a_group, a_group_member_service)
-    assert_presence(a_group, 'Group must be provided.')
-    assert_equal(tenant_id, a_group.tenant_id, 'Wrong tenant for this group.')
-    assert(!a_group_member_service.member_group?(a_group, self), 'Group recurrsion.')
+  def add_group(group, group_member_service)
+    assert_presence(group, 'Group must be provided.')
+    assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
+    assert(!group_member_service.member_group?(group, self), 'Group recurrsion.')
 
-    if members.add?(a_group) && !internal_group?
+    if members.add?(group) && !internal_group?
       DomainEventPublisher.publish(
         GroupGroupAdded.new(
           tenant_id,
           name,
-          a_group.name
+          group.name
         )
       )
     end
   end
 
-  def add_user(an_user)
-    assert_presence(an_user, 'User must be provided.')
-    assert_equal(tenant_id, an_user.tenant_id, 'Wrong tenant for this group.')
-    assert(an_user.enabled?, 'User is not enabled.')
+  def add_user(user)
+    assert_presence(user, 'User must be provided.')
+    assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
+    assert(user.enabled?, 'User is not enabled.')
 
-    if members.add?(an_user) && !internal_group?
+    if members.add?(user) && !internal_group?
       DomainEventPublisher.publish(
         GroupUserAdded.new(
           tenant_id,
           name,
-          an_user.username
+          user.username
         )
       )
     end
   end
 
-  def member?(an_user, a_group_member_service)
-    assert_presence(an_user, 'User must be provided.')
-    assert_equal(tenant_id, an_user.tenant_id, 'Wrong tenant for this group.')
-    assert(an_user.enabled?, 'User is not enabled.')
+  def member?(user, group_member_service)
+    assert_presence(user, 'User must be provided.')
+    assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
+    assert(user.enabled?, 'User is not enabled.')
 
-    if an_user.in?(members)
-      return a_group_member_service.confirm_user(self, an_user)
+    if user.in?(members)
+      return group_member_service.confirm_user(self, user)
     else
-      return a_group_member_service.in_nested_group?(self, an_user)
+      return group_member_service.in_nested_group?(self, user)
     end
   end
 
@@ -82,31 +82,31 @@ class Group
 
   private
 
-  def tenant_id=(a_tenant_id)
-    assert_presence(a_tenant_id, 'The Tenant Id must be provided.')
-    @tenant_id = a_tenant_id
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'The Tenant Id must be provided.')
+    @tenant_id = tenant_id
   end
 
-  def description=(a_description)
-    assert_presence(a_description, 'Group description is required.')
-    assert_length(a_description, 1, 250, 'Group description must be 250 characters or less.')
+  def description=(description)
+    assert_presence(description, 'Group description is required.')
+    assert_length(description, 1, 250, 'Group description must be 250 characters or less.')
 
-    @description = a_description
+    @description = description
   end
 
-  def name=(a_name)
-    assert_presence(a_name, 'Group name is required.')
-    assert_length(a_name, 1, 100, 'Group name must be 100 characters or less.')
-    if internal_group_name?(a_name)
-      uuid = a_name.sub(ROLE_GROUP_PREFIX, '')
+  def name=(name)
+    assert_presence(name, 'Group name is required.')
+    assert_length(name, 1, 100, 'Group name must be 100 characters or less.')
+    if internal_group_name?(name)
+      uuid = name.sub(ROLE_GROUP_PREFIX, '')
       assert(uuid.match?(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i), 'Group name has an invalid format.')
     end
 
-    @name = a_name
+    @name = name
   end
 
-  def internal_group_name?(a_name)
-    a_name.starts_with?(ROLE_GROUP_PREFIX)
+  def internal_group_name?(name)
+    name.starts_with?(ROLE_GROUP_PREFIX)
   end
 
   def internal_group?

@@ -8,24 +8,24 @@ class PasswordService
     SecureRandom.urlsafe_base64
   end
 
-  def weak?(a_plain_text_password)
-    calculate_strength(a_plain_text_password) < STRONG_THRESHOLD
+  def weak?(plain_text_password)
+    calculate_strength(plain_text_password) < STRONG_THRESHOLD
   end
 
-  def strong?(a_plain_text_password)
-    calculate_strength(a_plain_text_password) >= STRONG_THRESHOLD
+  def strong?(plain_text_password)
+    calculate_strength(plain_text_password) >= STRONG_THRESHOLD
   end
 
-  def very_strong?(a_plain_text_password)
-    calculate_strength(a_plain_text_password) >= VERY_STRONG_THRESHOLD
+  def very_strong?(plain_text_password)
+    calculate_strength(plain_text_password) >= VERY_STRONG_THRESHOLD
   end
 
-  def calculate_strength(a_plain_text_password)
-    assert_not_nil(a_plain_text_password, 'Password strength cannot be tested on nil')
+  def calculate_strength(plain_text_password)
+    assert_not_nil(plain_text_password, 'Password strength cannot be tested on nil')
 
     strength = 0
 
-    length = a_plain_text_password.length
+    length = plain_text_password.length
 
     if (length > 7)
       strength += 10
@@ -39,7 +39,7 @@ class PasswordService
     upper_count = 0
     symbol_count = 0
 
-    a_plain_text_password.split('').each do |char|
+    plain_text_password.split('').each do |char|
       case char
       when /\d/ # digit
         digit_count += 1

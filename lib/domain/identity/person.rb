@@ -3,45 +3,45 @@ class Person
 
   attr_reader :name, :contact_information
 
-  def initialize(a_tenant_id, a_name, a_contact_information)
-    self.tenant_id = a_tenant_id
-    self.name = a_name
-    self.contact_information = a_contact_information
+  def initialize(tenant_id, name, contact_information)
+    self.tenant_id = tenant_id
+    self.name = name
+    self.contact_information = contact_information
   end
 
-  def tenant_id=(a_tenant_id)
-    assert_presence(a_tenant_id, 'The tenant id is required')
-    @tenant_id = a_tenant_id
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'The tenant id is required')
+    @tenant_id = tenant_id
   end
 
-  def name=(a_name)
-    assert_presence(a_name, 'The person name is required')
-    @name = a_name
+  def name=(name)
+    assert_presence(name, 'The person name is required')
+    @name = name
   end
 
-  def contact_information=(a_contact_information)
-    assert_presence(a_contact_information, 'The person contact information is required')
-    @contact_information = a_contact_information
+  def contact_information=(contact_information)
+    assert_presence(contact_information, 'The person contact information is required')
+    @contact_information = contact_information
   end
 
-  def change_name(a_name)
-    self.name = a_name
+  def change_name(name)
+    self.name = name
 
     DomainEventPublisher.publish(
       PersonNameChanged.new(
         @user.username,
-        a_name
+        name
       )
     )
   end
 
-  def change_contact_information(a_contact_information)
-    self.contact_information = a_contact_information
+  def change_contact_information(contact_information)
+    self.contact_information = contact_information
 
     DomainEventPublisher.publish(
       PersonContactInformationChanged.new(
         @user.username,
-        a_contact_information
+        contact_information
       )
     )
   end
@@ -56,7 +56,7 @@ class Person
     self.contact_information == other.contact_information
   end
 
-  def internal_only_user=(an_user)
-    @user = an_user
+  def internal_only_user=(user)
+    @user = user
   end
 end

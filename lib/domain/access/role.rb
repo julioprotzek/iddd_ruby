@@ -19,11 +19,11 @@ class Role
     create_internal_group
   end
 
-  def assign_user(an_user)
+  def assign_user(user)
     assert_presence(tenant_id, 'User must be provided.')
-    assert_equal(tenant_id, an_user.tenant_id, 'Wrong tenant for this user.')
+    assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this user.')
 
-    @group.add_user(an_user)
+    @group.add_user(user)
 
     # NOTE: Consider what a consuming Bounded Context would
     # need to do if this event was not enriched with the
@@ -31,10 +31,10 @@ class Role
     DomainEventPublisher.publish(UserAssignedToRole.new(
       tenant_id,
       name,
-      an_user.username,
-      an_user.person.name.first_name,
-      an_user.person.name.last_name,
-      an_user.person.email_address.address
+      user.username,
+      user.person.name.first_name,
+      user.person.name.last_name,
+      user.person.email_address.address
     ))
   end
 

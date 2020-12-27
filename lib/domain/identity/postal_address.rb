@@ -3,47 +3,47 @@ class PostalAddress
 
   attr_reader :street_address, :city, :state_province, :postal_code, :country_code
 
-  def initialize(a_street_address, a_city, a_state_province, a_postal_code, a_country_code)
-    self.street_address = a_street_address
-    self.city = a_city
-    self.state_province = a_state_province
-    self.postal_code = a_postal_code
-    self.country_code= a_country_code
+  def initialize(street_address, city, state_province, postal_code, country_code)
+    self.street_address = street_address
+    self.city = city
+    self.state_province = state_province
+    self.postal_code = postal_code
+    self.country_code= country_code
   end
 
-  def street_address=(a_street_address)
-    assert_presence(a_street_address, 'The street address is required.')
-    assert_length(a_street_address, 1, 100, 'The street address must be 100 characters or less.')
+  def street_address=(street_address)
+    assert_presence(street_address, 'The street address is required.')
+    assert_length(street_address, 1, 100, 'The street address must be 100 characters or less.')
 
-    @street_address = a_street_address
+    @street_address = street_address
   end
 
-  def city=(a_city)
-    assert_presence(a_city, 'The city is required.')
-    assert_length(a_city, 1, 100, 'The city must be 100 characters or less.')
+  def city=(city)
+    assert_presence(city, 'The city is required.')
+    assert_length(city, 1, 100, 'The city must be 100 characters or less.')
 
-    @city = a_city
+    @city = city
   end
 
-  def state_province=(a_state_province)
-    assert_presence(a_state_province, 'The state/province is required.')
-    assert_length(a_state_province, 1, 100, 'The state/province must be 100 characters or less.')
+  def state_province=(state_province)
+    assert_presence(state_province, 'The state/province is required.')
+    assert_length(state_province, 1, 100, 'The state/province must be 100 characters or less.')
 
-    @state_province = a_state_province
+    @state_province = state_province
   end
 
-  def postal_code=(a_postal_code)
-    assert_presence(a_postal_code, 'The postal code is required.')
-    assert_length(a_postal_code, 5, 12, 'The postal code must be 12 characters or less.')
+  def postal_code=(postal_code)
+    assert_presence(postal_code, 'The postal code is required.')
+    assert_length(postal_code, 5, 12, 'The postal code must be 12 characters or less.')
 
-    @postal_code = a_postal_code
+    @postal_code = postal_code
   end
 
-  def country_code=(a_country_code)
-    assert_presence(a_country_code, 'The country code is required.')
-    assert_length(a_country_code, 2, 2, 'The country code must be two characters or less.')
+  def country_code=(country_code)
+    assert_presence(country_code, 'The country code is required.')
+    assert_length(country_code, 2, 2, 'The country code must be two characters or less.')
 
-    @country_code = a_country_code
+    @country_code = country_code
   end
 
   def ==(other)

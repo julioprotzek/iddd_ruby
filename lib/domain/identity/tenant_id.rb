@@ -1,8 +1,8 @@
 class TenantId
   attr_reader :id
 
-  def initialize(an_id)
-    @id = an_id
+  def initialize(id)
+    @id = id
   end
 
   def ==(other)

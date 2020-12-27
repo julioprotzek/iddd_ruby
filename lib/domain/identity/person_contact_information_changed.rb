@@ -1,10 +1,10 @@
 class PersonContactInformationChanged
   attr_reader :version, :occurred_at, :username, :contact_information
 
-  def initialize(an_username, a_contact_information)
+  def initialize(username, contact_information)
     @version = 1
     @occurred_at = Time.now
-    @username = an_username
-    @contact_information = a_contact_information
+    @username = username
+    @contact_information = contact_information
   end
 end

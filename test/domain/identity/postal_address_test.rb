@@ -2,7 +2,7 @@ require './test/test_helper'
 
 class PostalAddressTest < ActiveSupport::TestCase
   test 'valid post address' do
-    a_postal_address = PostalAddress.new(
+    postal_address = PostalAddress.new(
       '123 Pearl Street',
       'Boulder',
       'CO',
@@ -10,11 +10,11 @@ class PostalAddressTest < ActiveSupport::TestCase
       'US'
     )
 
-    assert_equal '123 Pearl Street', a_postal_address.street_address
-    assert_equal 'Boulder', a_postal_address.city
-    assert_equal 'CO', a_postal_address.state_province
-    assert_equal '80301', a_postal_address.postal_code
-    assert_equal 'US', a_postal_address.country_code
+    assert_equal '123 Pearl Street', postal_address.street_address
+    assert_equal 'Boulder', postal_address.city
+    assert_equal 'CO', postal_address.state_province
+    assert_equal '80301', postal_address.postal_code
+    assert_equal 'US', postal_address.country_code
   end
 
   test 'validations' do

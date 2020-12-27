@@ -29,21 +29,21 @@ class Tenant
     @active
   end
 
-  def registration_available_through?(a_invitation_identifier)
+  def registration_available_through?(invitation_identifier)
     assert_tenant_is_active
 
-    invitation = find_invitation_by_indentifier(a_invitation_identifier)
+    invitation = find_invitation_by_indentifier(invitation_identifier)
     invitation.present? && invitation.available?
   end
 
-  def offer_registration_invitation(a_description)
+  def offer_registration_invitation(description)
     assert_tenant_is_active
-    assert(!registration_available_through?(a_description), 'Invitation already exists.')
+    assert(!registration_available_through?(description), 'Invitation already exists.')
 
     invitation = RegistrationInvitation.new(
       tenant_id: tenant_id,
       invitation_id: SecureRandom.uuid,
-      description: a_description
+      description: description
     )
 
     registration_invitations << invitation
@@ -51,12 +51,12 @@ class Tenant
     invitation
   end
 
-  def provision_group(a_name, a_description)
+  def provision_group(name, description)
     assert_tenant_is_active
 
-    group = Group.new(tenant_id, a_name, a_description)
+    group = Group.new(tenant_id, name, description)
 
-    DomainEventPublisher.publish(GroupProvisioned.new(tenant_id, a_name))
+    DomainEventPublisher.publish(GroupProvisioned.new(tenant_id, name))
 
     group
   end
@@ -76,10 +76,10 @@ class Tenant
     role
   end
 
-  def redefine_registration_invitation_as(an_invitation_identifier)
+  def redefine_registration_invitation_as(invitation_identifier)
     assert_tenant_is_active
 
-    invitation = find_invitation_by_indentifier(an_invitation_identifier)
+    invitation = find_invitation_by_indentifier(invitation_identifier)
 
     invitation.redefine_as.open_ended if invitation.present?
 
@@ -101,38 +101,38 @@ class Tenant
     end
   end
 
-  def withdraw_invitation(an_invitation_identifier)
-    invitation = find_invitation_by_indentifier(an_invitation_identifier)
+  def withdraw_invitation(invitation_identifier)
+    invitation = find_invitation_by_indentifier(invitation_identifier)
     registration_invitations.delete(invitation)
   end
 
   private
 
-  def find_invitation_by_indentifier(an_invitation_identifier)
-    registration_invitations.find{ |an_invitation| an_invitation.identified_by?(an_invitation_identifier) }
+  def find_invitation_by_indentifier(invitation_identifier)
+    registration_invitations.find{ |invitation| invitation.identified_by?(invitation_identifier) }
   end
 
   def assert_tenant_is_active
     assert(active?, 'Tenant is not active.')
   end
 
-  def tenant_id=(a_tenant_id)
-    assert_presence(a_tenant_id, 'TenantId is required.')
+  def tenant_id=(tenant_id)
+    assert_presence(tenant_id, 'TenantId is required.')
 
-    @tenant_id = a_tenant_id
+    @tenant_id = tenant_id
   end
 
-  def name=(a_name)
-    assert_presence(a_name, 'Tenant name is required.')
-    assert_length(a_name, 1, 100, 'Tenant name must be 100 characters or less.')
+  def name=(name)
+    assert_presence(name, 'Tenant name is required.')
+    assert_length(name, 1, 100, 'Tenant name must be 100 characters or less.')
 
-    @name = a_name
+    @name = name
   end
 
-  def description=(a_description)
-    assert_presence(a_description, 'Tenant description is required.')
-    assert_length(a_description, 1, 100, 'Tenant description must be 100 characters or less.')
+  def description=(description)
+    assert_presence(description, 'Tenant description is required.')
+    assert_length(description, 1, 100, 'Tenant description must be 100 characters or less.')
 
-    @description = a_description
+    @description = description
   end
 end

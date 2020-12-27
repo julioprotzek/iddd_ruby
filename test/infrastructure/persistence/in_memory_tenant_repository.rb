@@ -3,26 +3,26 @@ class InMemoryTenantRepository
     @repository = {}
   end
 
-  def add(a_tenant)
-    key = key_of(a_tenant)
+  def add(tenant)
+    key = key_of(tenant)
     raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = a_tenant
+    @repository[key] = tenant
   end
 
   def next_identity
     TenantId.new(SecureRandom.uuid)
   end
 
-  def tenant_named(a_name)
-    @repository.values.find{ |a_tenant| a_tenant.name == a_name }
+  def tenant_named(name)
+    @repository.values.find{ |tenant| tenant.name == name }
   end
 
-  def tenant_of_id(a_tenant_id)
-    @repository[a_tenant_id]
+  def tenant_of_id(tenant_id)
+    @repository[tenant_id]
   end
 
-  def remove(a_tenant)
-    @repository.delete(key_of(a_tenant))
+  def remove(tenant)
+    @repository.delete(key_of(tenant))
   end
 
   def clean
@@ -31,7 +31,7 @@ class InMemoryTenantRepository
 
   private
 
-  def key_of(a_tenant)
-    a_tenant.tenant_id
+  def key_of(tenant)
+    tenant.tenant_id
   end
 end

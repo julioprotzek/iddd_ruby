@@ -22,9 +22,9 @@ class RegistrationInvitation
     starts_at.nil? && ends_at.nil? || Time.now.between?(starts_at, ends_at)
   end
 
-  def identified_by?(an_invitation_identification)
-    (invitation_id == an_invitation_identification) ||
-    (description.present? && description == an_invitation_identification)
+  def identified_by?(invitation_identification)
+    (invitation_id == invitation_identification) ||
+    (description.present? && description == invitation_identification)
   end
 
   def open_ended
@@ -39,22 +39,22 @@ class RegistrationInvitation
     self
   end
 
-  def starting_at(a_date)
+  def starting_at(date)
     raise StandardError, 'Cannot set starting-at date after ends-at date.' unless ends_at.nil?
 
-    @starts_at = a_date
+    @starts_at = date
 
     # temporary if ends_at properly follows, but
     # prevents illegal state if ends_at doesn't follow
-    @ends_at = a_date + 1.day
+    @ends_at = date + 1.day
 
     self
   end
 
-  def ending_at(a_date)
+  def ending_at(date)
     raise StandardError, 'Cannot set ends-at date before starting-at date.' unless ends_at.present?
 
-    @ends_at = a_date
+    @ends_at = date
 
     self
   end

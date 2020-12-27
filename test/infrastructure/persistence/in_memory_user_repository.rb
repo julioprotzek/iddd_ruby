@@ -3,19 +3,19 @@ class InMemoryUserRepository
     @repository = {}
   end
 
-  def add(an_user)
-    key = key_of(an_user)
+  def add(user)
+    key = key_of(user)
     raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = an_user
+    @repository[key] = user
   end
 
   def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)
     @repository
       .values
-      .select do |an_user|
-        next unless tenant_id == an_user.tenant_id
+      .select do |user|
+        next unless tenant_id == user.tenant_id
 
-        name = an_user.person.name
+        name = user.person.name
         next unless name.first_name.starts_with?(first_name_prefix)
         next unless name.last_name.starts_with?(last_name_prefix)
 
@@ -23,17 +23,17 @@ class InMemoryUserRepository
       end
   end
 
-  def remove(an_user)
-    @repository.delete(key_of(an_user))
+  def remove(user)
+    @repository.delete(key_of(user))
   end
 
-  def user_from_authentic_credentials(a_tenant_id, an_username, an_encrypted_password)
+  def user_from_authentic_credentials(tenant_id, username, encrypted_password)
     @repository
       .values
-      .find do |an_user|
-        a_tenant_id == an_user.tenant_id &&
-        an_username == an_user.username &&
-        an_user.internal_access_only_encrypted_password == an_encrypted_password
+      .find do |user|
+        tenant_id == user.tenant_id &&
+        username == user.username &&
+        user.internal_access_only_encrypted_password == encrypted_password
       end
   end
 
@@ -47,11 +47,11 @@ class InMemoryUserRepository
 
   private
 
-  def key_of(an_user)
-    key_with(an_user.tenant_id, an_user.username)
+  def key_of(user)
+    key_with(user.tenant_id, user.username)
   end
 
-  def key_with(a_tenant_id, an_username)
-    "#{a_tenant_id}##{an_username}"
+  def key_with(tenant_id, username)
+    "#{tenant_id}##{username}"
   end
 end
