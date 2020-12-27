@@ -13,6 +13,26 @@ class Tenant
     @active = active
   end
 
+  def activate
+    unless active?
+      @active = true
+
+      DomainEventPublisher.publish(TenantActivated.new(tenant_id))
+    end
+  end
+
+  def active?
+    @active
+  end
+
+  def deactivate
+    if active?
+      @active = false
+
+      DomainEventPublisher.publish(TenantDeactivated.new(tenant_id))
+    end
+  end
+
   def all_available_registration_invitations
     assert_tenant_is_active
 
@@ -23,10 +43,6 @@ class Tenant
     assert_tenant_is_active
 
     registration_invitations.excluding(&:available?)
-  end
-
-  def active?
-    @active
   end
 
   def registration_available_through?(invitation_identifier)
@@ -90,7 +106,9 @@ class Tenant
     assert_tenant_is_active
 
     if registration_available_through?(invitation_identifier)
+      # ensure same tenant
       person.tenant_id = tenant_id
+
       User.new(
         tenant_id: tenant_id,
         username: username,
