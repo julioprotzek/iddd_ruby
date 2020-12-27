@@ -83,37 +83,6 @@ class GroupTest < IdentityAccessTest
     assert_equal 1, @group_user_removed_count
   end
 
-  test 'remove group referenced user' do
-    tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
-    user = user_aggregate
-    DomainRegistry.user_repository.add(user)
-    group_a.add_user(user)
-    DomainRegistry.group_repository.add(group_a)
-
-    assert_equal 1, group_a.members.size
-    assert group_a.member?(user, DomainRegistry.group_member_service)
-    DomainRegistry.user_repository.remove(user)
-
-    re_grouped = DomainRegistry.group_repository.group_named(tenant.tenant_id, 'GroupA')
-    assert_equal 'GroupA', re_grouped.name
-    assert_equal 1, re_grouped.members.size
-    assert !re_grouped.member?(user, DomainRegistry.group_member_service)
-  end
-
-  test 'remove repository group' do
-    tenant = tenant_aggregate
-    group_a = tenant.provision_group('GroupA', 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
-    not_nil_group = DomainRegistry.group_repository.group_named(tenant.tenant_id, 'GroupA')
-    assert_not_nil not_nil_group
-
-    DomainRegistry.group_repository.remove(group_a)
-    nil_group = DomainRegistry.group_repository.group_named(tenant.tenant_id, 'GroupA')
-
-    assert_nil nil_group
-  end
-
   test 'user is member of nested group' do
     DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
 
