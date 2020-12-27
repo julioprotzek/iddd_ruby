@@ -44,7 +44,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
         description: FIXTURE_TENANT_DESCRIPTION,
         administrator_name: FullName.new('John', 'Doe'),
         email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-        postal_address: PostalAdress.new(
+        postal_address: PostalAddress.new(
           '123 Pearl Street',
           'Boulder',
           'CO',
@@ -61,7 +61,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
     invitation = tenant.offer_registration_invitation('open-ended').open_ended
 
     tenant.register_user(
-      invitation_identifier: invitation.id,
+      invitation_identifier: invitation.invitation_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,
       enablement: Enablement.indefinite_enablement,
