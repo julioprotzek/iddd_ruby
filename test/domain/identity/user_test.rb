@@ -5,7 +5,7 @@ class UserTest < IdentityAccessTest
     tenant = tenant_aggregate
     handled = false
 
-    DomainEventPublisher.instance.subscribe(UserRegistered) do |a_domain_event|
+    DomainEventPublisher.subscribe(UserRegistered) do |a_domain_event|
       assert_equal FIXTURE_USERNAME, a_domain_event.username
       assert_equal 'Zoe Doe', a_domain_event.name.as_formatted_name
       assert_equal FIXTURE_USER_EMAIL_ADDRESS, a_domain_event.email_address.address
@@ -33,7 +33,7 @@ class UserTest < IdentityAccessTest
     user = user_aggregate
 
     handled = false
-    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(UserEnablementChanged) do |a_domain_event|
       assert_equal user.username, a_domain_event.username
       handled = true
     end
@@ -50,7 +50,7 @@ class UserTest < IdentityAccessTest
     assert user.enabled?
 
     handled = false
-    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(UserEnablementChanged) do |a_domain_event|
       assert_equal user.username, a_domain_event.username
       handled = true
     end
@@ -67,7 +67,7 @@ class UserTest < IdentityAccessTest
     assert user.enabled?
 
     handled = false
-    DomainEventPublisher.instance.subscribe(UserEnablementChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(UserEnablementChanged) do |a_domain_event|
       assert_equal user.username, a_domain_event.username
       handled = true
     end
@@ -88,7 +88,7 @@ class UserTest < IdentityAccessTest
   test 'change password' do
     user = user_aggregate
     handled = false
-    DomainEventPublisher.instance.subscribe(UserPasswordChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(UserPasswordChanged) do |a_domain_event|
       assert_equal user.username, a_domain_event.username
       handled = true
     end
@@ -130,7 +130,7 @@ class UserTest < IdentityAccessTest
 
     handled = false
 
-    DomainEventPublisher.instance.subscribe(PersonContactInformationChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(PersonContactInformationChanged) do |a_domain_event|
       assert_equal FIXTURE_USER_EMAIL_ADDRESS_2, a_domain_event.contact_information.email_address.address
       assert_equal user.username, a_domain_event.username
       handled = true
@@ -149,7 +149,7 @@ class UserTest < IdentityAccessTest
 
     handled = false
 
-    DomainEventPublisher.instance.subscribe(PersonNameChanged) do |a_domain_event|
+    DomainEventPublisher.subscribe(PersonNameChanged) do |a_domain_event|
       assert_equal user.username, a_domain_event.username
       assert_equal 'Zoe Jones-Doe', a_domain_event.name.as_formatted_name
       handled = true

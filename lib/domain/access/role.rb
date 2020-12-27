@@ -28,7 +28,7 @@ class Role
     # NOTE: Consider what a consuming Bounded Context would
     # need to do if this event was not enriched with the
     # last three user person properties. (Hint: A lot.)
-    DomainEventPublisher.instance.publish(UserAssignedToRole.new(
+    DomainEventPublisher.publish(UserAssignedToRole.new(
       tenant_id,
       name,
       an_user.username,

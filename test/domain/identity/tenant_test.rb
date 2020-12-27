@@ -3,12 +3,12 @@ require './test/domain/identity_access_test'
 class TenantTest < IdentityAccessTest
   test 'provision tenant' do
     provision_handled = false
-    DomainEventPublisher.instance.subscribe(TenantProvisioned) do |a_domain_event|
+    DomainEventPublisher.subscribe(TenantProvisioned) do |a_domain_event|
       provision_handled = true
     end
 
     registration_handled = false
-    DomainEventPublisher.instance.subscribe(TenantAdministratorRegistered) do |a_domain_event|
+    DomainEventPublisher.subscribe(TenantAdministratorRegistered) do |a_domain_event|
       registration_handled = true
     end
 

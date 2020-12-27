@@ -27,7 +27,7 @@ class Person
   def change_name(a_name)
     self.name = a_name
 
-    DomainEventPublisher.instance.publish(
+    DomainEventPublisher.publish(
       PersonNameChanged.new(
         @user.username,
         a_name
@@ -38,7 +38,7 @@ class Person
   def change_contact_information(a_contact_information)
     self.contact_information = a_contact_information
 
-    DomainEventPublisher.instance.publish(
+    DomainEventPublisher.publish(
       PersonContactInformationChanged.new(
         @user.username,
         a_contact_information

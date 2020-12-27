@@ -2,6 +2,10 @@ class DomainEventPublisher
   include Singleton
   attr_reader :subscribers
 
+  class << self
+    delegate :subscribe, :publish, :publishing?, :reset, to: :instance
+  end
+
   def initialize
     reset
   end

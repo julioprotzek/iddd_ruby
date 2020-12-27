@@ -56,7 +56,7 @@ class Tenant
 
     group = Group.new(tenant_id, a_name, a_description)
 
-    DomainEventPublisher.instance.publish(GroupProvisioned.new(tenant_id, a_name))
+    DomainEventPublisher.publish(GroupProvisioned.new(tenant_id, a_name))
 
     group
   end
@@ -71,7 +71,7 @@ class Tenant
       supports_nesting
     )
 
-    DomainEventPublisher.instance.publish(RoleProvisioned.new(tenant_id, name))
+    DomainEventPublisher.publish(RoleProvisioned.new(tenant_id, name))
 
     role
   end

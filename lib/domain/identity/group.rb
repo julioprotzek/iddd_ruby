@@ -18,7 +18,7 @@ class Group
     assert(!a_group_member_service.member_group?(a_group, self), 'Group recurrsion.')
 
     if group_members.add?(a_group) && !internal_group?
-      DomainEventPublisher.instance.publish(
+      DomainEventPublisher.publish(
         GroupGroupAdded.new(
           tenant_id,
           name,
@@ -34,7 +34,7 @@ class Group
     assert(an_user.enabled?, 'User is not enabled.')
 
     if group_members.add?(an_user) && !internal_group?
-      DomainEventPublisher.instance.publish(
+      DomainEventPublisher.publish(
         GroupUserAdded.new(
           tenant_id,
           name,

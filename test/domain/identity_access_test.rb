@@ -10,7 +10,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
   FIXTURE_USERNAME_2 = 'zdoe'
 
   setup do
-    DomainEventPublisher.instance.reset
+    DomainEventPublisher.reset
   end
 
   def contact_information

@@ -15,7 +15,7 @@ class GroupTest < IdentityAccessTest
 
   test 'add group' do
     group_group_added_count = 0
-    DomainEventPublisher.instance.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
+    DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group('GroupA', 'A group named GroupA')
@@ -30,7 +30,7 @@ class GroupTest < IdentityAccessTest
   end
 
   test 'add user' do
-    DomainEventPublisher.instance.subscribe(GroupUserAdded){ @group_user_added_count += 1 }
+    DomainEventPublisher.subscribe(GroupUserAdded){ @group_user_added_count += 1 }
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group('Group A', 'A group named GroupA')
@@ -42,5 +42,10 @@ class GroupTest < IdentityAccessTest
     assert_equal 1, group_a.group_members.size
     assert group_a.member?(user, DomainRegistry.group_member_service)
     assert_equal 1, @group_user_added_count
+  end
+
+
+  test 'remove group' do
+
   end
 end
