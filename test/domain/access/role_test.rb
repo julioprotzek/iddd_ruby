@@ -4,8 +4,8 @@ class RoleTest < IdentityAccessTest
   setup do
     @group_something_added_count = 0
     @group_something_removed_count = 0
-    @group_something_assigned_count = 0
-    @group_something_unassigned_count = 0
+    @role_something_assigned_count = 0
+    @role_something_unassigned_count = 0
   end
 
   test 'provision role' do
@@ -74,5 +74,28 @@ class RoleTest < IdentityAccessTest
     end
 
     assert_equal 'May not find internal groups.', error.message
+  end
+
+  test 'internal group events are not published' do
+    DomainEventPublisher.subscribe(GroupAssignedToRole){ @role_something_assigned_count += 1 }
+    DomainEventPublisher.subscribe(GroupGroupAdded){ @group_something_added_count += 1 }
+    DomainEventPublisher.subscribe(UserAssignedToRole){ @role_something_assigned_count += 1 }
+    DomainEventPublisher.subscribe(GroupUserAdded){ @group_something_added_count += 1 }
+
+    tenant = tenant_aggregate
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
+    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    DomainRegistry.group_repository.add(managers_group)
+
+    manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
+    manager_role.assign_user(user)
+    DomainRegistry.role_repository.add(manager_role)
+    managers_group.add_user(user) # legal add
+
+    assert_equal 2, @role_something_assigned_count
+    assert_equal 1, @group_something_added_count
   end
 end
