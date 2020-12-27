@@ -1,7 +1,7 @@
 class Role
   include Assertion
 
-  attr_reader :tenant_id, :name, :description, :supports_nesting
+  attr_reader :tenant_id, :name, :description
 
   def initialize(tenant_id, name, description, supports_nesting)
     self.tenant_id= tenant_id
@@ -11,6 +11,16 @@ class Role
     @supports_nesting = supports_nesting
 
     create_internal_group
+  end
+
+  def assign_group(group, group_member_service)
+    assert(supports_nesting?, 'This role does not support group nesting.')
+    assert_presence(group, 'Group must be provided.')
+    assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
+
+    @group.add_group(group, group_member_service)
+
+    DomainEventPublisher.publish(GroupAssignedToRole.new(tenant_id, name, group.name))
   end
 
   def assign_user(user)
@@ -30,6 +40,14 @@ class Role
       user.person.name.last_name,
       user.person.email_address.address
     ))
+  end
+
+  def in_role?(user, group_member_service)
+    @group.member?(user, group_member_service)
+  end
+
+  def supports_nesting?
+    @supports_nesting == true
   end
 
   private

@@ -27,4 +27,22 @@ class RoleTest < IdentityAccessTest
 
     assert_equal 'Duplicate Key', error.message
   end
+
+  test 'user is in role' do
+    tenant = tenant_aggregate
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
+    managers_group = tenant.provision_group('Managers', 'A group of managers.')
+    DomainRegistry.group_repository.add(managers_group)
+
+    manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
+    DomainRegistry.role_repository.add(manager_role)
+
+    managers_group.add_user(user)
+
+    assert managers_group.member?(user, DomainRegistry.group_member_service)
+    assert manager_role.in_role?(user, DomainRegistry.group_member_service)
+  end
 end
