@@ -40,6 +40,11 @@ class IdentityApplicationService
     user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)
   end
 
+  def deactivate_tenant(command)
+    tenant = existing_tenant(command.tenant_id)
+    tenant.deactivate
+  end
+
   private
 
   def existing_tenant(tenant_id)

@@ -81,4 +81,21 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_not_nil user_descriptor
     assert_equal user_descriptor.username, user.username
   end
+
+  test 'deactivate tenant' do
+    tenant = tenant_aggregate
+    assert tenant.active?
+
+    ApplicationServiceRegistry.identity_application_service.deactivate_tenant(
+      DeactivateTenantCommand.new(
+        tenant_id: tenant.tenant_id.id
+      )
+    )
+
+    changed_tenant = DomainRegistry.tenant_repository.tenant_of_id(tenant.tenant_id)
+
+    assert changed_tenant.present?
+    assert_equal changed_tenant.name, tenant.name
+    assert !changed_tenant.active?
+  end
 end
