@@ -93,6 +93,28 @@ class IdentityApplicationService
     )
   end
 
+  def change_user_primary_phone(command)
+    user = existing_user(command.tenant_id, command.username)
+    internal_change_user_contact_information(
+      user,
+      user
+        .person
+        .contact_information
+        .change_primary_phone(PhoneNumber.new(command.phone_number))
+    )
+  end
+
+  def change_user_secondary_phone(command)
+    user = existing_user(command.tenant_id, command.username)
+    internal_change_user_contact_information(
+      user,
+      user
+        .person
+        .contact_information
+        .change_secondary_phone(PhoneNumber.new(command.phone_number))
+    )
+  end
+
   private
 
   def existing_tenant(tenant_id)

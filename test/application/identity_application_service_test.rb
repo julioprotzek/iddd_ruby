@@ -174,4 +174,44 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_equal '123 Pine Street', changed_user.person.contact_information.postal_address.street_address
     assert_equal 'Loveland', changed_user.person.contact_information.postal_address.city
   end
+
+  test 'change user primary phone' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    ApplicationServiceRegistry.identity_application_service.change_user_primary_phone(
+      ChangePrimaryPhoneCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        phone_number: '888-555-1211'
+      )
+    )
+
+    changed_user = DomainRegistry
+      .user_repository
+      .find_by(tenant_id: user.tenant_id, username: user.username)
+
+    assert_not_nil changed_user
+    assert_equal '888-555-1211', changed_user.person.contact_information.primary_phone.number
+  end
+
+  test 'change user secondary phone' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    ApplicationServiceRegistry.identity_application_service.change_user_secondary_phone(
+      ChangeSecondaryPhoneCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        phone_number: '888-555-1212'
+      )
+    )
+
+    changed_user = DomainRegistry
+      .user_repository
+      .find_by(tenant_id: user.tenant_id, username: user.username)
+
+    assert_not_nil changed_user
+    assert_equal '888-555-1212', changed_user.person.contact_information.secondary_phone.number
+  end
 end
