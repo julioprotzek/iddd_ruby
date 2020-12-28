@@ -108,8 +108,8 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
         tenant_id: user.tenant_id.id,
         username: user.username,
         email_address: 'mynewemailaddress@example.com',
-        primary_telephone: '777-555-1211',
-        secondary_telephone: '777-555-1212',
+        primary_phone: '777-555-1211',
+        secondary_phone: '777-555-1212',
         street_address: '123 Pine Street',
         city: 'Loveland',
         state_province: 'CO',
@@ -121,8 +121,8 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     changed_user = DomainRegistry.user_repository.find_by(tenant_id: user.tenant_id, username: user.username)
     assert_not_nil changed_user
     assert_equal 'mynewemailaddress@example.com', changed_user.person.email_address.address
-    assert_equal '777-555-1211', changed_user.person.contact_information.primary_telephone.number
-    assert_equal '777-555-1212', changed_user.person.contact_information.secondary_telephone.number
+    assert_equal '777-555-1211', changed_user.person.contact_information.primary_phone.number
+    assert_equal '777-555-1212', changed_user.person.contact_information.secondary_phone.number
     assert_equal '123 Pine Street', changed_user.person.contact_information.postal_address.street_address
     assert_equal 'Loveland', changed_user.person.contact_information.postal_address.city
   end

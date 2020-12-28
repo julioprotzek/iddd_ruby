@@ -26,8 +26,8 @@ class TenantTest < IdentityAccessTest
           '80301',
           'US'
         ),
-        primary_telephone: Telephone.new('303-555-1210'),
-        secondary_telephone: Telephone.new('777-123-1011')
+        primary_phone: PhoneNumber.new('303-555-1210'),
+        secondary_phone: PhoneNumber.new('777-123-1011')
       )
 
     assert provision_handled

@@ -6,7 +6,7 @@ class TenantProvisionService
     @role_repository = role_repository
   end
 
-  def provision_tenant(name: , description: , administrator_name: , email_address: , postal_address: , primary_telephone: , secondary_telephone: nil)
+  def provision_tenant(name: , description: , administrator_name: , email_address: , postal_address: , primary_phone: , secondary_phone: nil)
     tenant = Tenant.new(
       tenant_id: @tenant_repository.next_identity,
       name: name,
@@ -16,7 +16,7 @@ class TenantProvisionService
 
     tenant_repository.add(tenant)
 
-    register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_telephone, secondary_telephone)
+    register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_phone, secondary_phone)
 
     DomainEventPublisher.publish(TenantProvisioned.new(tenant_id: tenant.tenant_id))
 
@@ -25,7 +25,7 @@ class TenantProvisionService
 
   private
 
-  def register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_telephone, secondary_telephone)
+  def register_administrator_for(tenant, administrator_name, email_address, postal_address, primary_phone, secondary_phone)
     invitation = tenant.offer_registration_invitation('init').open_ended
 
     strong_password = DomainRegistry.password_service.generate_strong_password
@@ -41,8 +41,8 @@ class TenantProvisionService
         ContactInformation.new(
           email_address,
           postal_address,
-          primary_telephone,
-          secondary_telephone
+          primary_phone,
+          secondary_phone
         )
       )
     )

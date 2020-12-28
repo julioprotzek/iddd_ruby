@@ -51,8 +51,8 @@ class ApplicationServiceTest < ActiveSupport::TestCase
           '80301',
           'US'
         ),
-        primary_telephone: Telephone.new('303-555-1210'),
-        secondary_telephone: Telephone.new('777-123-1011')
+        primary_phone: PhoneNumber.new('303-555-1210'),
+        secondary_phone: PhoneNumber.new('777-123-1011')
       )
   end
 
@@ -77,8 +77,8 @@ class ApplicationServiceTest < ActiveSupport::TestCase
             '80301',
             'US'
           ),
-          Telephone.new('303-555-1210'),
-          Telephone.new('777-123-1011')
+          PhoneNumber.new('303-555-1210'),
+          PhoneNumber.new('777-123-1011')
         )
       )
     )

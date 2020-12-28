@@ -1,21 +1,21 @@
 class ContactInformation
   include Assertion
 
-  attr_reader :email_address, :postal_address, :primary_telephone, :secondary_telephone
+  attr_reader :email_address, :postal_address, :primary_phone, :secondary_phone
 
-  def initialize(email_address, postal_address, primary_telephone, secondary_telephone)
+  def initialize(email_address, postal_address, primary_phone, secondary_phone)
     self.email_address = email_address
     self.postal_address = postal_address
-    self.primary_telephone = primary_telephone
-    self.secondary_telephone = secondary_telephone
+    self.primary_phone = primary_phone
+    self.secondary_phone = secondary_phone
   end
 
   def change_email_address(email_address)
     self.class.new(
       email_address,
       postal_address,
-      primary_telephone,
-      secondary_telephone
+      primary_phone,
+      secondary_phone
     )
   end
 
@@ -23,26 +23,26 @@ class ContactInformation
     self.class.new(
       email_address,
       postal_address,
-      primary_telephone,
-      secondary_telephone
+      primary_phone,
+      secondary_phone
     )
   end
 
-  def change_primary_telephone(primary_telephone)
+  def change_primary_phone(primary_phone)
     self.class.new(
       email_address,
       postal_address,
-      primary_telephone,
-      secondary_telephone
+      primary_phone,
+      secondary_phone
     )
   end
 
-  def change_secondary_telephone(secondary_telephone)
+  def change_secondary_phone(secondary_phone)
     self.class.new(
       email_address,
       postal_address,
-      primary_telephone,
-      secondary_telephone
+      primary_phone,
+      secondary_phone
     )
   end
 
@@ -50,8 +50,8 @@ class ContactInformation
     self.class == other.class &&
     self.email_address == other.email_address &&
     self.postal_address == other.postal_address &&
-    self.primary_telephone == other.primary_telephone &&
-    self.secondary_telephone == other.secondary_telephone
+    self.primary_phone == other.primary_phone &&
+    self.secondary_phone == other.secondary_phone
   end
 
   private
@@ -68,13 +68,13 @@ class ContactInformation
     @postal_address = postal_address
   end
 
-  def primary_telephone=(primary_telephone)
-    assert_presence(primary_telephone, 'The primary telephone is required.')
+  def primary_phone=(primary_phone)
+    assert_presence(primary_phone, 'The primary telephone is required.')
 
-    @primary_telephone = primary_telephone
+    @primary_phone = primary_phone
   end
 
-  def secondary_telephone=(secondary_telephone)
-    @secondary_telephone = secondary_telephone
+  def secondary_phone=(secondary_phone)
+    @secondary_phone = secondary_phone
   end
 end

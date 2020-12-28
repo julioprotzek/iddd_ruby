@@ -1,12 +1,12 @@
 class ChangeContactInfoCommand
-  attr_accessor :tenant_id, :username, :email_address, :primary_telephone, :secondary_telephone, :street_address, :city, :state_province, :postal_code, :country_code
+  attr_accessor :tenant_id, :username, :email_address, :primary_phone, :secondary_phone, :street_address, :city, :state_province, :postal_code, :country_code
 
-  def initialize(tenant_id:, username:, email_address:, primary_telephone:, secondary_telephone:, street_address:, city:, state_province:, postal_code:, country_code:)
+  def initialize(tenant_id:, username:, email_address:, primary_phone:, secondary_phone:, street_address:, city:, state_province:, postal_code:, country_code:)
     @tenant_id = tenant_id
     @username = username
     @email_address = email_address
-    @primary_telephone = primary_telephone
-    @secondary_telephone = secondary_telephone
+    @primary_phone = primary_phone
+    @secondary_phone = secondary_phone
     @street_address = street_address
     @city = city
     @state_province = state_province

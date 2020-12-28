@@ -57,8 +57,8 @@ class IdentityApplicationService
           command.postal_code,
           command.country_code
         ),
-        Telephone.new(command.primary_telephone),
-        Telephone.new(command.secondary_telephone),
+        PhoneNumber.new(command.primary_phone),
+        PhoneNumber.new(command.secondary_phone),
       )
     )
   end

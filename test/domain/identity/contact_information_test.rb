@@ -19,14 +19,14 @@ class ContactInformationTest < IdentityAccessTest
       'US'
     ), contact_information.postal_address
 
-    assert_equal Telephone.new('303-555-1210'), contact_information.primary_telephone
-    assert_equal Telephone.new('777-123-1011'), contact_information.secondary_telephone
+    assert_equal PhoneNumber.new('303-555-1210'), contact_information.primary_phone
+    assert_equal PhoneNumber.new('777-123-1011'), contact_information.secondary_phone
   end
 
   test 'validations' do
     assert_validates_presence :email_address, error_message: 'The email address is required.'
     assert_validates_presence :postal_address, error_message: 'The postal address is required.'
-    assert_validates_presence :primary_telephone, error_message: 'The primary telephone is required.'
+    assert_validates_presence :primary_phone, error_message: 'The primary telephone is required.'
   end
 
   test 'change email address' do
@@ -52,38 +52,38 @@ class ContactInformationTest < IdentityAccessTest
   end
 
   test 'change primary telephone' do
-    changed_contact_information = contact_information.change_primary_telephone(Telephone.new('333-123-0000'))
-    assert_equal Telephone.new('333-123-0000'), changed_contact_information.primary_telephone
+    changed_contact_information = contact_information.change_primary_phone(PhoneNumber.new('333-123-0000'))
+    assert_equal PhoneNumber.new('333-123-0000'), changed_contact_information.primary_phone
   end
 
   test 'change secondary telephone' do
-    changed_contact_information = contact_information.change_secondary_telephone(Telephone.new('333-123-0000'))
-    assert_equal Telephone.new('333-123-0000'), changed_contact_information.secondary_telephone
+    changed_contact_information = contact_information.change_secondary_phone(PhoneNumber.new('333-123-0000'))
+    assert_equal PhoneNumber.new('333-123-0000'), changed_contact_information.secondary_phone
   end
 
   test 'equality' do
     assert_equal ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
       EmailAddress.new('john@example.com'),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
@@ -95,25 +95,25 @@ class ContactInformationTest < IdentityAccessTest
         '80301',
         'US'
       ),
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('(555) 000-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('(555) 000-1210'),
+      PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('(555) 777-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('(555) 777-1212')
     ), ContactInformation.new(
       EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       FIXTURE_POSTAL_ADDRESS,
-      Telephone.new('303-555-1210'),
-      Telephone.new('303-555-1212')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('303-555-1212')
     )
   end
 
@@ -122,8 +122,8 @@ class ContactInformationTest < IdentityAccessTest
     args = {
       email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
       postal_address: FIXTURE_POSTAL_ADDRESS,
-      primary_telephone: Telephone.new('303-555-1210'),
-      secondary_telephone: Telephone.new('303-555-1212')
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     }
 
     args[attr_name] = nil

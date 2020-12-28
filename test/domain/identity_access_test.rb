@@ -23,8 +23,8 @@ class IdentityAccessTest < ActiveSupport::TestCase
         '80301',
         'US'
       ),
-      Telephone.new('303-555-1210'),
-      Telephone.new('777-123-1011')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('777-123-1011')
     )
   end
 
@@ -38,8 +38,8 @@ class IdentityAccessTest < ActiveSupport::TestCase
         '80301',
         'US'
       ),
-      Telephone.new('303-555-1210'),
-      Telephone.new('777-123-1011')
+      PhoneNumber.new('303-555-1210'),
+      PhoneNumber.new('777-123-1011')
     )
   end
 
