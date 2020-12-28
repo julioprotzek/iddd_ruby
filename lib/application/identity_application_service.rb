@@ -63,6 +63,17 @@ class IdentityApplicationService
     )
   end
 
+  def change_user_email_address(command)
+    user = existing_user(command.tenant_id, command.username)
+    internal_change_user_contact_information(
+      user,
+      user
+        .person
+        .contact_information
+        .change_email_address(EmailAddress.new(command.email_address))
+    )
+  end
+
   private
 
   def existing_tenant(tenant_id)
@@ -87,6 +98,10 @@ class IdentityApplicationService
     return user if user.present?
 
     raise StandardError, "User does not exist for tenant_id=#{tenant_id.id} and username=#{username}"
+  end
+
+  def internal_change_user_contact_information(user, contact_information)
+    user.person.change_contact_information(contact_information)
   end
 
   def authentication_service
