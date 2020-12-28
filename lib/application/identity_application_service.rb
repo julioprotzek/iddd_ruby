@@ -139,6 +139,12 @@ class IdentityApplicationService
     )
   end
 
+  def member?(tenant_id:, group_name:, username:)
+    user = existing_user(tenant_id, username)
+    group = existing_group(tenant_id, group_name)
+    group.member?(user, group_member_service)
+  end
+
   private
 
   def existing_tenant(tenant_id)

@@ -279,4 +279,33 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_not_nil changed_user
     assert changed_user.enabled?
   end
+
+  test 'is group member' do
+    parent_group = group_1_aggregate
+    DomainRegistry.group_repository.add(parent_group)
+
+    child_group = group_2_aggregate
+    DomainRegistry.group_repository.add(child_group)
+
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    assert_equal 0, parent_group.members.size
+    assert_equal 0, child_group.members.size
+
+    parent_group.add_group(child_group, DomainRegistry.group_member_service)
+    child_group.add_user(user)
+
+    assert ApplicationServiceRegistry.identity_application_service.member?(
+      tenant_id: parent_group.tenant_id.id,
+      group_name: parent_group.name,
+      username: user.username
+    )
+
+    assert ApplicationServiceRegistry.identity_application_service.member?(
+      tenant_id: child_group.tenant_id.id,
+      group_name: child_group.name,
+      username: user.username
+    )
+  end
 end
