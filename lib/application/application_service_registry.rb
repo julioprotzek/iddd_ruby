@@ -9,6 +9,14 @@ class ApplicationServiceRegistry
       )
     end
 
+    def identity_application_service
+      IdentityApplicationService.new(
+        group_repository: group_repository,
+        tenant_repository: tenant_repository,
+        user_repository: user_repository
+      )
+    end
+
     private
 
     def tenant_repository

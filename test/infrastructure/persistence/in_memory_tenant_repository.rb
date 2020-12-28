@@ -18,7 +18,7 @@ class InMemoryTenantRepository
   end
 
   def tenant_of_id(tenant_id)
-    @repository[tenant_id]
+    @repository[tenant_id.id]
   end
 
   def remove(tenant)
@@ -32,6 +32,6 @@ class InMemoryTenantRepository
   private
 
   def key_of(tenant)
-    tenant.tenant_id
+    tenant.tenant_id.id
   end
 end
