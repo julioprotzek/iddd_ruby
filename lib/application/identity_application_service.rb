@@ -18,12 +18,22 @@ class IdentityApplicationService
     parent_group.add_group(child_group, group_member_service)
   end
 
+  def add_user_to_group(command)
+    user = existing_user(command.tenant_id, command.username)
+    group = existing_group(command.tenant_id, command.group_name)
+    group.add_user(user)
+  end
+
   def tenant(tenant_id)
     tenant_repository.tenant_of_id(TenantId.new(tenant_id))
   end
 
   def group(tenant_id, group_name)
     group_repository.group_named(TenantId.new(tenant_id), group_name)
+  end
+
+  def user(tenant_id, username)
+    user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)
   end
 
   private
@@ -33,7 +43,7 @@ class IdentityApplicationService
 
     return tenant if tenant.present?
 
-    raise StandardError, "Tenant does not exist for: #{tenant_id}"
+    raise StandardError, "Tenant does not exist for tenant_id=#{tenant_id.id}"
   end
 
   def existing_group(tenant_id, group_name)
@@ -41,7 +51,15 @@ class IdentityApplicationService
 
     return group if group.present?
 
-    raise StandardError, "Group does not exist for: #{tenant_id} and: #{group_name}"
+    raise StandardError, "Group does not exist for tenant_id=#{tenant_id.id} and username=#{group_name}"
+  end
+
+  def existing_user(tenant_id, username)
+    user = user(tenant_id, username)
+
+    return user if user.present?
+
+    raise StandardError, "User does not exist for tenant_id=#{tenant_id.id} and username=#{username}"
   end
 
   def authentication_service

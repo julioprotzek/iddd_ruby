@@ -36,4 +36,34 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
     assert_equal 1, parent_group.members.size
   end
+
+  test 'add user to group' do
+    parent_group = group_1_aggregate
+    DomainRegistry.group_repository.add(parent_group)
+
+    child_group = group_2_aggregate
+    DomainRegistry.group_repository.add(child_group)
+
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    assert_equal 0, parent_group.members.size
+    assert_equal 0, child_group.members.size
+
+    parent_group.add_group(child_group, DomainRegistry.group_member_service)
+
+    ApplicationServiceRegistry.identity_application_service.add_user_to_group(
+      AddUserToGroupCommand.new(
+        tenant_id: child_group.tenant_id.id,
+        group_name: child_group.name,
+        username: user.username
+      )
+    )
+
+    assert_equal 1, parent_group.members.size
+    assert_equal 1, child_group.members.size
+    assert parent_group.member?(user, DomainRegistry.group_member_service)
+    assert child_group.member?(user, DomainRegistry.group_member_service)
+
+  end
 end
