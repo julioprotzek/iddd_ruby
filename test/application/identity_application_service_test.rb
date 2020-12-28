@@ -214,4 +214,29 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_not_nil changed_user
     assert_equal '888-555-1212', changed_user.person.contact_information.secondary_phone.number
   end
+
+  test 'change user password' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    ApplicationServiceRegistry.identity_application_service.change_user_password(
+      ChangePasswordCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        current_password: FIXTURE_PASSWORD,
+        changed_password: "THIS.IS.JOE'S.NEW.PASSWORD"
+      )
+    )
+
+    user_descriptor = ApplicationServiceRegistry.identity_application_service.authenticate_user(
+      AuthenticateUserCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        password: "THIS.IS.JOE'S.NEW.PASSWORD"
+      )
+    )
+
+    assert_not_nil user_descriptor
+    assert_equal user_descriptor.username, user.username
+  end
 end

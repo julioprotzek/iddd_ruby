@@ -115,6 +115,14 @@ class IdentityApplicationService
     )
   end
 
+  def change_user_password(command)
+    user = existing_user(command.tenant_id, command.username)
+    user.change_password(
+      from: command.current_password,
+      to: command.changed_password
+    )
+  end
+
   private
 
   def existing_tenant(tenant_id)
