@@ -74,6 +74,25 @@ class IdentityApplicationService
     )
   end
 
+  def change_user_postal_address(command)
+    user = existing_user(command.tenant_id, command.username)
+    internal_change_user_contact_information(
+      user,
+      user
+        .person
+        .contact_information
+        .change_postal_address(
+          PostalAddress.new(
+            command.street_address,
+            command.city,
+            command.state_province,
+            command.postal_code,
+            command.country_code
+          )
+        )
+    )
+  end
+
   private
 
   def existing_tenant(tenant_id)

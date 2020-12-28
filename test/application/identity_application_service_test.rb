@@ -149,4 +149,29 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_not_nil changed_user
     assert_equal 'mynewemailaddress@example.com', changed_user.person.email_address.address
   end
+
+  test 'change user postal address' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    ApplicationServiceRegistry.identity_application_service.change_user_postal_address(
+      ChangePostalAddressCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        street_address: '123 Pine Street',
+        city: 'Loveland',
+        state_province: 'CO',
+        postal_code: '80771',
+        country_code: 'US'
+      )
+    )
+
+    changed_user = DomainRegistry
+      .user_repository
+      .find_by(tenant_id: user.tenant_id, username: user.username)
+
+    assert_not_nil changed_user
+    assert_equal '123 Pine Street', changed_user.person.contact_information.postal_address.street_address
+    assert_equal 'Loveland', changed_user.person.contact_information.postal_address.city
+  end
 end
