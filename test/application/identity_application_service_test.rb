@@ -220,7 +220,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.user_repository.add(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_password(
-      ChangePasswordCommand.new(
+      ChangeUserPasswordCommand.new(
         tenant_id: user.tenant_id.id,
         username: user.username,
         current_password: FIXTURE_PASSWORD,
@@ -238,5 +238,23 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
     assert_not_nil user_descriptor
     assert_equal user_descriptor.username, user.username
+  end
+
+  test 'change user personal name' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    ApplicationServiceRegistry.identity_application_service.change_user_personal_name(
+      ChangeUserPersonalNameCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        first_name: 'World',
+        last_name: 'Peace'
+      )
+    )
+
+    changed_user = DomainRegistry.user_repository.find_by(tenant_id: user.tenant_id, username: user.username)
+    assert_not_nil changed_user
+    assert_equal 'World Peace', changed_user.person.name.as_formatted_name
   end
 end

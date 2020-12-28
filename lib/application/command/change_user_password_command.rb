@@ -1,4 +1,4 @@
-class ChangePasswordCommand
+class ChangeUserPasswordCommand
   attr_accessor :tenant_id, :username, :current_password, :changed_password
 
   def initialize(tenant_id:, username:, current_password:, changed_password:)

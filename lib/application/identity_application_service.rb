@@ -123,6 +123,11 @@ class IdentityApplicationService
     )
   end
 
+  def change_user_personal_name(command)
+    user = existing_user(command.tenant_id, command.username)
+    user.change_person_name(FullName.new(command.first_name, command.last_name))
+  end
+
   private
 
   def existing_tenant(tenant_id)
