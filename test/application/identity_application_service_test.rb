@@ -362,4 +362,39 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert !parent_group.member?(user, DomainRegistry.group_member_service)
     assert !child_group.member?(user, DomainRegistry.group_member_service)
   end
+
+  test 'query tenant' do
+    tenant = tenant_aggregate
+
+    queried_tenant = ApplicationServiceRegistry
+      .identity_application_service
+      .tenant(tenant.tenant_id.id)
+
+    assert_not_nil queried_tenant
+    assert_equal queried_tenant, tenant
+  end
+
+  test 'query user' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    queried_user = ApplicationServiceRegistry
+      .identity_application_service
+      .user(user.tenant_id.id, user.username)
+
+    assert_not_nil queried_user
+    assert_equal queried_user, user
+  end
+
+  test 'query user descriptor' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    queried_user_descriptor = ApplicationServiceRegistry
+      .identity_application_service
+      .user_descriptor(user.tenant_id.id, user.username)
+
+    assert_not_nil queried_user_descriptor
+    assert_equal queried_user_descriptor, user.user_descriptor
+  end
 end
