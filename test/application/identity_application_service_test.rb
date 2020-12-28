@@ -308,4 +308,26 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
       username: user.username
     )
   end
+
+  test 'remove group from group' do
+    parent_group = group_1_aggregate
+    DomainRegistry.group_repository.add(parent_group)
+
+    child_group = group_2_aggregate
+    DomainRegistry.group_repository.add(child_group)
+
+    parent_group.add_group(child_group, DomainRegistry.group_member_service)
+
+    assert_equal 1, parent_group.members.size
+
+    ApplicationServiceRegistry.identity_application_service.remove_group_from_group(
+      RemoveGroupFromGroupCommand.new(
+        tenant_id: parent_group.tenant_id.id,
+        parent_group_name: parent_group.name,
+        child_group_name: child_group.name
+      )
+    )
+
+    assert_equal 0, parent_group.members.size
+  end
 end

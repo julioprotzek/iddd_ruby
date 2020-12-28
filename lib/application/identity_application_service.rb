@@ -145,6 +145,12 @@ class IdentityApplicationService
     group.member?(user, group_member_service)
   end
 
+  def remove_group_from_group(command)
+    parent_group = existing_group(command.tenant_id, command.parent_group_name)
+    child_group = existing_group(command.tenant_id, command.child_group_name)
+    parent_group.remove_group(child_group)
+  end
+
   private
 
   def existing_tenant(tenant_id)
