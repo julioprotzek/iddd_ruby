@@ -8,7 +8,7 @@ class PostalAddress
     self.city = city
     self.state_province = state_province
     self.postal_code = postal_code
-    self.country_code= country_code
+    self.country_code = country_code
   end
 
   def ==(other)
