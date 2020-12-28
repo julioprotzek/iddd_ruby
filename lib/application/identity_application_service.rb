@@ -128,6 +128,17 @@ class IdentityApplicationService
     user.change_person_name(FullName.new(command.first_name, command.last_name))
   end
 
+  def define_user_enablement(command)
+    user = existing_user(command.tenant_id, command.username)
+    user.define_enablement(
+      Enablement.new(
+        enabled: command.enabled,
+        start_at: command.start_at,
+        end_at: command.end_at
+      )
+    )
+  end
+
   private
 
   def existing_tenant(tenant_id)

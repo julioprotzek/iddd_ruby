@@ -257,4 +257,26 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_not_nil changed_user
     assert_equal 'World Peace', changed_user.person.name.as_formatted_name
   end
+
+  test 'define user enablement' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    now = Date.today
+    future = Date.today + 1000.years
+
+    ApplicationServiceRegistry.identity_application_service.define_user_enablement(
+      DefineUserEnablementCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        enabled: true,
+        start_at: now,
+        end_at: future
+      )
+    )
+
+    changed_user = DomainRegistry.user_repository.find_by(tenant_id: user.tenant_id, username: user.username)
+    assert_not_nil changed_user
+    assert changed_user.enabled?
+  end
 end
