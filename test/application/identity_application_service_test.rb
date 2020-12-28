@@ -64,6 +64,21 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_equal 1, child_group.members.size
     assert parent_group.member?(user, DomainRegistry.group_member_service)
     assert child_group.member?(user, DomainRegistry.group_member_service)
+  end
 
+  test 'authenticate user' do
+    user = user_aggregate
+    DomainRegistry.user_repository.add(user)
+
+    user_descriptor = ApplicationServiceRegistry.identity_application_service.authenticate_user(
+      AuthenticateUserCommand.new(
+        tenant_id: user.tenant_id.id,
+        username: user.username,
+        password: FIXTURE_PASSWORD
+      )
+    )
+
+    assert_not_nil user_descriptor
+    assert_equal user_descriptor.username, user.username
   end
 end

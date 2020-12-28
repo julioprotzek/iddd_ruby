@@ -24,6 +24,10 @@ class IdentityApplicationService
     group.add_user(user)
   end
 
+  def authenticate_user(command)
+    authentication_service.authenticate(TenantId.new(command.tenant_id), command.username, command.password)
+  end
+
   def tenant(tenant_id)
     tenant_repository.tenant_of_id(TenantId.new(tenant_id))
   end
@@ -63,18 +67,11 @@ class IdentityApplicationService
   end
 
   def authentication_service
-    AuthenticationService.new(
-      tenant_repository: tenant_repository,
-      user_repository: user_repository,
-      encryption_service: DomainRegistry.encryption_service
-    )
+    DomainRegistry.authentication_service
   end
 
   def group_member_service
-    GroupMemberService.new(
-      group_repository: group_repository,
-      user_repository: user_repository
-    )
+    DomainRegistry.group_member_service
   end
 
   attr_reader :group_repository, :tenant_repository, :user_repository
