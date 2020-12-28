@@ -6,7 +6,7 @@ class TenantProvisionService
     @role_repository = role_repository
   end
 
-  def provision_tenant(name: , description: , administrator_name: , email_address: , postal_address: , primary_phone: , secondary_phone: nil)
+  def provision_tenant(name:, description:, administrator_name:, email_address:, postal_address:, primary_phone:, secondary_phone: nil)
     tenant = Tenant.new(
       tenant_id: @tenant_repository.next_identity,
       name: name,

@@ -133,6 +133,81 @@ class IdentityApplicationService
     group.member?(user, group_member_service)
   end
 
+  def provision_group(command)
+    tenant = existing_tenant(command.tenant_id)
+
+    group = tenant.provision_group(
+      name: command.group_name,
+      description: command.description
+    )
+
+    group_repository.add(group)
+
+    group
+  end
+
+  def provision_tenant(command)
+    tenant_provisioning_service.provision_tenant(
+      name: command.tenant_name,
+      description: command.tenant_description,
+      administrator_name: FullName.new(
+        command.administrator_first_name,
+        command.administrator_last_name
+      ),
+      email_address: EmailAddress.new(command.email_address),
+      postal_address: PostalAddress.new(
+        command.address_street_address,
+        command.address_city,
+        command.address_state_province,
+        command.address_postal_code,
+        command.address_country_code,
+      ),
+      primary_phone: PhoneNumber.new(command.primary_phone),
+      secondary_phone: PhoneNumber.new(command.secondary_phone)
+    )
+  end
+
+  def register_user(command)
+    tenant = existing_tenant(command.tenant_id)
+    user = tenant.register_user(
+      invitation_identifier: command.invitation_identifier,
+      username: command.username,
+      password: command.password,
+      enablement: Enablement.new(
+        enabled: command.enabled,
+        start_at: command.start_at,
+        end_at: command.end_at
+      ),
+      person: Person.new(
+        tenant.tenant_id,
+        FullName.new(
+          command.first_name,
+          command.last_name
+        ),
+        ContactInformation.new(
+          EmailAddress.new(command.email_address),
+          PostalAddress.new(
+            command.address_street_address,
+            command.address_city,
+            command.address_state_province,
+            command.address_postal_code,
+            command.address_country_code,
+          ),
+          primary_phone: PhoneNumber.new(command.primary_phone),
+          secondary_phone: PhoneNumber.new(command.secondary_phone)
+        )
+      )
+    )
+
+    if user.present?
+      user_repository.add(user)
+    else
+      raise StandardError, 'User not registered.'
+    end
+
+    user
+  end
+
   def remove_group_from_group(command)
     parent_group = existing_group(command.tenant_id, command.parent_group_name)
     child_group = existing_group(command.tenant_id, command.child_group_name)
@@ -197,6 +272,10 @@ class IdentityApplicationService
 
   def group_member_service
     DomainRegistry.group_member_service
+  end
+
+  def tenant_provision_service
+    DomainRegistry.tenant_provision_service
   end
 
   attr_reader :group_repository, :tenant_repository, :user_repository
