@@ -28,22 +28,6 @@ class IdentityApplicationService
     authentication_service.authenticate(TenantId.new(command.tenant_id), command.username, command.password)
   end
 
-  def tenant(tenant_id)
-    tenant_repository.tenant_of_id(TenantId.new(tenant_id))
-  end
-
-  def group(tenant_id, group_name)
-    group_repository.group_named(TenantId.new(tenant_id), group_name)
-  end
-
-  def user(tenant_id, username)
-    user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)
-  end
-
-  def user_descriptor(tenant_id, username)
-    user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)&.user_descriptor
-  end
-
   def deactivate_tenant(command)
     tenant = existing_tenant(command.tenant_id)
     tenant.deactivate
@@ -159,6 +143,22 @@ class IdentityApplicationService
     user = existing_user(command.tenant_id, command.username)
     group = existing_group(command.tenant_id, command.group_name)
     group.remove_user(user)
+  end
+
+  def tenant(tenant_id)
+    tenant_repository.tenant_of_id(TenantId.new(tenant_id))
+  end
+
+  def group(tenant_id, group_name)
+    group_repository.group_named(TenantId.new(tenant_id), group_name)
+  end
+
+  def user(tenant_id, username)
+    user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)
+  end
+
+  def user_descriptor(tenant_id, username)
+    user_repository.find_by(tenant_id: TenantId.new(tenant_id), username: username)&.user_descriptor
   end
 
   private
