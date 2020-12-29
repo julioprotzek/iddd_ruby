@@ -17,6 +17,18 @@ class ApplicationServiceRegistry
       )
     end
 
+    def notification_application_service
+      NotificationApplicationService.new(event_store, notification_publisher)
+    end
+
+    def event_store
+      @@event_store ||= InMemoryEventStore.new
+    end
+
+    def notification_publisher
+      @@notification_publisher ||= MockNotificationPublisher.new
+    end
+
     private
 
     def tenant_repository

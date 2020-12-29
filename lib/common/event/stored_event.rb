@@ -3,9 +3,9 @@ class StoredEvent
 
   attr_reader :event_id, :occurred_at, :event_body, :type_name
 
-  def initialize(type_name:, ocurred_at:, event_body:, event_id: -1)
+  def initialize(type_name:, occurred_at:, event_body:, event_id: -1)
     self.type_name = type_name
-    @ocurred_at = ocurred_at
+    @occurred_at = occurred_at
     self.event_body = event_body
     @event_id = event_id
   end

@@ -1,8 +1,8 @@
 class AnotherTestableDomainEvent
-  attr_reader :event_version, :occurred_at, :value
+  attr_reader :version, :occurred_at, :value
 
   def initialize(value:)
-    @event_version = 1
+    @version = 1
     @value = value
     @occurred_at = Time.now
   end
