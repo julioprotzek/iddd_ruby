@@ -1,3 +1,4 @@
+require './lib/config/initializer'
 require './lib/identity_and_access'
 
 map '/api' do

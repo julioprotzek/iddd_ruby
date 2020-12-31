@@ -1,7 +1,16 @@
+# Sinatra Base
+require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/reloader'
+require 'sinatra/activerecord'
+
+# Database
+set :database_file, 'database.yml'
+
+# Active Support
 require 'active_support/all'
 
+# Load files
 require 'zeitwerk'
 loader = Zeitwerk::Loader.new
 loader.push_dir('lib/common')
@@ -15,14 +24,10 @@ loader.push_dir('lib/infrastructure/services')
 loader.push_dir('lib/application')
 loader.push_dir('lib/application/command')
 loader.push_dir('lib/resource')
-
+loader.push_dir('lib/infrastructure/persistence/active_record')
 
 loader.push_dir('test/common')
 loader.push_dir('test/application')
 loader.push_dir('test/infrastructure/persistence')
 
 loader.setup
-
-# require 'sinatra/activerecord'
-
-# set :database, {adapter: 'sqlite3', database: 'foo.sqlite3'}

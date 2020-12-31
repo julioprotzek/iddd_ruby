@@ -52,7 +52,13 @@ class DomainRegistry
     end
 
     def group_repository
-      @@group_repository ||= InMemoryGroupRepository.new
+      @@group_repository ||= begin
+        if ENV['APP_ENV'] == 'test'
+           InMemoryGroupRepository.new
+        else
+          GroupRepository.new
+        end
+      end
     end
   end
 end

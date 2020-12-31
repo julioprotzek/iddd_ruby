@@ -5,3 +5,6 @@ Rake::TestTask.new(:test) do |t|
 end
 
 task default: :test
+
+require './lib/config/initializer'
+require 'sinatra/activerecord/rake'
