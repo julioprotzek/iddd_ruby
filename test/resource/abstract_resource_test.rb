@@ -13,6 +13,6 @@ class AbstractResourceTest < ApplicationServiceTest
   end
 
   def url_encode(string)
-    CGI.escape(string).gsub('+', '%20')
+    ERB::Util.url_encode(string)
   end
 end
