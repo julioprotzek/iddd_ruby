@@ -3,7 +3,7 @@ class GroupResource < AbstractResource
     content_type :json
   end
 
-  get '/api/tenants/:tenant_id/groups/:group_name' do
+  get '/tenants/:tenant_id/groups/:group_name' do
     group = identity_application_service.group(params[:tenant_id], params[:group_name])
 
     if group.present?

@@ -10,6 +10,8 @@ gem 'bcrypt', '~> 3.1', '>= 3.1.16'
 gem 'sinatra', '~> 2.1'
 gem 'thin', '~> 1.8'
 gem 'sinatra-contrib', '~> 2.1'
+gem 'sinatra-activerecord', '~> 2.0', '>= 2.0.21'
+gem 'sqlite3', '~> 1.4', '>= 1.4.2'
 
 group :test do
   gem 'minitest', '~> 5.14', '>= 5.14.2'
