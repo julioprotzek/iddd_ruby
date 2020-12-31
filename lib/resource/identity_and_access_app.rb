@@ -1,10 +1,10 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 
-class MainApplication < AbstractResource
+class IdentityAndAccessApp < AbstractResource
   use GroupResource
 
   get '/' do
-    "Hello world"
+    "Api only for now..."
   end
 end

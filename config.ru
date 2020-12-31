@@ -1,7 +1,6 @@
 require 'active_support/all'
 require 'zeitwerk'
 loader = Zeitwerk::Loader.new
-loader.push_dir('lib')
 loader.push_dir('lib/common')
 loader.push_dir('lib/common/domain')
 loader.push_dir('lib/common/event')
@@ -21,4 +20,4 @@ loader.push_dir('test/infrastructure/persistence')
 
 loader.setup
 
-run MainApplication
+run identity_and_access_app

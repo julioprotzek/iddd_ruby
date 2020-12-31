@@ -15,4 +15,5 @@ group :test do
   gem 'minitest', '~> 5.14', '>= 5.14.2'
   gem 'minitest-reporters', '~> 1.4', '>= 1.4.2'
   gem 'm', '~> 1.5', '>= 1.5.1'
+  gem 'rack-test', '~> 1.1'
 end

@@ -31,6 +31,8 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
     rake (13.0.1)
     ruby-progressbar (1.10.1)
     ruby2_keywords (0.0.2)
@@ -63,6 +65,7 @@ DEPENDENCIES
   m (~> 1.5, >= 1.5.1)
   minitest (~> 5.14, >= 5.14.2)
   minitest-reporters (~> 1.4, >= 1.4.2)
+  rack-test (~> 1.1)
   rake (~> 13.0, >= 13.0.1)
   sinatra (~> 2.1)
   sinatra-contrib (~> 2.1)
