@@ -2,6 +2,7 @@ ENV['APP_ENV'] = 'test'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
+require 'mocha/minitest'
 Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true)]
 
 require 'active_support/all'

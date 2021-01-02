@@ -18,4 +18,5 @@ group :test do
   gem 'minitest-reporters', '~> 1.4', '>= 1.4.2'
   gem 'm', '~> 1.5', '>= 1.5.1'
   gem 'rack-test', '~> 1.1'
+  gem 'mocha', '~> 1.12'
 end

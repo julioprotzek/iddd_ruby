@@ -14,6 +14,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
   setup do
     DomainEventPublisher.reset
     event_store.clean
+    DomainRegistry.stubs(:group_repository).returns(InMemoryGroupRepository.new)
     DomainRegistry.group_repository.clean
     DomainRegistry.role_repository.clean
     DomainRegistry.tenant_repository.clean
