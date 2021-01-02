@@ -1,4 +1,4 @@
-class InMemoryUserRepository
+class InMemory::UserRepository
   def initialize
     @repository = {}
   end

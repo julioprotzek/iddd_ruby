@@ -22,7 +22,7 @@ class ApplicationServiceRegistry
     end
 
     def event_store
-      @@event_store ||= InMemoryEventStore.new
+      @@event_store ||= InMemory::EventStore.new
     end
 
     def notification_publisher

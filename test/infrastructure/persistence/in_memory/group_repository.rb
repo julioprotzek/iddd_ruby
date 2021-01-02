@@ -1,4 +1,4 @@
-class InMemoryGroupRepository
+class InMemory::GroupRepository
   def initialize
     @repository = {}
   end

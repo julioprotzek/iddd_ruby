@@ -24,7 +24,7 @@ loader.push_dir('lib/infrastructure/services')
 loader.push_dir('lib/application')
 loader.push_dir('lib/application/command')
 loader.push_dir('lib/resource')
-loader.push_dir('lib/infrastructure/persistence/active_record')
+loader.push_dir('lib/infrastructure/persistence')
 
 loader.push_dir('test/common')
 loader.push_dir('test/application')

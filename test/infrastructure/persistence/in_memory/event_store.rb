@@ -1,4 +1,4 @@
-class InMemoryEventStore
+class InMemory::EventStore
   def initialize
     @stored_events = []
   end

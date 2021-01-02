@@ -11,7 +11,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
 
   setup do
     DomainEventPublisher.reset
-    DomainRegistry.stubs(:group_repository).returns(InMemoryGroupRepository.new)
+    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
   end
 
   def contact_information

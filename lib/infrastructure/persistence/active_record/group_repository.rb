@@ -1,4 +1,4 @@
-class GroupRepository
+class ActiveRecord::GroupRepository
   class Repository < ActiveRecord::Base
     self.table_name = 'groups'
     validates_uniqueness_of :key
