@@ -1,13 +1,13 @@
 class ActiveRecord::GroupRepository
   class Repository < ActiveRecord::Base
     self.table_name = 'groups'
-    validates_uniqueness_of :key
+    validates :name, uniqueness: { scope: :tenant_id_id }
   end
 
   def add(group)
-    key = key_of(group)
-    raise StandardError, 'Duplicate Key' if Repository.find_by(key: key)
     Repository.create!(from_aggregate(group))
+  rescue
+    raise StandardError, 'Group is not unique.'
   end
 
   def all_groups(tenant_id)
@@ -22,7 +22,7 @@ class ActiveRecord::GroupRepository
   end
 
   def remove(group)
-    Repository.find_by(key: key_of(group)).delete
+    Repository.group_named(group.tenant_id.id, group.name).delete
   end
 
   def clean
@@ -30,14 +30,6 @@ class ActiveRecord::GroupRepository
   end
 
   private
-
-  def key_of(group)
-    key_with(group.tenant_id, group.name)
-  end
-
-  def key_with(tenant_id, name)
-    "#{tenant_id.id}##{name}"
-  end
 
   def to_aggregate(record)
     Group.new(TenantId.new(record.tenant_id_id), record.name, record.description)
@@ -47,7 +39,6 @@ class ActiveRecord::GroupRepository
     group_hash = group.as_json.deep_symbolize_keys
     group_hash[:tenant_id_id] = group_hash[:tenant_id][:id]
     group_hash.delete(:tenant_id)
-    group_hash[:key] = key_of(group)
     group_hash.delete(:members) # Todo: Implement members
     group_hash
   end

@@ -13,13 +13,12 @@
 ActiveRecord::Schema.define(version: 2020_12_31_201241) do
 
   create_table "groups", force: :cascade do |t|
-    t.string "key"
     t.string "tenant_id_id"
     t.string "name"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["key"], name: "index_groups_on_key", unique: true
+    t.index ["name"], name: "index_groups_on_name"
     t.index ["tenant_id_id"], name: "index_groups_on_tenant_id_id"
   end
 
