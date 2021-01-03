@@ -1,8 +1,8 @@
 class SetList
   include Enumerable
 
-  def initialize
-    @members = []
+  def initialize(members = [])
+    @members = members.uniq
   end
 
   def add(item)

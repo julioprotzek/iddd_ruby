@@ -7,7 +7,7 @@ Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(color: true)]
 
 
 require './lib/config/initializer'
-
+ActiveRecord::Migration.maintain_test_schema!
 
 require 'active_support/test_case'
 ActiveSupport.test_order = :random

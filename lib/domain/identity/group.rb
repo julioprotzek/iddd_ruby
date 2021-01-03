@@ -106,6 +106,9 @@ class Group
     )
   end
 
+  def members=(members)
+    @members = SetList.new(members)
+  end
 
   private
 

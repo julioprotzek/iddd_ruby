@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_160459) do
+ActiveRecord::Schema.define(version: 2021_01_03_193507) do
 
   create_table "group_members", force: :cascade do |t|
     t.string "tenant_id_id"
     t.string "name"
-    t.string "type"
     t.integer "group_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "member_type"
     t.index ["group_id"], name: "index_group_members_on_group_id"
     t.index ["tenant_id_id"], name: "index_group_members_on_tenant_id_id"
   end
