@@ -142,7 +142,7 @@ class GroupTest < IdentityAccessTest
       group_c.add_group(group_a, DomainRegistry.group_member_service)
     end
 
-    assert_equal 'Group recurrsion.', error.message
+    assert_equal 'Group recursion.', error.message
     assert_equal 2, @group_group_added_count
   end
 

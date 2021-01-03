@@ -79,6 +79,14 @@ class User
     @password
   end
 
+  def as_group_member
+    GroupMember.new(
+      tenant_id: tenant_id,
+      name: username,
+      type: self.class.name
+    )
+  end
+
   private
 
   def tenant_id=(tenant_id)

@@ -9,15 +9,15 @@ class Group
     self.tenant_id = tenant_id
     self.name = name
     self.description = description
-    @members = Set.new
+    @members = SetList.new
   end
 
   def add_group(group, group_member_service)
     assert_presence(group, 'Group must be provided.')
     assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
-    assert(!group_member_service.member_group?(group, self), 'Group recurrsion.')
+    assert(!group_member_service.member_group?(group, self), 'Group recursion.')
 
-    if members.add?(group) && !internal_group?
+    if members.add?(group.as_group_member) && !internal_group?
       DomainEventPublisher.publish(
         GroupGroupAdded.new(
           tenant_id: tenant_id,
@@ -33,7 +33,7 @@ class Group
     assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
     assert(user.enabled?, 'User is not enabled.')
 
-    if members.add?(user) && !internal_group?
+    if members.add?(user.as_group_member) && !internal_group?
       DomainEventPublisher.publish(
         GroupUserAdded.new(
           tenant_id: tenant_id,
@@ -49,7 +49,7 @@ class Group
     assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
     assert(user.enabled?, 'User is not enabled.')
 
-    if user.in?(members)
+    if user.as_group_member.in?(members)
       return group_member_service.confirm_user(self, user)
     else
       return group_member_service.in_nested_group?(self, user)
@@ -61,7 +61,7 @@ class Group
     assert_equal(tenant_id, group.tenant_id, 'Wrong tenant for this group.')
 
     # Not a nested remove, only a direct member
-    if members.delete?(group) && !internal_group?
+    if members.delete?(group.as_group_member) && !internal_group?
       DomainEventPublisher.publish(
         GroupGroupRemoved.new(
           tenant_id: tenant_id,
@@ -77,7 +77,7 @@ class Group
     assert_equal(tenant_id, user.tenant_id, 'Wrong tenant for this group.')
 
     # Not a nested remove, only a direct member
-    if members.delete?(user) && !internal_group?
+    if members.delete?(user.as_group_member) && !internal_group?
       DomainEventPublisher.publish(
         GroupUserRemoved.new(
           tenant_id: tenant_id,
@@ -97,6 +97,15 @@ class Group
   def eql?(other)
     self == other
   end
+
+  def as_group_member
+    GroupMember.new(
+      tenant_id: tenant_id,
+      name: name,
+      type: self.class.name
+    )
+  end
+
 
   private
 
