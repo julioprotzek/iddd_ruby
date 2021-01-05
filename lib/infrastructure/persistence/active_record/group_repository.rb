@@ -1,6 +1,6 @@
 class ActiveRecord::GroupRepository
   class GroupModel < ActiveRecord::Base
-    has_many :members, class_name: 'MemberModel', foreign_key: 'group_id'
+    has_many :members, class_name: 'MemberModel', foreign_key: 'group_id', dependent: :delete_all
     self.table_name = 'groups'
     validates :name, uniqueness: { scope: :tenant_id_id }
   end
