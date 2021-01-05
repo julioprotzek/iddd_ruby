@@ -24,6 +24,10 @@ class InMemory::GroupRepository
     @repository.clear
   end
 
+  def reload(group)
+    group_named(group.tenant_id, group.name)
+  end
+
   private
 
   def key_of(group)

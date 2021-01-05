@@ -1,11 +1,11 @@
 require './test/domain/identity_access_test'
 require './test/domain/identity/group_repository_tests'
 
-class ActiveRecordGroupRepositoryTest < IdentityAccessTest
+class InMemoryGroupRepositoryTest < IdentityAccessTest
   extend GroupRepositoryTests
 
   setup do
-    DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)
+    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
     DomainRegistry.group_repository.clean
   end
 

@@ -2,7 +2,8 @@ require './test/application/application_service_test'
 
 class IdentityApplicationServiceTest < ApplicationServiceTest
   setup do
-    DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)
+    # DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)
+    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
   end
 
   test 'activate tenant' do
