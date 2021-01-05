@@ -14,7 +14,7 @@ class GroupMemberService
 
     group.members.each do |member|
       if member.group?
-        is_member = member_group.as_group_member == member
+        is_member = member_group.as_member == member
         break if is_member
 
         group = group_repository.group_named(member.tenant_id, member.name)

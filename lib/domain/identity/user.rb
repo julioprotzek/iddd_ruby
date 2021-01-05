@@ -79,7 +79,7 @@ class User
     @password
   end
 
-  def as_group_member
+  def as_member
     GroupMember.new(
       tenant_id: tenant_id,
       name: username,
