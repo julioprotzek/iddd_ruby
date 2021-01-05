@@ -1,6 +1,10 @@
 require './test/application/application_service_test'
 
 class IdentityApplicationServiceTest < ApplicationServiceTest
+  setup do
+    DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)
+  end
+
   test 'activate tenant' do
     tenant = tenant_aggregate
     tenant.deactivate
@@ -34,6 +38,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
       )
     )
 
+    parent_group = DomainRegistry.group_repository.reload(parent_group)
     assert_equal 1, parent_group.members.size
   end
 
@@ -51,6 +56,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_equal 0, child_group.members.size
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
+    parent_group = DomainRegistry.group_repository.add(parent_group)
 
     ApplicationServiceRegistry.identity_application_service.add_user_to_group(
       AddUserToGroupCommand.new(
@@ -59,6 +65,8 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
         username: user.username
       )
     )
+
+    child_group = DomainRegistry.group_repository.reload(child_group)
 
     assert_equal 1, parent_group.members.size
     assert_equal 1, child_group.members.size
@@ -294,7 +302,9 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     assert_equal 0, child_group.members.size
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
+    parent_group = DomainRegistry.group_repository.add(parent_group)
     child_group.add_user(user)
+    child_group = DomainRegistry.group_repository.add(child_group)
 
     assert ApplicationServiceRegistry.identity_application_service.member?(
       tenant_id: parent_group.tenant_id.id,
@@ -317,6 +327,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.group_repository.add(child_group)
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
+    parent_group = DomainRegistry.group_repository.add(parent_group)
 
     assert_equal 1, parent_group.members.size
 
@@ -328,6 +339,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
       )
     )
 
+    parent_group = DomainRegistry.group_repository.reload(parent_group)
     assert_equal 0, parent_group.members.size
   end
 
@@ -342,7 +354,9 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.user_repository.add(user)
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
+    parent_group = DomainRegistry.group_repository.add(parent_group)
     child_group.add_user(user)
+    child_group = DomainRegistry.group_repository.add(child_group)
 
     assert_equal 1, parent_group.members.size
     assert_equal 1, child_group.members.size
@@ -356,6 +370,8 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
         username: user.username
       )
     )
+
+    child_group = DomainRegistry.group_repository.reload(child_group)
 
     assert_equal 1, parent_group.members.size
     assert_equal 0, child_group.members.size

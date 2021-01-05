@@ -15,13 +15,19 @@ class IdentityApplicationService
   def add_group_to_group(command)
     parent_group = existing_group(command.tenant_id, command.parent_group_name)
     child_group = existing_group(command.tenant_id, command.child_group_name)
+
     parent_group.add_group(child_group, group_member_service)
+
+    group_repository.add(parent_group)
   end
 
   def add_user_to_group(command)
     user = existing_user(command.tenant_id, command.username)
     group = existing_group(command.tenant_id, command.group_name)
+
     group.add_user(user)
+
+    group_repository.add(group)
   end
 
   def authenticate_user(command)
@@ -211,13 +217,19 @@ class IdentityApplicationService
   def remove_group_from_group(command)
     parent_group = existing_group(command.tenant_id, command.parent_group_name)
     child_group = existing_group(command.tenant_id, command.child_group_name)
+
     parent_group.remove_group(child_group)
+
+    group_repository.add(parent_group)
   end
 
   def remove_user_from_group(command)
     user = existing_user(command.tenant_id, command.username)
     group = existing_group(command.tenant_id, command.group_name)
+
     group.remove_user(user)
+
+    group_repository.add(group)
   end
 
   def tenant(tenant_id)

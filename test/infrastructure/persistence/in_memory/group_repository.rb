@@ -4,9 +4,7 @@ class InMemory::GroupRepository
   end
 
   def add(group)
-    key = key_of(group)
-    raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = group
+    @repository[key_of(group)] = group
   end
 
   def all_groups(tenant_id)

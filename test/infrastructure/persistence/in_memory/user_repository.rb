@@ -4,9 +4,7 @@ class InMemory::UserRepository
   end
 
   def add(user)
-    key = key_of(user)
-    raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = user
+    @repository[key_of(user)] = user
   end
 
   def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)

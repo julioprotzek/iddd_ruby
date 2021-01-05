@@ -4,9 +4,7 @@ class InMemory::TenantRepository
   end
 
   def add(tenant)
-    key = key_of(tenant)
-    raise StandardError, 'Duplicate Key' if @repository.key?(key)
-    @repository[key] = tenant
+    @repository[key_of(tenant)] = tenant
   end
 
   def next_identity
