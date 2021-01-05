@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_193507) do
+ActiveRecord::Schema.define(version: 2021_01_05_194531) do
 
   create_table "group_members", force: :cascade do |t|
     t.string "tenant_id_id"
@@ -31,6 +31,37 @@ ActiveRecord::Schema.define(version: 2021_01_03_193507) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_groups_on_name"
     t.index ["tenant_id_id"], name: "index_groups_on_tenant_id_id"
+  end
+
+  create_table "persons", force: :cascade do |t|
+    t.string "tenant_id_id"
+    t.string "contact_information_email_address"
+    t.string "contact_information_postal_address_city"
+    t.string "contact_information_postal_address_country_code"
+    t.string "contact_information_postal_address_postal_code"
+    t.string "contact_information_postal_address_state_province"
+    t.string "contact_information_postal_address_street_address"
+    t.string "contact_information_primary_phone_number"
+    t.string "contact_information_secondary_phone_number"
+    t.string "name_first_name"
+    t.string "name_last_name"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tenant_id_id"], name: "index_persons_on_tenant_id_id"
+    t.index ["user_id"], name: "index_persons_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "tenant_id_id"
+    t.boolean "enablement_enabled"
+    t.date "enablement_start_at"
+    t.date "enablement_end_at"
+    t.string "password"
+    t.string "username"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tenant_id_id"], name: "index_users_on_tenant_id_id"
   end
 
 end
