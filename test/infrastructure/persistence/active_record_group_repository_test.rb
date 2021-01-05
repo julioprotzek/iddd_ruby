@@ -1,8 +1,8 @@
 require './test/domain/identity_access_test'
-require './test/domain/identity/group_repository_tests'
+require './test/domain/identity/group_repository_shared_tests'
 
 class ActiveRecordGroupRepositoryTest < IdentityAccessTest
-  extend GroupRepositoryTests
+  extend GroupRepositorySharedTests
 
   setup do
     DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)

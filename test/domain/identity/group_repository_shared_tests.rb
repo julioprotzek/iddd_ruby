@@ -1,4 +1,4 @@
-module GroupRepositoryTests
+module GroupRepositorySharedTests
   def it_behaves_like_a_group_repostiory
      test 'remove group referenced user' do
       tenant = tenant_aggregate
