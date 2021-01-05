@@ -43,16 +43,16 @@ class IdentityApplicationService
     user = existing_user(command.tenant_id, command.username)
     user.change_person_contact_information(
       ContactInformation.new(
-        EmailAddress.new(command.email_address),
-        PostalAddress.new(
-          command.street_address,
-          command.city,
-          command.state_province,
-          command.postal_code,
-          command.country_code
+        email_address: EmailAddress.new(command.email_address),
+        postal_address: PostalAddress.new(
+          street_address: command.street_address,
+          city: command.city,
+          state_province: command.state_province,
+          postal_code: command.postal_code,
+          country_code: command.country_code
         ),
-        PhoneNumber.new(command.primary_phone),
-        PhoneNumber.new(command.secondary_phone),
+        primary_phone: PhoneNumber.new(command.primary_phone),
+        secondary_phone: PhoneNumber.new(command.secondary_phone),
       )
     )
   end
@@ -77,11 +77,11 @@ class IdentityApplicationService
         .contact_information
         .change_postal_address(
           PostalAddress.new(
-            command.street_address,
-            command.city,
-            command.state_province,
-            command.postal_code,
-            command.country_code
+            street_address: command.street_address,
+            city: command.city,
+            state_province: command.state_province,
+            postal_code: command.postal_code,
+            country_code: command.country_code
           )
         )
     )
@@ -119,7 +119,12 @@ class IdentityApplicationService
 
   def change_user_personal_name(command)
     user = existing_user(command.tenant_id, command.username)
-    user.change_person_name(FullName.new(command.first_name, command.last_name))
+    user.change_person_name(
+      FullName.new(
+        first_name: command.first_name,
+        last_name: command.last_name
+      )
+    )
   end
 
   def define_user_enablement(command)
@@ -157,16 +162,16 @@ class IdentityApplicationService
       name: command.tenant_name,
       description: command.tenant_description,
       administrator_name: FullName.new(
-        command.administrator_first_name,
-        command.administrator_last_name
+        first_name: command.administrator_first_name,
+        last_name: command.administrator_last_name
       ),
       email_address: EmailAddress.new(command.email_address),
       postal_address: PostalAddress.new(
-        command.address_street_address,
-        command.address_city,
-        command.address_state_province,
-        command.address_postal_code,
-        command.address_country_code,
+        street_address: command.address_street_address,
+        city: command.address_city,
+        state_province: command.address_state_province,
+        postal_code: command.address_postal_code,
+        country_code: command.address_country_code,
       ),
       primary_phone: PhoneNumber.new(command.primary_phone),
       secondary_phone: PhoneNumber.new(command.secondary_phone)
@@ -185,19 +190,19 @@ class IdentityApplicationService
         end_at: command.end_at
       ),
       person: Person.new(
-        tenant.tenant_id,
-        FullName.new(
-          command.first_name,
-          command.last_name
+        tenant_id: tenant.tenant_id,
+        name: FullName.new(
+          first_name: command.first_name,
+          last_name: command.last_name
         ),
-        ContactInformation.new(
-          EmailAddress.new(command.email_address),
-          PostalAddress.new(
-            command.address_street_address,
-            command.address_city,
-            command.address_state_province,
-            command.address_postal_code,
-            command.address_country_code,
+        contact_information: ContactInformation.new(
+          email_address: EmailAddress.new(command.email_address),
+          postal_address: PostalAddress.new(
+            street_address: command.address_street_address,
+            city: command.address_city,
+            state_province: command.address_state_province,
+            postal_code: command.address_postal_code,
+            country_code: command.address_country_code,
           ),
           primary_phone: PhoneNumber.new(command.primary_phone),
           secondary_phone: PhoneNumber.new(command.secondary_phone)

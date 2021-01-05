@@ -3,7 +3,7 @@ class ContactInformation
 
   attr_reader :email_address, :postal_address, :primary_phone, :secondary_phone
 
-  def initialize(email_address, postal_address, primary_phone, secondary_phone)
+  def initialize(email_address:, postal_address:, primary_phone:, secondary_phone:)
     self.email_address = email_address
     self.postal_address = postal_address
     self.primary_phone = primary_phone
@@ -12,37 +12,37 @@ class ContactInformation
 
   def change_email_address(email_address)
     self.class.new(
-      email_address,
-      postal_address,
-      primary_phone,
-      secondary_phone
+      email_address: email_address,
+      postal_address: postal_address,
+      primary_phone: primary_phone,
+      secondary_phone: secondary_phone
     )
   end
 
   def change_postal_address(postal_address)
     self.class.new(
-      email_address,
-      postal_address,
-      primary_phone,
-      secondary_phone
+      email_address: email_address,
+      postal_address: postal_address,
+      primary_phone: primary_phone,
+      secondary_phone: secondary_phone
     )
   end
 
   def change_primary_phone(primary_phone)
     self.class.new(
-      email_address,
-      postal_address,
-      primary_phone,
-      secondary_phone
+      email_address: email_address,
+      postal_address: postal_address,
+      primary_phone: primary_phone,
+      secondary_phone: secondary_phone
     )
   end
 
   def change_secondary_phone(secondary_phone)
     self.class.new(
-      email_address,
-      postal_address,
-      primary_phone,
-      secondary_phone
+      email_address: email_address,
+      postal_address: postal_address,
+      primary_phone: primary_phone,
+      secondary_phone: secondary_phone
     )
   end
 

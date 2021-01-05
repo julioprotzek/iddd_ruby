@@ -2,21 +2,21 @@ require './test/domain/identity_access_test'
 
 class ContactInformationTest < IdentityAccessTest
   FIXTURE_POSTAL_ADDRESS = PostalAddress.new(
-    '123 Pearl Street',
-    'Boulder',
-    'CO',
-    '80301',
-    'US'
+    street_address: '123 Pearl Street',
+    city: 'Boulder',
+    state_province: 'CO',
+    postal_code: '80301',
+    country_code: 'US'
   )
 
   test 'valid contact information' do
     assert_equal EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS), contact_information.email_address
     assert_equal PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     ), contact_information.postal_address
 
     assert_equal PhoneNumber.new('303-555-1210'), contact_information.primary_phone
@@ -36,18 +36,18 @@ class ContactInformationTest < IdentityAccessTest
 
   test 'change postal address' do
     changed_contact_information = contact_information.change_postal_address(PostalAddress.new(
-      '555 Other Street',
-      'Boulder',
-      'CO',
-      '80602',
-      'US'
+      street_address: '555 Other Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80602',
+      country_code: 'US'
     ))
     assert_equal PostalAddress.new(
-      '555 Other Street',
-      'Boulder',
-      'CO',
-      '80602',
-      'US'
+      street_address: '555 Other Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80602',
+      country_code: 'US'
     ), changed_contact_information.postal_address
   end
 
@@ -63,60 +63,59 @@ class ContactInformationTest < IdentityAccessTest
 
   test 'equality' do
     assert_equal ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
-      EmailAddress.new('john@example.com'),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new('john@example.com'),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      PostalAddress.new(
-        '333 Other Street',
-        'Boulder',
-        'CO',
-        '80301',
-        'US'
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: PostalAddress.new(
+        street_address: '333 Other Street',
+        city: 'Boulder',
+        state_province: 'CO',
+        postal_code: '80301',
+        country_code: 'US'
       ),
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     ), ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('(555) 000-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('(555) 000-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     )
 
     assert_not_equal ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('(555) 777-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('(555) 777-1212')
     ), ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      FIXTURE_POSTAL_ADDRESS,
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('303-555-1212')
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: FIXTURE_POSTAL_ADDRESS,
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('303-555-1212')
     )
   end
-
 
   def assert_validates_presence(attr_name, error_message:)
     args = {
@@ -129,7 +128,7 @@ class ContactInformationTest < IdentityAccessTest
     args[attr_name] = nil
 
     error = assert_raises ArgumentError do
-      ContactInformation.new(*args.values)
+      ContactInformation.new(args)
     end
 
     assert_equal error.message, error_message

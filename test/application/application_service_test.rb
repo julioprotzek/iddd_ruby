@@ -43,14 +43,17 @@ class ApplicationServiceTest < ActiveSupport::TestCase
       .provision_tenant(
         name: FIXTURE_TENANT_NAME,
         description: FIXTURE_TENANT_DESCRIPTION,
-        administrator_name: FullName.new('John', 'Doe'),
+        administrator_name: FullName.new(
+          first_name: 'John',
+          last_name: 'Doe'
+        ),
         email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
         postal_address: PostalAddress.new(
-          '123 Pearl Street',
-          'Boulder',
-          'CO',
-          '80301',
-          'US'
+          street_address: '123 Pearl Street',
+          city: 'Boulder',
+          state_province: 'CO',
+          postal_code: '80301',
+          country_code: 'US'
         ),
         primary_phone: PhoneNumber.new('303-555-1210'),
         secondary_phone: PhoneNumber.new('777-123-1011')
@@ -67,19 +70,22 @@ class ApplicationServiceTest < ActiveSupport::TestCase
       password: FIXTURE_PASSWORD,
       enablement: Enablement.indefinite_enablement,
       person: Person.new(
-        tenant.tenant_id,
-        FullName.new('John', 'Doe'),
-        ContactInformation.new(
-          EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-          PostalAddress.new(
-            '123 Pearl Street',
-            'Boulder',
-            'CO',
-            '80301',
-            'US'
+        tenant_id: tenant.tenant_id,
+        name: FullName.new(
+          first_name: 'John',
+          last_name: 'Doe'
+        ),
+        contact_information: ContactInformation.new(
+          email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+          postal_address: PostalAddress.new(
+            street_address: '123 Pearl Street',
+            city: 'Boulder',
+            state_province: 'CO',
+            postal_code: '80301',
+            country_code: 'US'
           ),
-          PhoneNumber.new('303-555-1210'),
-          PhoneNumber.new('777-123-1011')
+          primary_phone: PhoneNumber.new('303-555-1210'),
+          secondary_phone: PhoneNumber.new('777-123-1011')
         )
       )
     )

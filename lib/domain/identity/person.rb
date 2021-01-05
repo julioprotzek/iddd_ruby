@@ -3,7 +3,7 @@ class Person
 
   attr_reader :name, :contact_information
 
-  def initialize(tenant_id, name, contact_information)
+  def initialize(tenant_id:, name:, contact_information:)
     self.tenant_id = tenant_id
     self.name = name
     self.contact_information = contact_information
@@ -53,6 +53,11 @@ class Person
   def tenant_id=(tenant_id)
     assert_presence(tenant_id, 'The tenant id is required')
     @tenant_id = tenant_id
+  end
+
+  def as_json(defaults = {})
+    options = defaults.merge({ except: 'user' })
+    super(options)
   end
 
   private

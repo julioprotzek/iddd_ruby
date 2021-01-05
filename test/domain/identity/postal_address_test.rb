@@ -3,11 +3,11 @@ require './test/test_helper'
 class PostalAddressTest < ActiveSupport::TestCase
   test 'valid post address' do
     postal_address = PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     )
 
     assert_equal '123 Pearl Street', postal_address.street_address
@@ -36,73 +36,73 @@ class PostalAddressTest < ActiveSupport::TestCase
 
   test 'equality' do
     assert_equal PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     ), PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     )
 
     assert_not_equal PostalAddress.new(
-      '333 Other Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '333 Other Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     ), PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     )
 
     assert_not_equal PostalAddress.new(
-      '123 Pearl Street',
-      'Other City',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Other City',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     ), PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     )
 
     assert_not_equal PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'SF',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'SF',
+      postal_code: '80301',
+      country_code: 'US'
     ), PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'US'
     )
 
     assert_not_equal PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '77777',
-      'US'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '77777',
+      country_code: 'US'
     ), PostalAddress.new(
-      '123 Pearl Street',
-      'Boulder',
-      'CO',
-      '80301',
-      'GE'
+      street_address: '123 Pearl Street',
+      city: 'Boulder',
+      state_province: 'CO',
+      postal_code: '80301',
+      country_code: 'GE'
     )
   end
 
@@ -118,7 +118,7 @@ class PostalAddressTest < ActiveSupport::TestCase
     args[attr_name] = ''
 
     error = assert_raises ArgumentError do
-      PostalAddress.new(*args.values)
+      PostalAddress.new(args)
     end
 
     assert_equal error.message, error_message
@@ -135,7 +135,7 @@ class PostalAddressTest < ActiveSupport::TestCase
     args[attr_name] = args[attr_name] + ('o' * max)
 
     error = assert_raises ArgumentError do
-      PostalAddress.new(*args.values)
+      PostalAddress.new(args)
     end
 
     assert_equal error.message, error_message

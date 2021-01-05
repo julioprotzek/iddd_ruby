@@ -7,7 +7,7 @@ class UserTest < IdentityAccessTest
 
     DomainEventPublisher.subscribe(UserRegistered) do |domain_event|
       assert_equal FIXTURE_USERNAME, domain_event.username
-      assert_equal 'Zoe Doe', domain_event.name.as_formatted_name
+      assert_equal 'John Doe', domain_event.name.as_formatted_name
       assert_equal FIXTURE_USER_EMAIL_ADDRESS, domain_event.email_address.address
       handled = true
     end
@@ -155,7 +155,10 @@ class UserTest < IdentityAccessTest
       handled = true
     end
 
-    user.change_person_name(FullName.new('Zoe', 'Jones-Doe'))
+    user.change_person_name(FullName.new(
+      first_name: 'Zoe',
+      last_name: 'Jones-Doe'
+    ))
     assert_equal 'Jones-Doe', user.person.name.last_name
 
     assert handled

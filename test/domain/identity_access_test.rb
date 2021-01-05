@@ -16,47 +16,53 @@ class IdentityAccessTest < ActiveSupport::TestCase
 
   def contact_information
     ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
-      PostalAddress.new(
-        '123 Pearl Street',
-        'Boulder',
-        'CO',
-        '80301',
-        'US'
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS),
+      postal_address: PostalAddress.new(
+        street_address: '123 Pearl Street',
+        city: 'Boulder',
+        state_province: 'CO',
+        postal_code: '80301',
+        country_code: 'US'
       ),
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('777-123-1011')
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('777-123-1011')
     )
   end
 
   def contact_information_2
     ContactInformation.new(
-      EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS_2),
-      PostalAddress.new(
-        '123 Pearl Street',
-        'Boulder',
-        'CO',
-        '80301',
-        'US'
+      email_address: EmailAddress.new(FIXTURE_USER_EMAIL_ADDRESS_2),
+      postal_address: PostalAddress.new(
+        street_address: '123 Pearl Street',
+        city: 'Boulder',
+        state_province: 'CO',
+        postal_code: '80301',
+        country_code: 'US'
       ),
-      PhoneNumber.new('303-555-1210'),
-      PhoneNumber.new('777-123-1011')
+      primary_phone: PhoneNumber.new('303-555-1210'),
+      secondary_phone: PhoneNumber.new('777-123-1011')
     )
   end
 
   def person_entity_for(tenant)
     Person.new(
-      tenant.tenant_id,
-      FullName.new('Zoe', 'Doe'),
-      contact_information
+      tenant_id: tenant.tenant_id,
+      name: FullName.new(
+        first_name: 'John',
+        last_name: 'Doe'
+      ),
+      contact_information: contact_information
     )
   end
 
   def person_entity_2_for(tenant)
     Person.new(
-      tenant.tenant_id,
-      FullName.new('Zoe', 'Doe'),
-      contact_information_2
+      tenant_id: tenant.tenant_id,
+      name: FullName.new(
+        first_name: 'John',
+        last_name: 'Doe'
+      ),
+      contact_information: contact_information_2
     )
   end
 

@@ -36,13 +36,13 @@ class TenantProvisionService
       password: strong_password,
       enablement: Enablement.indefinite_enablement,
       person: Person.new(
-        tenant.tenant_id,
-        administrator_name,
-        ContactInformation.new(
-          email_address,
-          postal_address,
-          primary_phone,
-          secondary_phone
+        tenant_id: tenant.tenant_id,
+        name: administrator_name,
+        contact_information: ContactInformation.new(
+          email_address: email_address,
+          postal_address: postal_address,
+          primary_phone: primary_phone,
+          secondary_phone: secondary_phone
         )
       )
     )

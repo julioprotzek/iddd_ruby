@@ -3,7 +3,7 @@ class PostalAddress
 
   attr_reader :street_address, :city, :state_province, :postal_code, :country_code
 
-  def initialize(street_address, city, state_province, postal_code, country_code)
+  def initialize(street_address:, city:, state_province:, postal_code:, country_code:)
     self.street_address = street_address
     self.city = city
     self.state_province = state_province
