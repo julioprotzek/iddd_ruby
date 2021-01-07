@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.boolean :enablement_enabled
       t.date :enablement_start_at
       t.date :enablement_end_at
-      t.string :password
+      t.string :password_hash
       t.string :username
       t.timestamps
     end

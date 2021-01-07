@@ -1,6 +1,6 @@
 require './test/test_helper'
 
-class PostalAddressTest < ActiveSupport::TestCase
+class PostalAddressTest < IdentityAccessTest
   test 'valid post address' do
     postal_address = PostalAddress.new(
       street_address: '123 Pearl Street',

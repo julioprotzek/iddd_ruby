@@ -5,6 +5,7 @@ class InMemoryGroupRepositoryTest < IdentityAccessTest
   extend GroupRepositorySharedTests
 
   setup do
+    # Ensure correct subject under test (ignores IdentityAccessTest stub config)
     DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
     DomainRegistry.group_repository.clean
   end

@@ -1,6 +1,6 @@
 require './test/test_helper'
 
-class EnablementTest < ActiveSupport::TestCase
+class EnablementTest < IdentityAccessTest
   test 'enabled' do
     enablement = Enablement.new(enabled: true)
     assert enablement.enablement_enabled?

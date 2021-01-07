@@ -55,6 +55,8 @@ class IdentityApplicationService
         secondary_phone: PhoneNumber.new(command.secondary_phone),
       )
     )
+
+    user_repository.add(user)
   end
 
   def change_user_email_address(command)
@@ -66,6 +68,8 @@ class IdentityApplicationService
         .contact_information
         .change_email_address(EmailAddress.new(command.email_address))
     )
+
+    user_repository.add(user)
   end
 
   def change_user_postal_address(command)
@@ -85,6 +89,8 @@ class IdentityApplicationService
           )
         )
     )
+
+    user_repository.add(user)
   end
 
   def change_user_primary_phone(command)
@@ -96,6 +102,8 @@ class IdentityApplicationService
         .contact_information
         .change_primary_phone(PhoneNumber.new(command.phone_number))
     )
+
+    user_repository.add(user)
   end
 
   def change_user_secondary_phone(command)
@@ -107,6 +115,8 @@ class IdentityApplicationService
         .contact_information
         .change_secondary_phone(PhoneNumber.new(command.phone_number))
     )
+
+    user_repository.add(user)
   end
 
   def change_user_password(command)
@@ -115,6 +125,8 @@ class IdentityApplicationService
       from: command.current_password,
       to: command.changed_password
     )
+
+    user_repository.add(user)
   end
 
   def change_user_personal_name(command)
@@ -125,6 +137,8 @@ class IdentityApplicationService
         last_name: command.last_name
       )
     )
+
+    user_repository.add(user)
   end
 
   def define_user_enablement(command)

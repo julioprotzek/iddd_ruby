@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2021_01_05_194531) do
     t.boolean "enablement_enabled"
     t.date "enablement_start_at"
     t.date "enablement_end_at"
-    t.string "password"
+    t.string "password_hash"
     t.string "username"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

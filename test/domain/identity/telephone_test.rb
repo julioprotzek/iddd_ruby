@@ -1,6 +1,6 @@
 require './test/test_helper'
 
-class TelephoneTest < ActiveSupport::TestCase
+class TelephoneTest < IdentityAccessTest
   test 'telephone has number' do
     phone = PhoneNumber.new('333-550-9010')
     assert_equal phone.number, '333-550-9010'

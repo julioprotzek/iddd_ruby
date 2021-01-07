@@ -5,6 +5,7 @@ class ActiveRecordUserRepositoryTest < IdentityAccessTest
   extend UserRepositorySharedTests
 
   setup do
+    # Ensure correct subject under test (ignores IdentityAccessTest stub config)
     DomainRegistry.stubs(:user_repository).returns(ActiveRecord::UserRepository.new)
     DomainRegistry.user_repository.clean
   end

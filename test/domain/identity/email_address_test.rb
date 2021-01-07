@@ -1,6 +1,6 @@
 require './test/test_helper'
 
-class EmailAddressTest < ActiveSupport::TestCase
+class EmailAddressTest < IdentityAccessTest
   test 'email has address' do
     email = EmailAddress.new('zoe@example.com')
     assert_equal email.address, 'zoe@example.com'

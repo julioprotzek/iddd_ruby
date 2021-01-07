@@ -1,8 +1,21 @@
+require 'bcrypt'
+
 class ActiveRecord::UserRepository
   class UserModel < ActiveRecord::Base
+    include BCrypt
     has_one :person, class_name: 'PersonModel', foreign_key: 'user_id', dependent: :delete
     self.table_name = 'users'
+
     validates :username, uniqueness: { scope: :tenant_id_id }
+
+    def password
+      @password ||= Password.new(password_hash)
+    end
+
+    def password=(new_password)
+      @password = new_password
+      self.password_hash = @password
+    end
   end
 
   class PersonModel < ActiveRecord::Base
@@ -46,6 +59,14 @@ class ActiveRecord::UserRepository
     nil
   end
 
+  def user_from_authentic_credentials(tenant_id, username, encrypted_password)
+    record = UserModel.find_by(tenant_id_id: tenant_id.id, username: username)
+
+    if record.present? && record.password == encrypted_password
+      as_aggregate(record)
+    end
+  end
+
   def clean
     UserModel.delete_all
   end
@@ -53,7 +74,7 @@ class ActiveRecord::UserRepository
   private
 
   def as_aggregate(record)
-    User.new(
+    user = User.new(
       tenant_id: TenantId.new(record.tenant_id_id),
       username: record.username,
       password: record.password,
@@ -82,6 +103,8 @@ class ActiveRecord::UserRepository
         )
       )
     )
+    user.internal_access_only_encrypted_password = record.password
+    user
   end
 
   def hash_from_aggregate(user)
@@ -91,6 +114,7 @@ class ActiveRecord::UserRepository
     user_hash[:enablement_start_at] = user_hash[:enablement][:start_at]
     user_hash[:enablement_end_at] = user_hash[:enablement][:end_at]
     user_hash.delete(:enablement)
+    user_hash.delete(:temp)
 
     user_hash[:person][:tenant_id_id] = user_hash[:person].delete(:tenant_id)[:id]
     user_hash[:person][:name_first_name] = user_hash[:person][:name][:first_name]

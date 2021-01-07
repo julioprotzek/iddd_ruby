@@ -1,6 +1,6 @@
 require './test/test_helper'
 
-class FullNameTest < ActiveSupport::TestCase
+class FullNameTest < IdentityAccessTest
   FIRST_NAME = 'Zoe'
   LAST_NAME = 'Doe'
   MARRIED_LAST_NAME = 'Jones-Doe'

@@ -1,6 +1,10 @@
 require './test/resource/abstract_resource_test'
 
 class GroupResourceTest < AbstractResourceTest
+  setup do
+    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
+  end
+
   test 'group' do
     group = group_1_aggregate
     DomainRegistry.group_repository.add(group)

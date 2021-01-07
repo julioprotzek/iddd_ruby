@@ -108,22 +108,6 @@ class UserTest < IdentityAccessTest
     assert_equal 'Current password not confirmed', error.message
   end
 
-  test 'password hashed on construction' do
-    user = user_aggregate
-
-    assert_not_equal FIXTURE_PASSWORD, user.internal_access_only_encrypted_password
-  end
-
-  test 'password hashed on change' do
-    user = user_aggregate
-
-    strong_password = DomainRegistry.password_service.generate_strong_password
-    user.change_password(from: FIXTURE_PASSWORD, to: strong_password)
-
-    assert_not_equal FIXTURE_PASSWORD, user.internal_access_only_encrypted_password
-    assert_not_equal strong_password, user.internal_access_only_encrypted_password
-  end
-
   test 'user person contact information changed' do
     user = user_aggregate
     assert_equal FIXTURE_USER_EMAIL_ADDRESS, user.person.email_address.address

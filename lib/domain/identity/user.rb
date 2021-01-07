@@ -11,6 +11,7 @@ class User
     self.password = password
     self.enablement = enablement
     self.person = person
+
     DomainEventPublisher.publish(
       UserRegistered.new(
         username: username,
@@ -79,6 +80,11 @@ class User
     @password
   end
 
+  def internal_access_only_encrypted_password=(encrypted_password)
+    assert_presence(encrypted_password, 'The password is required.')
+    @password = encrypted_password
+  end
+
   def as_member
     GroupMember.new(
       tenant_id: tenant_id,
@@ -112,7 +118,7 @@ class User
   def protect_password(plain_text_password)
     assert_passwod_not_weak(plain_text_password, 'The password must be stronger.')
     assert_not_equal(plain_text_password, username, 'Username and password must not be the same.')
-
+    @temp = plain_text_password
     encrypt(plain_text_password)
   end
 

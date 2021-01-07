@@ -99,6 +99,7 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.user_repository.add(user)
 
     group_b.add_user(user)
+    DomainRegistry.group_repository.add(group_b)
 
     assert group_b.member?(user, DomainRegistry.group_member_service)
     assert group_a.member?(user, DomainRegistry.group_member_service)
@@ -136,7 +137,10 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.group_repository.add(group_c)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
+    DomainRegistry.group_repository.add(group_a)
+
     group_b.add_group(group_c, DomainRegistry.group_member_service)
+    DomainRegistry.group_repository.add(group_b)
 
     error = assert_raise StandardError do
       group_c.add_group(group_a, DomainRegistry.group_member_service)

@@ -41,6 +41,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.role_repository.add(manager_role)
 
     managers_group.add_user(user)
+    DomainRegistry.group_repository.add(managers_group)
 
     assert managers_group.member?(user, DomainRegistry.group_member_service)
     assert manager_role.in_role?(user, DomainRegistry.group_member_service)

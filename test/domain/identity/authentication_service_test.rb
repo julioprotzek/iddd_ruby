@@ -1,10 +1,6 @@
 require './test/domain/identity_access_test'
 
 class AuthenticationServiceTest < IdentityAccessTest
-  setup do
-    DomainRegistry.user_repository.clean
-  end
-
   test 'authentication success' do
     user = user_aggregate
 

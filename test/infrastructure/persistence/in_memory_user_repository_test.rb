@@ -5,6 +5,7 @@ class InMemoryUserRepositoryTest < IdentityAccessTest
   extend UserRepositorySharedTests
 
   setup do
+    # Ensure correct subject under test (ignores IdentityAccessTest stub config)
     DomainRegistry.stubs(:user_repository).returns(InMemory::UserRepository.new)
     DomainRegistry.user_repository.clean
   end

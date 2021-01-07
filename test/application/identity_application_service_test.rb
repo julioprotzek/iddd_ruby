@@ -1,11 +1,6 @@
 require './test/application/application_service_test'
 
 class IdentityApplicationServiceTest < ApplicationServiceTest
-  setup do
-    # DomainRegistry.stubs(:group_repository).returns(ActiveRecord::GroupRepository.new)
-    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
-  end
-
   test 'activate tenant' do
     tenant = tenant_aggregate
     tenant.deactivate
@@ -87,8 +82,8 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
       )
     )
 
-    assert_not_nil user_descriptor
-    assert_equal user_descriptor.username, user.username
+    refute_nil user_descriptor
+    assert_equal user.username, user_descriptor.username
   end
 
   test 'deactivate tenant' do

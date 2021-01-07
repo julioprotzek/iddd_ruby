@@ -40,19 +40,23 @@ class DomainRegistry
     end
 
     def tenant_repository
+      # TODO Implement ActiveRecord Repository
+      # @@tenant_repository ||= ActiveRecord::TenantRepository.new
       @@tenant_repository ||= InMemory::TenantRepository.new
     end
 
     def user_repository
-      @@user_repository ||= InMemory::UserRepository.new
+      @@user_repository ||= ActiveRecord::UserRepository.new
     end
 
     def role_repository
+      # TODO Implement ActiveRecord Repository
+      # @@role_repository ||= ActiveRecord::RoleRepository.new
       @@role_repository ||= InMemory::RoleRepository.new
     end
 
     def group_repository
-      ActiveRecord::GroupRepository.new
+      @@group_repository ||= ActiveRecord::GroupRepository.new
     end
   end
 end

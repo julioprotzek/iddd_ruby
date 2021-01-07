@@ -26,13 +26,14 @@ class InMemory::UserRepository
   end
 
   def user_from_authentic_credentials(tenant_id, username, encrypted_password)
-    @repository
+    user = @repository
       .values
       .find do |user|
         tenant_id == user.tenant_id &&
-        username == user.username &&
-        user.internal_access_only_encrypted_password == encrypted_password
+        username == user.username
       end
+
+    return user if user&.internal_access_only_encrypted_password == encrypted_password
   end
 
   def find_by(tenant_id:, username:)
