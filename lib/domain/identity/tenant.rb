@@ -142,6 +142,16 @@ class Tenant
     registration_invitations.delete(invitation)
   end
 
+  def ==(other)
+    self.class == other.class &&
+    self.tenant_id == other.tenant_id &&
+    self.name == other.name
+  end
+
+  def registration_invitations=(registration_invitations)
+    @registration_invitations = Set.new(registration_invitations)
+  end
+
   private
 
   def find_invitation_by_indentifier(invitation_identifier)

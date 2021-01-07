@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_05_194531) do
+ActiveRecord::Schema.define(version: 2021_01_07_183038) do
 
   create_table "group_members", force: :cascade do |t|
     t.string "tenant_id_id"
@@ -50,6 +50,29 @@ ActiveRecord::Schema.define(version: 2021_01_05_194531) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tenant_id_id"], name: "index_persons_on_tenant_id_id"
     t.index ["user_id"], name: "index_persons_on_user_id"
+  end
+
+  create_table "registration_invitations", force: :cascade do |t|
+    t.string "tenant_id_id"
+    t.text "description"
+    t.string "invitation_id"
+    t.date "starts_at"
+    t.date "ends_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "tenant_id"
+    t.index ["tenant_id"], name: "index_registration_invitations_on_tenant_id"
+    t.index ["tenant_id_id"], name: "index_registration_invitations_on_tenant_id_id"
+  end
+
+  create_table "tenants", force: :cascade do |t|
+    t.string "tenant_id_id"
+    t.boolean "active"
+    t.text "description"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tenant_id_id"], name: "index_tenants_on_tenant_id_id"
   end
 
   create_table "users", force: :cascade do |t|

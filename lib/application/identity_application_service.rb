@@ -10,6 +10,8 @@ class IdentityApplicationService
   def activate_tenant(command)
     tenant = existing_tenant(command.tenant_id)
     tenant.activate
+
+    tenant_repository.add(tenant)
   end
 
   def add_group_to_group(command)
@@ -37,6 +39,8 @@ class IdentityApplicationService
   def deactivate_tenant(command)
     tenant = existing_tenant(command.tenant_id)
     tenant.deactivate
+
+    tenant_repository.add(tenant)
   end
 
   def change_user_contact_information(command)

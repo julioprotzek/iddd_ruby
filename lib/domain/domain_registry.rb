@@ -40,9 +40,7 @@ class DomainRegistry
     end
 
     def tenant_repository
-      # TODO Implement ActiveRecord Repository
-      # @@tenant_repository ||= ActiveRecord::TenantRepository.new
-      @@tenant_repository ||= InMemory::TenantRepository.new
+      @@tenant_repository ||= ActiveRecord::TenantRepository.new
     end
 
     def user_repository
