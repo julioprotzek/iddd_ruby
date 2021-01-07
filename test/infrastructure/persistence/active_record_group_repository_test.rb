@@ -10,5 +10,5 @@ class ActiveRecordGroupRepositoryTest < IdentityAccessTest
     DomainRegistry.group_repository.clean
   end
 
-  it_behaves_like_a_group_repostiory
+  it_behaves_like_a_group_repository
 end

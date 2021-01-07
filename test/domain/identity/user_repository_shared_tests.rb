@@ -1,5 +1,5 @@
 module UserRepositorySharedTests
-  def it_behaves_like_a_user_repostiory
+  def it_behaves_like_a_user_repository
     test 'add user and find by username' do
       user = user_aggregate
 

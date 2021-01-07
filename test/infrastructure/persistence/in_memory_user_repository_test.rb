@@ -10,5 +10,5 @@ class InMemoryUserRepositoryTest < IdentityAccessTest
     DomainRegistry.user_repository.clean
   end
 
-  it_behaves_like_a_user_repostiory
+  it_behaves_like_a_user_repository
 end
