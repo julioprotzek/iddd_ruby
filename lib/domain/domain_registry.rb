@@ -48,9 +48,7 @@ class DomainRegistry
     end
 
     def role_repository
-      # TODO Implement ActiveRecord Repository
-      # @@role_repository ||= ActiveRecord::RoleRepository.new
-      @@role_repository ||= InMemory::RoleRepository.new
+      @@role_repository ||= ActiveRecord::RoleRepository.new
     end
 
     def group_repository

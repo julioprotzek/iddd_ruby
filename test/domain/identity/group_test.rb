@@ -156,13 +156,13 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.group_repository.add(group_a)
 
     role_a = tenant.provision_role(name: 'RoleA', description: 'A role of A.')
-    DomainRegistry.role_repository.add(role_a)
+    DomainRegistry.role_repository.create(role_a)
 
     role_b = tenant.provision_role(name: 'RoleB', description: 'A role of B.')
-    DomainRegistry.role_repository.add(role_b)
+    DomainRegistry.role_repository.create(role_b)
 
     role_c = tenant.provision_role(name: 'RoleC', description: 'A role of C.')
-    DomainRegistry.role_repository.add(role_c)
+    DomainRegistry.role_repository.create(role_c)
 
     groups = DomainRegistry.group_repository.all_groups(tenant.tenant_id)
 

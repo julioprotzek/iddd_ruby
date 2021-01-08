@@ -6,7 +6,7 @@ class AccessApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.user_repository.add(user)
 
     role = role_aggregate
-    DomainRegistry.role_repository.add(role)
+    DomainRegistry.role_repository.create(role)
 
     assert !role.in_role?(user, DomainRegistry.group_member_service)
 
@@ -18,6 +18,8 @@ class AccessApplicationServiceTest < ApplicationServiceTest
       )
     )
 
+    role = DomainRegistry.role_repository.reload(role)
+
     assert role.in_role?(user, DomainRegistry.group_member_service)
   end
 
@@ -26,7 +28,7 @@ class AccessApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.user_repository.add(user)
 
     role = role_aggregate
-    DomainRegistry.role_repository.add(role)
+    DomainRegistry.role_repository.create(role)
 
     assert !ApplicationServiceRegistry.access_application_service.user_in_role?(
       tenant_id: user.tenant_id.id,
@@ -54,7 +56,7 @@ class AccessApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.user_repository.add(user)
 
     role = role_aggregate
-    DomainRegistry.role_repository.add(role)
+    DomainRegistry.role_repository.create(role)
 
 
     user_not_in_role = ApplicationServiceRegistry.access_application_service.user_in_role(

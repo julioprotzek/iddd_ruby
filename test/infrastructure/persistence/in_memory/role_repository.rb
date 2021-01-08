@@ -3,10 +3,14 @@ class InMemory::RoleRepository
     @repository = {}
   end
 
-  def add(role)
+  def create(role)
     key = key_of(role)
-    raise StandardError, 'Duplicate Key' if @repository.key?(key)
+    raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key)
     @repository[key] = role
+  end
+
+  def update(role)
+    @repository[key_of(role)] = role
   end
 
   def all_roles(tenant_id)
@@ -23,6 +27,10 @@ class InMemory::RoleRepository
 
   def clean
     @repository.clear
+  end
+
+  def reload(role)
+    @repository[key_of(role)]
   end
 
   private

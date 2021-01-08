@@ -9,7 +9,7 @@ class AuthorizationServiceTest < IdentityAccessTest
 
     manager_role.assign_user(user)
 
-    DomainRegistry.role_repository.add(manager_role)
+    DomainRegistry.role_repository.create(manager_role)
 
     is_authorized = DomainRegistry.authorization_service.user_in_role?(user, 'Manager')
     assert is_authorized
@@ -26,7 +26,7 @@ class AuthorizationServiceTest < IdentityAccessTest
 
     manager_role.assign_user(user)
 
-    DomainRegistry.role_repository.add(manager_role)
+    DomainRegistry.role_repository.create(manager_role)
 
     is_authorized = DomainRegistry.authorization_service.username_in_role?(tenant.tenant_id, user.username, 'Manager')
     assert is_authorized

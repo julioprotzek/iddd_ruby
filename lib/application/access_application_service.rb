@@ -13,6 +13,8 @@ class AccessApplicationService
     if user.present?
       role = role_repository.role_named(tenant_id, command.role_name)
       role&.assign_user(user)
+
+      role_repository.update(role)
     end
   end
 
@@ -30,7 +32,7 @@ class AccessApplicationService
       supports_nesting: command.supports_nesting?
     )
 
-    role_repository.add(role)
+    role_repository.create(role)
   end
 
   def user_in_role(tenant_id:, username:, role_name:)

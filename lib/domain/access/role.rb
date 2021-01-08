@@ -90,6 +90,11 @@ class Role
     )
   end
 
+  # used by repository when rehydrating from database
+  def internal_group=(group)
+    @group = group
+  end
+
   private
 
   def create_internal_group
@@ -101,6 +106,7 @@ class Role
       "Role backing group for: #{name}"
     )
   end
+
 
   def tenant_id=(tenant_id)
     assert_presence(tenant_id, 'The tenant id is required')

@@ -55,7 +55,7 @@ class TenantProvisionService
 
     )
     admin_role.assign_user(admin_user)
-    role_repository.add(admin_role)
+    role_repository.create(admin_role)
 
     DomainEventPublisher.publish(
       TenantAdministratorRegistered.new(
