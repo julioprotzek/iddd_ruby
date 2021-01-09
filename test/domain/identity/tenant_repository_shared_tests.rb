@@ -18,7 +18,7 @@ module TenantRepositorySharedTests
         .starting_at(Date.today)
         .ending_at(Date.tomorrow)
 
-      DomainRegistry.tenant_repository.add(tenant)
+      DomainRegistry.tenant_repository.create(tenant)
 
       reloaed_tenant = DomainRegistry.tenant_repository.tenant_of_id(tenant_id)
 

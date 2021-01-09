@@ -4,7 +4,7 @@ class AuthorizationServiceTest < IdentityAccessTest
   test 'user in role authorization' do
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
 
     manager_role.assign_user(user)
@@ -21,7 +21,7 @@ class AuthorizationServiceTest < IdentityAccessTest
   test 'username in role authorization' do
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
 
     manager_role.assign_user(user)

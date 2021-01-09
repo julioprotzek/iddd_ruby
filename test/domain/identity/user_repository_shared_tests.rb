@@ -3,7 +3,7 @@ module UserRepositorySharedTests
     test 'add user and find by username' do
       user = user_aggregate
 
-      DomainRegistry.user_repository.add(user)
+      DomainRegistry.user_repository.create(user)
 
       assert_not_nil DomainRegistry.user_repository.find_by(tenant_id: user.tenant_id, username: user.username)
     end
@@ -11,7 +11,7 @@ module UserRepositorySharedTests
     test 'remove user' do
       user = user_aggregate
 
-      DomainRegistry.user_repository.add(user)
+      DomainRegistry.user_repository.create(user)
 
       assert_not_nil DomainRegistry.user_repository.find_by(tenant_id: user.tenant_id, username: user.username)
 
@@ -22,10 +22,10 @@ module UserRepositorySharedTests
 
     test 'find similar named users' do
       user = user_aggregate
-      DomainRegistry.user_repository.add(user)
+      DomainRegistry.user_repository.create(user)
 
       user2 = user_aggregate_2
-      DomainRegistry.user_repository.add(user2)
+      DomainRegistry.user_repository.create(user2)
 
       name = user.person.name
 

@@ -11,17 +11,17 @@ class ActiveRecord::GroupRepository
   end
 
   def add(group)
+    as_aggregate GroupModel.create!(hash_from_aggregate(group))
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
+  end
+
+  def update(group)
     record = find_record_for(group)
-
-    if record.present?
-      record.update(hash_from_aggregate(group))
-    else
-      record = GroupModel.create!(hash_from_aggregate(group))
-    end
-
+    record.update(hash_from_aggregate(group))
     as_aggregate(record)
-  rescue
-    raise StandardError, 'Group is not unique.'
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
   end
 
   def all_groups(tenant_id)

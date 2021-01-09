@@ -4,7 +4,7 @@ module GroupRepositorySharedTests
       tenant = tenant_aggregate
       group_a = tenant.provision_group(name: 'GroupA', description: 'A group member A.')
       user = user_aggregate
-      DomainRegistry.user_repository.add(user)
+      DomainRegistry.user_repository.create(user)
       group_a.add_user(user)
       DomainRegistry.group_repository.add(group_a)
 
@@ -44,15 +44,15 @@ module GroupRepositorySharedTests
 
 
       group_a.add_group(group_b, DomainRegistry.group_member_service)
-      DomainRegistry.group_repository.add(group_a)
+      DomainRegistry.group_repository.update(group_a)
 
       group_b.add_group(group_c, DomainRegistry.group_member_service)
-      DomainRegistry.group_repository.add(group_b)
+      DomainRegistry.group_repository.update(group_b)
 
       user = user_aggregate
-      DomainRegistry.user_repository.add(user)
+      DomainRegistry.user_repository.create(user)
       group_c.add_user(user)
-      DomainRegistry.group_repository.add(group_c)
+      DomainRegistry.group_repository.update(group_c)
 
       group_a = DomainRegistry.group_repository.reload(group_a)
       group_b = DomainRegistry.group_repository.reload(group_b)

@@ -31,7 +31,7 @@ class RoleTest < IdentityAccessTest
   test 'user is in role' do
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
@@ -41,7 +41,7 @@ class RoleTest < IdentityAccessTest
     DomainRegistry.role_repository.create(manager_role)
 
     managers_group.add_user(user)
-    DomainRegistry.group_repository.add(managers_group)
+    DomainRegistry.group_repository.update(managers_group)
 
     assert managers_group.member?(user, DomainRegistry.group_member_service)
     assert manager_role.in_role?(user, DomainRegistry.group_member_service)
@@ -50,7 +50,7 @@ class RoleTest < IdentityAccessTest
   test 'user is not in role' do
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
@@ -85,7 +85,7 @@ class RoleTest < IdentityAccessTest
 
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
@@ -108,7 +108,7 @@ class RoleTest < IdentityAccessTest
 
     tenant = tenant_aggregate
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')

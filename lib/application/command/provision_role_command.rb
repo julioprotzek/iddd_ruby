@@ -1,14 +1,14 @@
 class ProvisionRoleCommand
-  attr_accessor :tenant_id, :name, :description, :supports_nesting
+  attr_accessor :tenant_id, :role_name, :role_description, :role_supports_nesting
 
-  def initialize(tenant_id:, name:, description:, supports_nesting:)
+  def initialize(tenant_id:, role_name:, role_description:, role_supports_nesting:)
     @tenant_id = tenant_id
-    @name = name
-    @description = description
-    @supports_nesting = supports_nesting
+    @role_name = role_name
+    @role_description = role_description
+    @role_supports_nesting = role_supports_nesting
   end
 
-  def supports_nesting?
-    @supports_nesting == true
+  def role_supports_nesting?
+    @role_supports_nesting == true
   end
 end

@@ -13,10 +13,10 @@ class IdentityAccessTest < ActiveSupport::TestCase
     DomainEventPublisher.reset
 
     # Comment stubs to test database active record repositories
-    # DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
-    # DomainRegistry.stubs(:user_repository).returns(InMemory::UserRepository.new)
-    # DomainRegistry.stubs(:tenant_repository).returns(InMemory::TenantRepository.new)
-    # DomainRegistry.stubs(:role_repository).returns(InMemory::RoleRepository.new)
+    DomainRegistry.stubs(:group_repository).returns(InMemory::GroupRepository.new)
+    DomainRegistry.stubs(:user_repository).returns(InMemory::UserRepository.new)
+    DomainRegistry.stubs(:tenant_repository).returns(InMemory::TenantRepository.new)
+    DomainRegistry.stubs(:role_repository).returns(InMemory::RoleRepository.new)
 
     DomainRegistry.group_repository.clean
     DomainRegistry.user_repository.clean
@@ -96,7 +96,7 @@ class IdentityAccessTest < ActiveSupport::TestCase
         active: true
       )
 
-      DomainRegistry.tenant_repository.add(tenant)
+      DomainRegistry.tenant_repository.create(tenant)
 
       tenant
     end

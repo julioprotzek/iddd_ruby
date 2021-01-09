@@ -11,7 +11,7 @@ class IdentityApplicationService
     tenant = existing_tenant(command.tenant_id)
     tenant.activate
 
-    tenant_repository.add(tenant)
+    tenant_repository.update(tenant)
   end
 
   def add_group_to_group(command)
@@ -20,7 +20,7 @@ class IdentityApplicationService
 
     parent_group.add_group(child_group, group_member_service)
 
-    group_repository.add(parent_group)
+    group_repository.update(parent_group)
   end
 
   def add_user_to_group(command)
@@ -29,7 +29,7 @@ class IdentityApplicationService
 
     group.add_user(user)
 
-    group_repository.add(group)
+    group_repository.update(group)
   end
 
   def authenticate_user(command)
@@ -40,7 +40,7 @@ class IdentityApplicationService
     tenant = existing_tenant(command.tenant_id)
     tenant.deactivate
 
-    tenant_repository.add(tenant)
+    tenant_repository.update(tenant)
   end
 
   def change_user_contact_information(command)
@@ -60,7 +60,7 @@ class IdentityApplicationService
       )
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_email_address(command)
@@ -73,7 +73,7 @@ class IdentityApplicationService
         .change_email_address(EmailAddress.new(command.email_address))
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_postal_address(command)
@@ -94,7 +94,7 @@ class IdentityApplicationService
         )
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_primary_phone(command)
@@ -107,7 +107,7 @@ class IdentityApplicationService
         .change_primary_phone(PhoneNumber.new(command.phone_number))
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_secondary_phone(command)
@@ -120,7 +120,7 @@ class IdentityApplicationService
         .change_secondary_phone(PhoneNumber.new(command.phone_number))
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_password(command)
@@ -130,7 +130,7 @@ class IdentityApplicationService
       to: command.changed_password
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def change_user_personal_name(command)
@@ -142,7 +142,7 @@ class IdentityApplicationService
       )
     )
 
-    user_repository.add(user)
+    user_repository.update(user)
   end
 
   def define_user_enablement(command)
@@ -176,7 +176,7 @@ class IdentityApplicationService
   end
 
   def provision_tenant(command)
-    tenant_provisioning_service.provision_tenant(
+    tenant_provision_service.provision_tenant(
       name: command.tenant_name,
       description: command.tenant_description,
       administrator_name: FullName.new(
@@ -192,8 +192,15 @@ class IdentityApplicationService
         country_code: command.address_country_code,
       ),
       primary_phone: PhoneNumber.new(command.primary_phone),
-      secondary_phone: PhoneNumber.new(command.secondary_phone)
+      secondary_phone: command.secondary_phone.present? ? PhoneNumber.new(command.secondary_phone) : nil
     )
+  end
+
+  def offer_open_ended_registration_invitation(command)
+    tenant = existing_tenant(command.tenant_id)
+    invitation = tenant.offer_registration_invitation(command.description).open_ended
+    tenant_repository.update(tenant)
+    invitation
   end
 
   def register_user(command)
@@ -223,13 +230,13 @@ class IdentityApplicationService
             country_code: command.address_country_code,
           ),
           primary_phone: PhoneNumber.new(command.primary_phone),
-          secondary_phone: PhoneNumber.new(command.secondary_phone)
+          secondary_phone: command.secondary_phone.present? ? PhoneNumber.new(command.secondary_phone) : nil
         )
       )
     )
 
     if user.present?
-      user_repository.add(user)
+      user_repository.create(user)
     else
       raise StandardError, 'User not registered.'
     end
@@ -243,7 +250,7 @@ class IdentityApplicationService
 
     parent_group.remove_group(child_group)
 
-    group_repository.add(parent_group)
+    group_repository.update(parent_group)
   end
 
   def remove_user_from_group(command)
@@ -252,7 +259,7 @@ class IdentityApplicationService
 
     group.remove_user(user)
 
-    group_repository.add(group)
+    group_repository.update(group)
   end
 
   def tenant(tenant_id)

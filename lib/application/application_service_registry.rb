@@ -5,7 +5,8 @@ class ApplicationServiceRegistry
         group_repository: group_repository,
         role_repository: role_repository,
         tenant_repository: tenant_repository,
-        user_repository: user_repository
+        user_repository: user_repository,
+        group_member_service: group_member_service,
       )
     end
 
@@ -45,6 +46,10 @@ class ApplicationServiceRegistry
 
     def group_repository
       DomainRegistry.group_repository
+    end
+
+    def group_member_service
+      DomainRegistry.group_member_service
     end
   end
 end

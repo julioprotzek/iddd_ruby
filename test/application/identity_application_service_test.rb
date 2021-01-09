@@ -46,13 +46,13 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.group_repository.add(child_group)
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     assert_equal 0, parent_group.members.size
     assert_equal 0, child_group.members.size
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
-    parent_group = DomainRegistry.group_repository.add(parent_group)
+    parent_group = DomainRegistry.group_repository.update(parent_group)
 
     ApplicationServiceRegistry.identity_application_service.add_user_to_group(
       AddUserToGroupCommand.new(
@@ -72,7 +72,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'authenticate user' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     user_descriptor = ApplicationServiceRegistry.identity_application_service.authenticate_user(
       AuthenticateUserCommand.new(
@@ -105,7 +105,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user contact information' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_contact_information(
       ChangeContactInfoCommand.new(
@@ -136,7 +136,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user email address' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_email_address(
       ChangeEmailAddressCommand.new(
@@ -156,7 +156,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user postal address' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_postal_address(
       ChangePostalAddressCommand.new(
@@ -181,7 +181,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user primary phone' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_primary_phone(
       ChangePrimaryPhoneCommand.new(
@@ -201,7 +201,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user secondary phone' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_secondary_phone(
       ChangeSecondaryPhoneCommand.new(
@@ -221,7 +221,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user password' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_password(
       ChangeUserPasswordCommand.new(
@@ -246,7 +246,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'change user personal name' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     ApplicationServiceRegistry.identity_application_service.change_user_personal_name(
       ChangeUserPersonalNameCommand.new(
@@ -264,7 +264,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'define user enablement' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     now = Date.today
     future = Date.today + 1000.years
@@ -292,15 +292,15 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.group_repository.add(child_group)
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     assert_equal 0, parent_group.members.size
     assert_equal 0, child_group.members.size
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
-    parent_group = DomainRegistry.group_repository.add(parent_group)
+    parent_group = DomainRegistry.group_repository.update(parent_group)
     child_group.add_user(user)
-    child_group = DomainRegistry.group_repository.add(child_group)
+    child_group = DomainRegistry.group_repository.update(child_group)
 
     assert ApplicationServiceRegistry.identity_application_service.member?(
       tenant_id: parent_group.tenant_id.id,
@@ -323,7 +323,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.group_repository.add(child_group)
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
-    parent_group = DomainRegistry.group_repository.add(parent_group)
+    parent_group = DomainRegistry.group_repository.update(parent_group)
 
     assert_equal 1, parent_group.members.size
 
@@ -347,12 +347,12 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
     DomainRegistry.group_repository.add(child_group)
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
-    parent_group = DomainRegistry.group_repository.add(parent_group)
+    parent_group = DomainRegistry.group_repository.update(parent_group)
     child_group.add_user(user)
-    child_group = DomainRegistry.group_repository.add(child_group)
+    child_group = DomainRegistry.group_repository.update(child_group)
 
     assert_equal 1, parent_group.members.size
     assert_equal 1, child_group.members.size
@@ -388,7 +388,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'query user' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     queried_user = ApplicationServiceRegistry
       .identity_application_service
@@ -400,7 +400,7 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'query user descriptor' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     queried_user_descriptor = ApplicationServiceRegistry
       .identity_application_service

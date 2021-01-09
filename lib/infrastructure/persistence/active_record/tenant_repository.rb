@@ -13,18 +13,18 @@ class ActiveRecord::TenantRepository
     validates :invitation_id, uniqueness: { scope: :tenant_id_id }
   end
 
-  def add(tenant)
+  def create(tenant)
+    as_aggregate TenantModel.create!(hash_from_aggregate(tenant))
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
+  end
+
+  def update(tenant)
     record = find_record_for(tenant)
-
-    if record.present?
-      record.update(hash_from_aggregate(tenant))
-    else
-      record = TenantModel.create!(hash_from_aggregate(tenant))
-    end
-
+    record.update(hash_from_aggregate(tenant))
     as_aggregate(record)
-  # rescue
-  #   raise StandardError, 'Tenant is not unique.'
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
   end
 
   def next_identity
@@ -66,10 +66,12 @@ class ActiveRecord::TenantRepository
         invitation_id: invitation_record.invitation_id,
         description: invitation_record.description
       )
-
+      if invitation_record.starts_at.present? && invitation_record.starts_at.present?
+        invitation
+          .starting_at(invitation_record.starts_at)
+          .ending_at(invitation_record.starts_at)
+      end
       invitation
-        .starting_at(invitation_record.starts_at)
-        .ending_at(invitation_record.starts_at)
     end
 
     tenant

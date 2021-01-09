@@ -4,9 +4,8 @@ class InMemory::RoleRepository
   end
 
   def create(role)
-    key = key_of(role)
-    raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key)
-    @repository[key] = role
+    raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key_of(role))
+    @repository[key_of(role)] = role
   end
 
   def update(role)

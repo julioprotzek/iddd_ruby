@@ -3,7 +3,7 @@ require './test/application/application_service_test'
 class AccessApplicationServiceTest < ApplicationServiceTest
   test 'assign user to role' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     role = role_aggregate
     DomainRegistry.role_repository.create(role)
@@ -25,7 +25,7 @@ class AccessApplicationServiceTest < ApplicationServiceTest
 
   test 'user is in role' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     role = role_aggregate
     DomainRegistry.role_repository.create(role)
@@ -53,7 +53,7 @@ class AccessApplicationServiceTest < ApplicationServiceTest
 
   test 'user in role' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     role = role_aggregate
     DomainRegistry.role_repository.create(role)

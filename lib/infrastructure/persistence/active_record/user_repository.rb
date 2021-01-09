@@ -23,18 +23,18 @@ class ActiveRecord::UserRepository
     self.table_name = 'persons'
   end
 
-  def add(user)
+  def create(user)
+    as_aggregate UserModel.create!(hash_from_aggregate(user))
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
+  end
+
+  def update(user)
     record = find_record_for(user)
-
-    if record.present?
-      record.update(hash_from_aggregate(user))
-    else
-      record = UserModel.create!(hash_from_aggregate(user))
-    end
-
+    record.update(hash_from_aggregate(user))
     as_aggregate(record)
-  rescue
-    raise StandardError, 'User is not unique.'
+  rescue ActiveRecord::RecordInvalid => error
+    raise StandardError, error.message
   end
 
   def find_by(tenant_id:, username:)
@@ -74,6 +74,15 @@ class ActiveRecord::UserRepository
   private
 
   def as_aggregate(record)
+    primary_phone = PhoneNumber.new(record.person.contact_information_primary_phone_number)
+
+    # optional
+    secondary_phone = if record.person.contact_information_secondary_phone_number.present?
+      PhoneNumber.new(record.person.contact_information_secondary_phone_number)
+    else
+      nil
+    end
+
     user = User.new(
       tenant_id: TenantId.new(record.tenant_id_id),
       username: record.username,
@@ -98,8 +107,8 @@ class ActiveRecord::UserRepository
             postal_code: record.person.contact_information_postal_address_postal_code,
             country_code: record.person.contact_information_postal_address_country_code
           ),
-          primary_phone: PhoneNumber.new(record.person.contact_information_primary_phone_number),
-          secondary_phone: PhoneNumber.new(record.person.contact_information_secondary_phone_number)
+          primary_phone: primary_phone,
+          secondary_phone: secondary_phone
         )
       )
     )
@@ -127,7 +136,7 @@ class ActiveRecord::UserRepository
     user_hash[:person][:contact_information_postal_address_state_province] = user_hash[:person][:contact_information][:postal_address][:state_province]
     user_hash[:person][:contact_information_postal_address_street_address] = user_hash[:person][:contact_information][:postal_address][:street_address]
     user_hash[:person][:contact_information_primary_phone_number] = user_hash[:person][:contact_information][:primary_phone][:number]
-    user_hash[:person][:contact_information_secondary_phone_number] = user_hash[:person][:contact_information][:secondary_phone][:number]
+    user_hash[:person][:contact_information_secondary_phone_number] = user_hash.dig(:person, :contact_information, :secondary_phone, :number)
     user_hash[:person].delete(:contact_information)
 
     user_hash[:person] = PersonModel.new(user_hash[:person])

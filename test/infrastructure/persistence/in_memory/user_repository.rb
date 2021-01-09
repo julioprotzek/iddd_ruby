@@ -3,7 +3,12 @@ class InMemory::UserRepository
     @repository = {}
   end
 
-  def add(user)
+  def create(user)
+    raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key_of(user))
+    @repository[key_of(user)] = user
+  end
+
+  def update(user)
     @repository[key_of(user)] = user
   end
 

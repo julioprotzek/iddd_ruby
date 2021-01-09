@@ -36,7 +36,7 @@ class GroupTest < IdentityAccessTest
     tenant = tenant_aggregate
     group_a = tenant.provision_group(name: 'Group A', description: 'A group named GroupA')
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
     group_a.add_user(user)
     DomainRegistry.group_repository.add(group_a)
 
@@ -72,7 +72,7 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.group_repository.add(group_a)
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     group_a.add_user(user)
 
@@ -96,10 +96,10 @@ class GroupTest < IdentityAccessTest
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     group_b.add_user(user)
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.update(group_b)
 
     assert group_b.member?(user, DomainRegistry.group_member_service)
     assert group_a.member?(user, DomainRegistry.group_member_service)
@@ -108,7 +108,7 @@ class GroupTest < IdentityAccessTest
 
   test 'user is not member' do
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     # test alternate creation via constructor
     group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
@@ -126,7 +126,7 @@ class GroupTest < IdentityAccessTest
     DomainEventPublisher.subscribe(GroupGroupAdded){ @group_group_added_count += 1 }
 
     user = user_aggregate
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     # test alternate creation via constructor
     group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
@@ -137,10 +137,10 @@ class GroupTest < IdentityAccessTest
     DomainRegistry.group_repository.add(group_c)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.update(group_a)
 
     group_b.add_group(group_c, DomainRegistry.group_member_service)
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.update(group_b)
 
     error = assert_raise StandardError do
       group_c.add_group(group_a, DomainRegistry.group_member_service)

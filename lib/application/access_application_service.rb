@@ -1,19 +1,19 @@
 class AccessApplicationService
-  def initialize(group_repository:, role_repository:, tenant_repository:, user_repository:)
+  def initialize(group_repository:, role_repository:, tenant_repository:, user_repository:, group_member_service:)
     @group_repository = group_repository
     @role_repository = role_repository
     @tenant_repository = tenant_repository
     @user_repository = user_repository
+    @group_member_service = group_member_service
   end
 
   def assign_user_to_role(command)
     tenant_id = TenantId.new(command.tenant_id)
     user = user_repository.find_by(tenant_id: tenant_id, username: command.username)
+    role = role_repository.role_named(tenant_id, command.role_name)
 
-    if user.present?
-      role = role_repository.role_named(tenant_id, command.role_name)
-      role&.assign_user(user)
-
+    if user.present? && role.present?
+      role.assign_user(user)
       role_repository.update(role)
     end
   end
@@ -29,10 +29,20 @@ class AccessApplicationService
     role = tenant.provision_role(
       name: command.role_name,
       description: command.role_description,
-      supports_nesting: command.supports_nesting?
+      supports_nesting: command.role_supports_nesting?
     )
 
     role_repository.create(role)
+  end
+
+  def assign_group_to_role(command)
+    tenant_id = TenantId.new(command.tenant_id)
+    group = group_repository.group_named(tenant_id, command.group_name)
+    role = role_repository.role_named(tenant_id, command.role_name)
+
+    if group.present? && role.present?
+      role.assign_group(group, group_member_service)
+    end
   end
 
   def user_in_role(tenant_id:, username:, role_name:)
@@ -59,5 +69,5 @@ class AccessApplicationService
 
   private
 
-  attr_reader :group_repository, :role_repository, :tenant_repository, :user_repository
+  attr_reader :group_repository, :role_repository, :tenant_repository, :user_repository, :group_member_service
 end

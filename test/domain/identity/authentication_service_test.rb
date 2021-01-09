@@ -4,7 +4,7 @@ class AuthenticationServiceTest < IdentityAccessTest
   test 'authentication success' do
     user = user_aggregate
 
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     user_descriptor = DomainRegistry
       .authentication_service
@@ -20,7 +20,7 @@ class AuthenticationServiceTest < IdentityAccessTest
   test 'authentication tenant failure' do
     user = user_aggregate
 
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     user_descriptor = DomainRegistry
       .authentication_service
@@ -33,7 +33,7 @@ class AuthenticationServiceTest < IdentityAccessTest
   test 'authentication username failure' do
     user = user_aggregate
 
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     user_descriptor = DomainRegistry
       .authentication_service
@@ -46,7 +46,7 @@ class AuthenticationServiceTest < IdentityAccessTest
   test 'authentication password failure' do
     user = user_aggregate
 
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     user_descriptor = DomainRegistry
       .authentication_service

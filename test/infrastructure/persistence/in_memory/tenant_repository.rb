@@ -3,7 +3,12 @@ class InMemory::TenantRepository
     @repository = {}
   end
 
-  def add(tenant)
+  def create(tenant)
+    raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key_of(tenant))
+    @repository[key_of(tenant)] = tenant
+  end
+
+  def update(tenant)
     @repository[key_of(tenant)] = tenant
   end
 

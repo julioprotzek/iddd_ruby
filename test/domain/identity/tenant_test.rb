@@ -116,7 +116,7 @@ class TenantTest < IdentityAccessTest
 
     assert_not_nil user
 
-    DomainRegistry.user_repository.add(user)
+    DomainRegistry.user_repository.create(user)
 
     assert_not_nil user.enablement
     assert_not_nil user.person
