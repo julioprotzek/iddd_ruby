@@ -3,7 +3,7 @@ class InMemory::GroupRepository
     @repository = {}
   end
 
-  def add(group)
+  def create(group)
     raise StandardError, 'Validation failed: Name has already been taken' if @repository.key?(key_of(group))
     @repository[key_of(group)] = group
   end

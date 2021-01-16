@@ -35,7 +35,7 @@ class RoleTest < IdentityAccessTest
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
-    DomainRegistry.group_repository.add(managers_group)
+    DomainRegistry.group_repository.create(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
     DomainRegistry.role_repository.create(manager_role)
@@ -54,7 +54,7 @@ class RoleTest < IdentityAccessTest
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
-    DomainRegistry.group_repository.add(managers_group)
+    DomainRegistry.group_repository.create(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
     DomainRegistry.role_repository.create(manager_role)
@@ -89,7 +89,7 @@ class RoleTest < IdentityAccessTest
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
-    DomainRegistry.group_repository.add(managers_group)
+    DomainRegistry.group_repository.create(managers_group)
 
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)
     manager_role.assign_user(user)
@@ -112,7 +112,7 @@ class RoleTest < IdentityAccessTest
 
     manager_role = tenant.provision_role(name: 'Manager', description: 'A manager role.', supports_nesting: true)
     managers_group = tenant.provision_group(name: 'Managers', description: 'A group of managers.')
-    DomainRegistry.group_repository.add(managers_group)
+    DomainRegistry.group_repository.create(managers_group)
 
     manager_role.assign_user(user)
     manager_role.assign_group(managers_group, DomainRegistry.group_member_service)

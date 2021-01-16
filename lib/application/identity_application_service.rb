@@ -170,7 +170,7 @@ class IdentityApplicationService
       description: command.description
     )
 
-    group_repository.add(group)
+    group_repository.create(group)
 
     group
   end

@@ -6,7 +6,7 @@ module GroupRepositorySharedTests
       user = user_aggregate
       DomainRegistry.user_repository.create(user)
       group_a.add_user(user)
-      DomainRegistry.group_repository.add(group_a)
+      DomainRegistry.group_repository.create(group_a)
 
       assert_equal 1, group_a.members.size
       assert group_a.member?(user, DomainRegistry.group_member_service)
@@ -21,7 +21,7 @@ module GroupRepositorySharedTests
     test 'remove repository group' do
       tenant = tenant_aggregate
       group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-      DomainRegistry.group_repository.add(group_a)
+      DomainRegistry.group_repository.create(group_a)
       not_nil_group = DomainRegistry.group_repository.group_named(tenant.tenant_id, 'GroupA')
       assert_not_nil not_nil_group
 
@@ -34,13 +34,13 @@ module GroupRepositorySharedTests
     test 'group A < group B < group C' do
       tenant = tenant_aggregate
       group_a = tenant.provision_group(name: 'Group A', description: 'A group member A.')
-      DomainRegistry.group_repository.add(group_a)
+      DomainRegistry.group_repository.create(group_a)
 
       group_b = tenant.provision_group(name: 'Group B', description: 'A group member B.')
-      DomainRegistry.group_repository.add(group_b)
+      DomainRegistry.group_repository.create(group_b)
 
       group_c = tenant.provision_group(name: 'Group C', description: 'A group member C.')
-      DomainRegistry.group_repository.add(group_c)
+      DomainRegistry.group_repository.create(group_c)
 
 
       group_a.add_group(group_b, DomainRegistry.group_member_service)

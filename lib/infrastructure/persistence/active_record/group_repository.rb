@@ -1,5 +1,5 @@
 class ActiveRecord::GroupRepository
-  def add(group)
+  def create(group)
     as_aggregate ActiveRecord::Group.create!(hash_from_aggregate(group))
   rescue ActiveRecord::RecordInvalid => error
     raise StandardError, error.message

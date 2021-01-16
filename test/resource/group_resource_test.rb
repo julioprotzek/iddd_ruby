@@ -3,7 +3,7 @@ require './test/resource/abstract_resource_test'
 class GroupResourceTest < AbstractResourceTest
   test 'group' do
     group = group_1_aggregate
-    DomainRegistry.group_repository.add(group)
+    DomainRegistry.group_repository.create(group)
 
     get "/tenants/#{group.tenant_id.id}/groups/#{url_encode(group.name)}"
 

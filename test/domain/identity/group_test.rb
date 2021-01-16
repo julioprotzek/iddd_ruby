@@ -11,7 +11,7 @@ class GroupTest < IdentityAccessTest
   test 'provision group' do
     tenant = tenant_aggregate
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
     assert_equal 1, DomainRegistry.group_repository.all_groups(tenant.tenant_id).size
   end
 
@@ -20,9 +20,9 @@ class GroupTest < IdentityAccessTest
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
     group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.create(group_b)
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
     assert_equal 1, group_a.members.size
@@ -38,7 +38,7 @@ class GroupTest < IdentityAccessTest
     user = user_aggregate
     DomainRegistry.user_repository.create(user)
     group_a.add_user(user)
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
 
     assert_equal 1, group_a.members.size
     assert group_a.member?(user, DomainRegistry.group_member_service)
@@ -51,10 +51,10 @@ class GroupTest < IdentityAccessTest
     tenant = tenant_aggregate
 
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
 
     group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.create(group_b)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
@@ -69,7 +69,7 @@ class GroupTest < IdentityAccessTest
 
     tenant = tenant_aggregate
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
 
     user = user_aggregate
     DomainRegistry.user_repository.create(user)
@@ -88,10 +88,10 @@ class GroupTest < IdentityAccessTest
     tenant = tenant_aggregate
 
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
 
     group_b = tenant.provision_group(name: 'GroupB', description: 'A group named GroupB')
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.create(group_b)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
@@ -112,9 +112,9 @@ class GroupTest < IdentityAccessTest
 
     # test alternate creation via constructor
     group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
     group_b = Group.new(user.tenant_id, 'GroupB', 'A group named GroupB')
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.create(group_b)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
 
@@ -130,11 +130,11 @@ class GroupTest < IdentityAccessTest
 
     # test alternate creation via constructor
     group_a = Group.new(user.tenant_id, 'GroupA', 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
     group_b = Group.new(user.tenant_id, 'GroupB', 'A group named GroupB')
-    DomainRegistry.group_repository.add(group_b)
+    DomainRegistry.group_repository.create(group_b)
     group_c = Group.new(user.tenant_id, 'GroupC', 'A group named GroupC')
-    DomainRegistry.group_repository.add(group_c)
+    DomainRegistry.group_repository.create(group_c)
 
     group_a.add_group(group_b, DomainRegistry.group_member_service)
     DomainRegistry.group_repository.update(group_a)
@@ -153,7 +153,7 @@ class GroupTest < IdentityAccessTest
   test 'no role internal groups in find_all_groups' do
     tenant = tenant_aggregate
     group_a = tenant.provision_group(name: 'GroupA', description: 'A group named GroupA')
-    DomainRegistry.group_repository.add(group_a)
+    DomainRegistry.group_repository.create(group_a)
 
     role_a = tenant.provision_role(name: 'RoleA', description: 'A role of A.')
     DomainRegistry.role_repository.create(role_a)

@@ -19,10 +19,10 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'add group to group' do
     parent_group = group_1_aggregate
-    DomainRegistry.group_repository.add(parent_group)
+    DomainRegistry.group_repository.create(parent_group)
 
     child_group = group_2_aggregate
-    DomainRegistry.group_repository.add(child_group)
+    DomainRegistry.group_repository.create(child_group)
 
     assert_equal 0, parent_group.members.size
 
@@ -40,10 +40,10 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'add user to group' do
     parent_group = group_1_aggregate
-    DomainRegistry.group_repository.add(parent_group)
+    DomainRegistry.group_repository.create(parent_group)
 
     child_group = group_2_aggregate
-    DomainRegistry.group_repository.add(child_group)
+    DomainRegistry.group_repository.create(child_group)
 
     user = user_aggregate
     DomainRegistry.user_repository.create(user)
@@ -286,10 +286,10 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'is group member' do
     parent_group = group_1_aggregate
-    DomainRegistry.group_repository.add(parent_group)
+    DomainRegistry.group_repository.create(parent_group)
 
     child_group = group_2_aggregate
-    DomainRegistry.group_repository.add(child_group)
+    DomainRegistry.group_repository.create(child_group)
 
     user = user_aggregate
     DomainRegistry.user_repository.create(user)
@@ -317,10 +317,10 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'remove group from group' do
     parent_group = group_1_aggregate
-    DomainRegistry.group_repository.add(parent_group)
+    DomainRegistry.group_repository.create(parent_group)
 
     child_group = group_2_aggregate
-    DomainRegistry.group_repository.add(child_group)
+    DomainRegistry.group_repository.create(child_group)
 
     parent_group.add_group(child_group, DomainRegistry.group_member_service)
     parent_group = DomainRegistry.group_repository.update(parent_group)
@@ -341,10 +341,10 @@ class IdentityApplicationServiceTest < ApplicationServiceTest
 
   test 'remove user from group' do
     parent_group = group_1_aggregate
-    DomainRegistry.group_repository.add(parent_group)
+    DomainRegistry.group_repository.create(parent_group)
 
     child_group = group_2_aggregate
-    DomainRegistry.group_repository.add(child_group)
+    DomainRegistry.group_repository.create(child_group)
 
     user = user_aggregate
     DomainRegistry.user_repository.create(user)
