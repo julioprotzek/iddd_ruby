@@ -1,20 +1,6 @@
 class ActiveRecord::TenantRepository
-  class TenantModel < ActiveRecord::Base
-    has_many :registration_invitations, class_name: 'RegistrationInvitationModel', foreign_key: 'tenant_id', dependent: :delete_all
-    self.table_name = 'tenants'
-
-    validates :tenant_id_id, :name, uniqueness: true
-  end
-
-  class RegistrationInvitationModel < ActiveRecord::Base
-    belongs_to :tenant, class_name: 'TenantModel', foreign_key: 'tenant_id'
-    self.table_name = 'registration_invitations'
-
-    validates :invitation_id, uniqueness: { scope: :tenant_id_id }
-  end
-
   def create(tenant)
-    as_aggregate TenantModel.create!(hash_from_aggregate(tenant))
+    as_aggregate ActiveRecord::Tenant.create!(hash_from_aggregate(tenant))
   rescue ActiveRecord::RecordInvalid => error
     raise StandardError, error.message
   end
@@ -32,11 +18,11 @@ class ActiveRecord::TenantRepository
   end
 
   def tenant_named(name)
-    as_aggregate TenantModel.find_by(name: name)
+    as_aggregate ActiveRecord::Tenant.find_by(name: name)
   end
 
   def tenant_of_id(tenant_id)
-    as_aggregate TenantModel.find_by(tenant_id_id: tenant_id.id)
+    as_aggregate ActiveRecord::Tenant.find_by(tenant_id_id: tenant_id.id)
   end
 
   def remove(tenant)
@@ -45,7 +31,7 @@ class ActiveRecord::TenantRepository
   end
 
   def clean
-    TenantModel.delete_all
+    ActiveRecord::Tenant.delete_all
   end
 
   private
@@ -82,13 +68,13 @@ class ActiveRecord::TenantRepository
     tenant_hash[:tenant_id_id] = tenant_hash.delete(:tenant_id)[:id]
     tenant_hash[:registration_invitations] = tenant_hash[:registration_invitations].map do |invitation_hash|
       invitation_hash[:tenant_id_id] = invitation_hash.delete(:tenant_id)[:id]
-      RegistrationInvitationModel.new(invitation_hash)
+      ActiveRecord::RegistrationInvitation.new(invitation_hash)
     end
 
     tenant_hash
   end
 
   def find_record_for(tenant)
-    TenantModel.find_by(tenant_id_id: tenant.tenant_id.id)
+    ActiveRecord::Tenant.find_by(tenant_id_id: tenant.tenant_id.id)
   end
 end

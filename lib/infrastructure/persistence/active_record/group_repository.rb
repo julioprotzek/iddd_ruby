@@ -1,17 +1,6 @@
 class ActiveRecord::GroupRepository
-  class GroupModel < ActiveRecord::Base
-    has_many :members, class_name: 'MemberModel', foreign_key: 'group_id', dependent: :delete_all
-    self.table_name = 'groups'
-    validates :name, uniqueness: { scope: :tenant_id_id }
-  end
-
-  class MemberModel < ActiveRecord::Base
-    belongs_to :group, class_name: 'GroupModel', foreign_key: 'group_id'
-    self.table_name = 'group_members'
-  end
-
   def add(group)
-    as_aggregate GroupModel.create!(hash_from_aggregate(group))
+    as_aggregate ActiveRecord::Group.create!(hash_from_aggregate(group))
   rescue ActiveRecord::RecordInvalid => error
     raise StandardError, error.message
   end
@@ -25,26 +14,26 @@ class ActiveRecord::GroupRepository
   end
 
   def all_groups(tenant_id)
-    GroupModel.where(tenant_id_id: tenant_id.id).map do |record|
+    ActiveRecord::Group.where(tenant_id_id: tenant_id.id).map do |record|
       as_aggregate(record)
     end
   end
 
   def group_named(tenant_id, name)
     raise ArgumentError, 'May not find internal groups.' if name.starts_with?(Group::ROLE_GROUP_PREFIX)
-    record = GroupModel.find_by(tenant_id_id: tenant_id.id, name: name)
+    record = ActiveRecord::Group.find_by(tenant_id_id: tenant_id.id, name: name)
     if record.present?
       as_aggregate(record)
     end
   end
 
   def remove(group)
-    GroupModel.find_by(tenant_id_id: group.tenant_id.id, name: group.name).delete
+    ActiveRecord::Group.find_by(tenant_id_id: group.tenant_id.id, name: group.name).delete
     group
   end
 
   def clean
-    GroupModel.delete_all
+    ActiveRecord::Group.delete_all
   end
 
   def reload(group)
@@ -77,13 +66,13 @@ class ActiveRecord::GroupRepository
     group_hash[:members] = group_hash[:members].map do |member_hash|
       member_hash[:tenant_id_id] = member_hash.delete(:tenant_id)[:id]
       member_hash[:member_type] = member_hash.delete(:type)
-      MemberModel.new(member_hash)
+      ActiveRecord::Member.new(member_hash)
     end
 
     group_hash
   end
 
   def find_record_for(group)
-    GroupModel.find_by(tenant_id_id: group.tenant_id.id, name: group.name)
+    ActiveRecord::Group.find_by(tenant_id_id: group.tenant_id.id, name: group.name)
   end
 end

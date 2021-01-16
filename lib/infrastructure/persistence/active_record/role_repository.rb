@@ -1,25 +1,7 @@
 class ActiveRecord::RoleRepository
-  class GroupModel < ActiveRecord::Base
-    has_many :one, class_name: 'RoleModel', foreign_key: 'group_id', dependent: :delete_all
-    has_many :members, class_name: 'MemberModel', foreign_key: 'group_id', dependent: :delete_all
-    self.table_name = 'groups'
-    validates :name, uniqueness: { scope: :tenant_id_id }
-  end
-
-  class RoleModel < ActiveRecord::Base
-    belongs_to :group, class_name: 'GroupModel', foreign_key: 'group_id'
-    self.table_name = 'roles'
-
-    validates :name, uniqueness: { scope: :tenant_id_id }
-  end
-
-  class MemberModel < ActiveRecord::Base
-    belongs_to :group, class_name: 'GroupModel', foreign_key: 'group_id'
-    self.table_name = 'group_members'
-  end
 
   def create(role)
-    as_aggregate RoleModel.create!(hash_from_aggregate(role))
+    as_aggregate ActiveRecord::Role.create!(hash_from_aggregate(role))
   end
 
   def update(role)
@@ -32,22 +14,22 @@ class ActiveRecord::RoleRepository
   end
 
   def all_roles(tenant_id)
-    RoleModel
+    ActiveRecord::Role
       .where(tenant_id_id: tenant_id.id)
       .all
       .map{ |record| as_aggregate(record) }
   end
 
   def remove(role)
-    RoleModel.find_by(tenant_id_id: role.tenant_id.id).group.delete
+    ActiveRecord::Role.find_by(tenant_id_id: role.tenant_id.id).group.delete
   end
 
   def role_named(tenant_id, name)
-    as_aggregate RoleModel.find_by(tenant_id_id: tenant_id.id, name: name)
+    as_aggregate ActiveRecord::Role.find_by(tenant_id_id: tenant_id.id, name: name)
   end
 
   def clean
-    GroupModel.where(id: RoleModel.select(:group_id)).delete_all
+    ActiveRecord::Group.where(id: ActiveRecord::Role.select(:group_id)).delete_all
   end
 
   def reload(role)
@@ -80,19 +62,19 @@ class ActiveRecord::RoleRepository
       member_hash[:tenant_id_id] = member_hash.delete(:tenant_id)[:id]
       member_hash[:member_type] = member_hash.delete(:type)
 
-      member_record = MemberModel.find_by(member_hash)
+      member_record = ActiveRecord::Member.find_by(member_hash)
 
-      member_record ||= MemberModel.new(member_hash)
+      member_record ||= ActiveRecord::Member.new(member_hash)
 
       member_record
     end
 
-    group_record = GroupModel.find_by(tenant_id_id: role_hash[:group][:tenant_id_id])
+    group_record = ActiveRecord::Group.find_by(tenant_id_id: role_hash[:group][:tenant_id_id])
 
     if group_record.present?
       group_record.members = role_hash[:group][:members]
     else
-      group_record = GroupModel.new(role_hash[:group])
+      group_record = ActiveRecord::Group.new(role_hash[:group])
     end
 
     role_hash[:group] = group_record
@@ -120,13 +102,13 @@ class ActiveRecord::RoleRepository
     group_hash[:members] = group_hash[:members].map do |member_hash|
       member_hash[:tenant_id_id] = member_hash.delete(:tenant_id)[:id]
       member_hash[:member_type] = member_hash.delete(:type)
-      MemberModel.new(member_hash)
+      ActiveRecord::Member.new(member_hash)
     end
 
     group_hash
   end
 
   def find_record_for(role)
-    RoleModel.find_by(tenant_id_id: role.tenant_id.id, name: role.name)
+    ActiveRecord::Role.find_by(tenant_id_id: role.tenant_id.id, name: role.name)
   end
 end

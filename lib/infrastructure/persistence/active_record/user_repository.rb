@@ -1,30 +1,6 @@
-require 'bcrypt'
-
 class ActiveRecord::UserRepository
-  class UserModel < ActiveRecord::Base
-    include BCrypt
-    has_one :person, class_name: 'PersonModel', foreign_key: 'user_id', dependent: :delete
-    self.table_name = 'users'
-
-    validates :username, uniqueness: { scope: :tenant_id_id }
-
-    def password
-      @password ||= Password.new(password_hash)
-    end
-
-    def password=(new_password)
-      @password = new_password
-      self.password_hash = @password
-    end
-  end
-
-  class PersonModel < ActiveRecord::Base
-    belongs_to :user, class_name: 'UserModel', foreign_key: 'user_id'
-    self.table_name = 'persons'
-  end
-
   def create(user)
-    as_aggregate UserModel.create!(hash_from_aggregate(user))
+    as_aggregate ActiveRecord::User.create!(hash_from_aggregate(user))
   rescue ActiveRecord::RecordInvalid => error
     raise StandardError, error.message
   end
@@ -38,7 +14,7 @@ class ActiveRecord::UserRepository
   end
 
   def find_by(tenant_id:, username:)
-    record = UserModel.find_by(tenant_id_id: tenant_id.id, username: username)
+    record = ActiveRecord::User.find_by(tenant_id_id: tenant_id.id, username: username)
 
     if record.present?
       as_aggregate(record)
@@ -46,7 +22,7 @@ class ActiveRecord::UserRepository
   end
 
   def all_similar_named_users(tenant_id:, first_name_prefix:, last_name_prefix:)
-    PersonModel
+    ActiveRecord::Person
       .where(tenant_id_id: tenant_id.id)
       .where("name_first_name LIKE :prefix", prefix: "#{first_name_prefix}%")
       .where("name_last_name LIKE :prefix", prefix: "#{last_name_prefix}%")
@@ -60,7 +36,7 @@ class ActiveRecord::UserRepository
   end
 
   def user_from_authentic_credentials(tenant_id, username, encrypted_password)
-    record = UserModel.find_by(tenant_id_id: tenant_id.id, username: username)
+    record = ActiveRecord::User.find_by(tenant_id_id: tenant_id.id, username: username)
 
     if record.present? && record.password == encrypted_password
       as_aggregate(record)
@@ -68,7 +44,7 @@ class ActiveRecord::UserRepository
   end
 
   def clean
-    UserModel.delete_all
+    ActiveRecord::User.delete_all
   end
 
   private
@@ -139,12 +115,12 @@ class ActiveRecord::UserRepository
     user_hash[:person][:contact_information_secondary_phone_number] = user_hash.dig(:person, :contact_information, :secondary_phone, :number)
     user_hash[:person].delete(:contact_information)
 
-    user_hash[:person] = PersonModel.new(user_hash[:person])
+    user_hash[:person] = ActiveRecord::Person.new(user_hash[:person])
 
     user_hash
   end
 
   def find_record_for(user)
-    UserModel.find_by(tenant_id_id: user.tenant_id.id, username: user.username)
+    ActiveRecord::User.find_by(tenant_id_id: user.tenant_id.id, username: user.username)
   end
 end
