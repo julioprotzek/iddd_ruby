@@ -4,6 +4,7 @@ DomainRegistry.role_repository.clean
 DomainRegistry.user_repository.clean
 ApplicationServiceRegistry.event_store.clean
 
+
 tenant = ApplicationServiceRegistry
   .identity_application_service
   .provision_tenant(

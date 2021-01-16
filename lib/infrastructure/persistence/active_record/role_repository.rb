@@ -1,5 +1,4 @@
 class ActiveRecord::RoleRepository
-
   def create(role)
     as_aggregate ActiveRecord::Role.create!(hash_from_aggregate(role))
   end
@@ -29,7 +28,7 @@ class ActiveRecord::RoleRepository
   end
 
   def clean
-    ActiveRecord::Group.where(id: ActiveRecord::Role.select(:group_id)).delete_all
+    ActiveRecord::Role.delete_all
   end
 
   def reload(role)
