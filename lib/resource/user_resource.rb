@@ -9,9 +9,9 @@ class UserResource < AbstractJsonResource
     )
 
     if user_descriptor.null_descriptor?
-      halt 404, { error: "User not authenticated" }.to_json
+      halt 401, { error: "User not authenticated." }.to_json
     else
-      user_descriptor.user.to_json
+      user_descriptor.to_json
     end
   end
 
@@ -19,9 +19,9 @@ class UserResource < AbstractJsonResource
     user = identity_application_service.user(params[:tenant_id], params[:username])
 
     if user.present?
-      user.to_json
+      UserRepresentation.new(user).to_json
     else
-      halt 404, { error: "User not found" }.to_json
+      halt 404, { error: "User not found." }.to_json
     end
   end
 
@@ -33,9 +33,9 @@ class UserResource < AbstractJsonResource
     )
 
     if user.present?
-      user.to_json
+      UserInRoleRepresentation.new(user, params[:role_name]).to_json
     else
-      halt 404, { error: "User not found in role #{params[:role_name]}" }.to_json
+      halt 404, { error: "User not found in role #{params[:role_name]}." }.to_json
     end
   end
 end

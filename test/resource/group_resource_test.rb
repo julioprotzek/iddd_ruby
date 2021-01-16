@@ -1,7 +1,7 @@
 require './test/resource/abstract_resource_test'
 
 class GroupResourceTest < AbstractResourceTest
-  test 'group' do
+  test 'find group' do
     group = group_1_aggregate
     DomainRegistry.group_repository.create(group)
 

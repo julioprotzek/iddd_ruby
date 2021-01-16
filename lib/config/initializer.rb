@@ -24,6 +24,7 @@ loader.push_dir('lib/domain/identity')
 loader.push_dir('lib/infrastructure/services')
 loader.push_dir('lib/application')
 loader.push_dir('lib/application/command')
+loader.push_dir('lib/application/representation')
 loader.push_dir('lib/resource')
 loader.push_dir('lib/infrastructure/persistence')
 
