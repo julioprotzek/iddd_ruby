@@ -15,8 +15,8 @@ ActiveSupport.test_order = :random
 
 require 'zeitwerk'
 loader = Zeitwerk::Loader.new
-# loader.push_dir('test/common')
+loader.push_dir('test/common')
+loader.push_dir('test/infrastructure/persistence')
 # loader.push_dir('test/application')
-# loader.push_dir('test/infrastructure/persistence')
 
 loader.setup
