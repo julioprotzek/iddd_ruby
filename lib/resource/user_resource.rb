@@ -1,4 +1,4 @@
-class UserResource < AbstractJsonResource
+class UserResource < AbstractJSONResource
   get '/tenants/:tenant_id/users/:username/authenticate_with/:password' do
     user_descriptor = identity_application_service.authenticate_user(
       AuthenticateUserCommand.new(

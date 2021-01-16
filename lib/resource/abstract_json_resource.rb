@@ -1,4 +1,4 @@
-class AbstractJsonResource < Sinatra::Base
+class AbstractJSONResource < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end

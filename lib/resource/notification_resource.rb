@@ -1,4 +1,4 @@
-class NotificationResource < AbstractJsonResource
+class NotificationResource < AbstractJSONResource
   get '/notifications' do
     current_notification_log = notification_application_service.current_notification_log
 

@@ -1,4 +1,4 @@
-class AdminResource < AbstractJsonResource
+class AdminResource < AbstractJSONResource
   get '/admin' do
     {
       tenants: ActiveRecord::Tenant.all,

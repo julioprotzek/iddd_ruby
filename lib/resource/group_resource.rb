@@ -1,4 +1,4 @@
-class GroupResource < AbstractJsonResource
+class GroupResource < AbstractJSONResource
   get '/tenants/:tenant_id/groups/:group_name' do
     group = identity_application_service.group(params[:tenant_id], params[:group_name])
 

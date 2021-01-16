@@ -13,6 +13,11 @@ require 'active_support/all'
 # Load files
 require 'zeitwerk'
 loader = Zeitwerk::Loader.new
+loader.inflector.inflect(
+  'abstract_json_resource'   => 'AbstractJSONResource',
+  'rabbit_mq' => 'RabbitMQ'
+)
+
 loader.push_dir('lib/common')
 loader.push_dir('lib/common/domain')
 loader.push_dir('lib/common/event')

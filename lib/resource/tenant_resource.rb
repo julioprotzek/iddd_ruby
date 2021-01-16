@@ -1,4 +1,4 @@
-class TenantResource < AbstractJsonResource
+class TenantResource < AbstractJSONResource
   get '/tenants/:tenant_id' do
     tenant = identity_application_service.tenant(params[:tenant_id])
 
