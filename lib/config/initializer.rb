@@ -23,6 +23,7 @@ loader.push_dir('lib/common/domain')
 loader.push_dir('lib/common/event')
 loader.push_dir('lib/common/notification')
 loader.push_dir('lib/common/port/adapter/persistence')
+loader.push_dir('lib/common/port/adapter/notification')
 loader.push_dir('lib/domain')
 loader.push_dir('lib/domain/access')
 loader.push_dir('lib/domain/identity')
@@ -32,8 +33,5 @@ loader.push_dir('lib/application/command')
 loader.push_dir('lib/application/representation')
 loader.push_dir('lib/resource')
 loader.push_dir('lib/infrastructure/persistence')
-
-
-loader.push_dir('test/application')
 
 loader.setup

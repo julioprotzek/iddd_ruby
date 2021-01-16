@@ -27,6 +27,7 @@ class ApplicationServiceTest < ActiveSupport::TestCase
     DomainRegistry.tenant_repository.clean
 
     ApplicationServiceRegistry.event_store.clean
+    ApplicationServiceRegistry.stubs(:notification_publisher).returns(MockNotificationPublisher.new)
   end
 
 

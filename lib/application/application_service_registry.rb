@@ -27,10 +27,18 @@ class ApplicationServiceRegistry
     end
 
     def notification_publisher
-      @@notification_publisher ||= MockNotificationPublisher.new
+      @@notification_publisher ||= RabbitMQ::NotifiationPublisher.new(
+        event_store,
+        published_notification_tracker_store,
+        'identity_access'
+      )
     end
 
     private
+
+    def published_notification_tracker_store
+      ActiveRecord::PublishedNotificationTrackerStore.new
+    end
 
     def tenant_repository
       DomainRegistry.tenant_repository

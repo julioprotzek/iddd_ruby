@@ -1,0 +1,3 @@
+class ActiveRecord::PublishedNotificationTrackerStore
+
+end
