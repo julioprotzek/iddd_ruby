@@ -1,9 +1,12 @@
 class DomainEventPublisher
-  include Singleton
   attr_reader :subscribers
 
   class << self
     delegate :subscribe, :publish, :publishing?, :reset, to: :instance
+
+    def instance
+      @instance ||= new
+    end
   end
 
   def initialize
@@ -29,6 +32,19 @@ class DomainEventPublisher
       begin
         @publishing = true
         @subscribers[domain_event.class].each do |handler_block|
+          handler_block.call(domain_event)
+        end
+
+        nil
+      ensure
+        @publishing = false
+      end
+    end
+
+    if @subscribers[DomainEvent]&.any? && !publishing?
+      begin
+        @publishing = true
+        @subscribers[DomainEvent].each do |handler_block|
           handler_block.call(domain_event)
         end
 

@@ -1,12 +1,8 @@
 class IdentityAccessEventProcessor
-  # Registers a IdentityAccessEventProcessor to listen
+  # Registers an IdentityAccessEventProcessor to listen
   # and forward all domain events to external subsribers.
   def self.register
     IdentityAccessEventProcessor.new.listen
-  end
-
-  def initialize
-    @event_store = EventStore.new
   end
 
   # Listen for all domain events and and stores them.
@@ -23,5 +19,7 @@ class IdentityAccessEventProcessor
     event_store.append(domain_event)
   end
 
-  attr_reader :event_store
+  def event_store
+    ApplicationServiceRegistry.event_store
+  end
 end

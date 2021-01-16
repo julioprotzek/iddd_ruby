@@ -4,7 +4,7 @@ class IdentityApplicationService
     @tenant_repository = tenant_repository
     @user_repository = user_repository
 
-    # IdentityAccessEventProcessor.register
+    IdentityAccessEventProcessor.register
   end
 
   def activate_tenant(command)

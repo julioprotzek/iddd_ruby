@@ -127,7 +127,7 @@ class Tenant
       # ensure same tenant
       person.tenant_id = tenant_id
 
-      User.new(
+      User.register(
         tenant_id: tenant_id,
         username: username,
         password: password,

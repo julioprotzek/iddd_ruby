@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_104704) do
+ActiveRecord::Schema.define(version: 2021_01_10_133859) do
 
   create_table "group_members", force: :cascade do |t|
     t.string "tenant_id_id"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 2021_01_08_104704) do
     t.integer "group_id"
     t.index ["group_id"], name: "index_roles_on_group_id"
     t.index ["tenant_id_id"], name: "index_roles_on_tenant_id_id"
+  end
+
+  create_table "stored_events", force: :cascade do |t|
+    t.integer "event_id"
+    t.text "body"
+    t.string "type_name"
+    t.datetime "occurred_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tenants", force: :cascade do |t|

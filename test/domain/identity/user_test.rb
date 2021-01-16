@@ -12,7 +12,7 @@ class UserTest < IdentityAccessTest
       handled = true
     end
 
-    User.new(
+    User.register(
       tenant_id: tenant.tenant_id,
       username: FIXTURE_USERNAME,
       password: FIXTURE_PASSWORD,

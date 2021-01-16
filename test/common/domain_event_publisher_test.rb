@@ -127,4 +127,14 @@ class DomainEventPublisherTest < ActiveSupport::TestCase
     DomainEventPublisher.publish(AnotherTestableDomainEvent.new(value: 1111))
     assert_equal false, event_handled
   end
+
+  test 'handler subscribed to DomainEvent receives all events' do
+    event_handled = false
+    DomainEventPublisher.subscribe(DomainEvent) do |domain_event|
+      event_handled = true
+    end
+
+    DomainEventPublisher.publish(TestableDomainEvent.new(id: 123, name: 'test'))
+    assert_equal true, event_handled
+  end
 end

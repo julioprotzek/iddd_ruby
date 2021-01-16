@@ -1,4 +1,4 @@
-class User
+class User < Entity
   include Assertion
 
   attr_reader :tenant_id, :username, :person, :enablement
@@ -11,14 +11,20 @@ class User
     self.password = password
     self.enablement = enablement
     self.person = person
+  end
+
+  def self.register(**args)
+    user = User.new(**args)
 
     DomainEventPublisher.publish(
       UserRegistered.new(
-        username: username,
-        name: person.name,
-        email_address: person.contact_information.email_address
+        username: user.username,
+        name: user.person.name,
+        email_address: user.person.contact_information.email_address
       )
     )
+
+    user
   end
 
   def change_password(from:, to:)

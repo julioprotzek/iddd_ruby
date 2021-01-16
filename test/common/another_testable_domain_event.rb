@@ -1,4 +1,4 @@
-class AnotherTestableDomainEvent
+class AnotherTestableDomainEvent < DomainEvent
   attr_reader :version, :occurred_at, :value
 
   def initialize(value:)
