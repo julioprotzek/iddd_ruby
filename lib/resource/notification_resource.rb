@@ -1,8 +1,4 @@
-class NotificationResource < AbstractResource
-  before do
-    content_type :json
-  end
-
+class NotificationResource < AbstractJsonResource
   get '/notifications' do
     current_notification_log = notification_application_service.current_notification_log
 

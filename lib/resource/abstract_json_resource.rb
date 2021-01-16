@@ -1,6 +1,10 @@
-class AbstractResource < Sinatra::Base
+class AbstractJsonResource < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
+  end
+
+  before do
+    content_type :json
   end
 
   def access_application_service
