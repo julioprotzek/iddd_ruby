@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_10_133859) do
+ActiveRecord::Schema.define(version: 2021_01_16_185254) do
 
   create_table "group_members", force: :cascade do |t|
     t.string "tenant_id_id"
@@ -50,6 +50,11 @@ ActiveRecord::Schema.define(version: 2021_01_10_133859) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tenant_id_id"], name: "index_persons_on_tenant_id_id"
     t.index ["user_id"], name: "index_persons_on_user_id"
+  end
+
+  create_table "published_notification_trackers", force: :cascade do |t|
+    t.integer "most_recent_published_notification_id"
+    t.string "type_name"
   end
 
   create_table "registration_invitations", force: :cascade do |t|

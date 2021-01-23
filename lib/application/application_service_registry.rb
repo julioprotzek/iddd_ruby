@@ -27,7 +27,7 @@ class ApplicationServiceRegistry
     end
 
     def notification_publisher
-      @@notification_publisher ||= RabbitMQ::NotifiationPublisher.new(
+      @@notification_publisher ||= RabbitMQ::NotificationPublisher.new(
         event_store,
         published_notification_tracker_store,
         'identity_access'

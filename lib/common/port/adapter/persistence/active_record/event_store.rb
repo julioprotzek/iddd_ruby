@@ -18,7 +18,7 @@ class ActiveRecord::EventStore
 
   def all_stored_events_since(stored_event_id)
     StoredEventModel
-      .where('event_id > ?', stored_event_id)
+      .where('event_id > ?', stored_event_id.to_i)
       .map{ |record| as_stored_event(record) }
   end
 

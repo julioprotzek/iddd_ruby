@@ -20,3 +20,5 @@ group :test do
   gem 'rack-test', '~> 1.1'
   gem 'mocha', '~> 1.12'
 end
+
+gem "bunny", "~> 2.17"
